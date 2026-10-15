@@ -929,7 +929,7 @@ Always connect technical choices to business value.
 
 # 23. Git rules
 
-Commit after meaningful tested units of work.
+Commit only coherent, reviewable units after relevant checks pass. Do not automatically commit after every task or stage; combine related implementation, tests and documentation. Leave routine work uncommitted until a meaningful unit is ready. Follow PLAN.md for commit policy.
 
 Do not create artificial commit quotas.
 
@@ -961,9 +961,9 @@ milestone 7
 Before considering a task complete:
 
 - implementation works
-- relevant tests exist
-- tests pass
-- ruff passes
+- relevant tests exist for implementation changes
+- relevant tests pass
+- Ruff passes for Python changes; documentation-only changes pass consistency and diff checks
 - docs are updated
 - no hard-coded source assumptions
 - no unresolved silent guesses
@@ -977,7 +977,7 @@ At the end of every Codex task, report:
 4. results
 5. assumptions
 6. `TODO(human)` items
-7. next milestone
+7. next stage
 
 # 25. Source contracts, revisions and numerical policies
 
@@ -1043,10 +1043,10 @@ visible warnings, source-access/redistribution review and no unsupported claims.
 
 # 27. Early delivery and mandatory export validation
 
-PLAN.md explicitly authorizes M1S after M1 verification: one month through reusable
+PLAN.md Stage 3 follows Stage 2 source verification: one month through reusable
 pipeline layers to validated exports and a human-built Power BI visual. A second
 month is necessary for a change demonstration. Then complete the remaining
-milestones using the same components.
+stages using the same components.
 
 Both run-all and direct export must enforce current-state validation. An old
 successful validation report cannot authorize changed inputs or database state.

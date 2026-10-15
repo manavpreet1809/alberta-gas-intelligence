@@ -3,7 +3,7 @@
 A planned Python, SQL, DuckDB and Power BI pipeline to examine changes in publicly
 reported natural gas production for facilities in Alberta's Kakwa area.
 
-**Status: M0 foundation implemented.** No production data has been loaded and no
+**Status: Stage 1 foundation implemented (legacy name M0).** No production data has been loaded and no
 dashboard or analytical findings exist yet. Source interpretation, the exact DLS
 study boundary and fixed 24-month window remain subject to M1 verification.
 
@@ -42,10 +42,10 @@ check a different configuration directory.
 they exit with code 2 and perform no pipeline work. No networking, database
 creation or export takes place in M0.
 
-## Next milestone
+## Next stage
 
-Complete the [M1 checklist](docs/m1_checklist.md), then deliver the one-month
-vertical slice before expanding to 24 months. See [PLAN.md](PLAN.md) and
+Complete Stage 2 using the [source checklist](docs/m1_checklist.md), then deliver
+the first working month in Stage 3 before expanding to 24 months. See [PLAN.md](PLAN.md) and
 [AGENTS.md](AGENTS.md) for the bridge definitions and acceptance requirements.
 
 Missing rows do not establish zero output or physical shut-in. Reporting-month

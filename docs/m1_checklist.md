@@ -19,4 +19,4 @@ verification date. A tick without evidence is not a completed contract.
 - [ ] Confirm source access and fixture redistribution terms.
 - [ ] Record unresolved questions, their dependent tasks and final exit decision. Material ambiguity blocks those tasks.
 
-After passing: run M1S, then expand the same implementation through M2–M7.
+This is the source checklist for Stage 2 (legacy name M1). After passing, deliver Stage 3: the first working month. Expand the same implementation in Stage 4, then build the bridge in Stage 5.
