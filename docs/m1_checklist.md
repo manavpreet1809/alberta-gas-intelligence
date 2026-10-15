@@ -1,0 +1,22 @@
+# M1 verification checklist
+
+Status: pending. No actual source files have been profiled yet.
+For each item record evidence URL/file/hash, observation, decision, reviewer and
+verification date. A tick without evidence is not a completed contract.
+
+- [ ] Acquire and hash representative official files; record endpoint, packaging, headers, encoding and selected months.
+- [ ] Establish revision behavior from official documentation and available snapshots. Separate published evidence from observed changes; do not assert a revision horizon without evidence.
+- [ ] Choose a pinned acquisition vintage for every month. V1 uses the selected versions as downloaded, not an as-first-reported series unless actual historical vintages exist. Disclose unequal download dates.
+- [ ] Verify GAS/PROD codes, source units, source precision and eligible facilities against actual rows and official definitions. Exclude movements, processing, flaring and fuel from production.
+- [ ] Prove the detail grain and nonoverlapping aggregation. Document From/To, masked rows, totals, duplicates and corrections.
+- [ ] Preserve source units in staging; apply any approved conversion once in core. Test conversion and never mix units in totals.
+- [ ] Verify reporting-month operator ID and distinguish it from licensee or ownership. Resolve conflicting IDs and any within-month changes using documented source semantics; never infer a transaction date from monthly observations.
+- [ ] Define UNKNOWN attribution and temporal fallback evidence. Do not join current operator attributes onto past production.
+- [ ] Verify explicit-zero representation and masking. Define absence only as no qualifying row in a valid selected extract. Do not infer shut-in, not-yet-reported, nonexistence or closure without independent evidence.
+- [ ] Freeze DLS study boundaries, cohort membership, location vintage, 24 display months and optional context months. Record facility-location versus well-origin limitations.
+- [ ] Define invalid/null/negative qualifying-volume handling and prove all required monthly files are present.
+- [ ] Independently calculate and review a known-month regression baseline with counts, exact total, source hash and config hash.
+- [ ] Confirm source access and fixture redistribution terms.
+- [ ] Record unresolved questions, their dependent tasks and final exit decision. Material ambiguity blocks those tasks.
+
+After passing: run M1S, then expand the same implementation through M2–M7.
