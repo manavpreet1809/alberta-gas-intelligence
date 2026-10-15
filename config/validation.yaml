@@ -1,0 +1,3 @@
+# M0 template: no source assumptions are executable.
+verification_status: pending
+notes: "TODO(human): verify approved validation thresholds and source-specific policies during M1"

@@ -41,6 +41,9 @@ An estimate only; source discovery and manual dashboard work determine duration.
 
 # M0 — Repository foundation
 
+Status: implemented locally; CLI behavior tests and Ruff checks pass.
+Source verification remains pending in M1.
+
 ## Goal
 
 Create a clean, runnable project structure without implementing business logic.
