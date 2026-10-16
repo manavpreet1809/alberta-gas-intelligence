@@ -67,3 +67,11 @@ def test_doctor_rejects_missing_config(config_dir: Path) -> None:
     result = runner.invoke(app, ["doctor", "--config-dir", str(config_dir)])
     assert result.exit_code == 1
     assert "codes.yaml" in result.output
+
+
+def test_doctor_details_explains_missing_evidence_without_certifying_sources(config_dir: Path) -> None:
+    result = runner.invoke(app, ["doctor", "--config-dir", str(config_dir), "--details"])
+    assert result.exit_code == 0
+    assert "PENDING: reference_facilities" in result.output
+    assert "PENDING: source_exit_review" in result.output
+    assert "Source contracts NOT verified" in result.output

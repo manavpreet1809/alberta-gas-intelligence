@@ -84,3 +84,9 @@ This fails on source/configuration/payload hash changes, schema drift, unresolve
 selected volumes, duplicate detail, or count/volume mismatches. It never silently
 updates expected values. CI uses independently specified synthetic expectations;
 full-source verification needs the pinned local downloads.
+
+Use `gas-intel doctor --details` for a Stage 2 evidence summary. It distinguishes
+missing evidence, failed reference key checks, pinned baseline configuration and
+pending scope/cohort decisions. This summary does not rerun the full-source verifier
+and cannot certify source contracts. `--require-sources` continues to fail while
+Stage 2 is incomplete.

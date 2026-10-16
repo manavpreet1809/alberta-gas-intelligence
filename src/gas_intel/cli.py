@@ -6,6 +6,7 @@ from typing import Annotated
 import typer
 
 from gas_intel.doctor import check_scaffold
+from gas_intel.readiness import source_readiness
 
 app = typer.Typer(no_args_is_help=True, help="Alberta Gas Production Intelligence Platform")
 
@@ -15,6 +16,9 @@ def doctor(
     config_dir: Annotated[
         Path, typer.Option(help="Directory containing YAML configuration")
     ] = Path("config"),
+    details: Annotated[
+        bool, typer.Option(help="Show Stage 2 evidence and pending decisions")
+    ] = False,
     require_sources: Annotated[
         bool, typer.Option(help="Fail unless source contracts have been verified")
     ] = False,
@@ -29,6 +33,9 @@ def doctor(
     typer.echo("Source contracts NOT verified: M1 is pending.")
     for name in pending:
         typer.echo(f"TODO(human): verify {name} during M1.")
+    if details:
+        for item in source_readiness(config_dir.resolve().parent):
+            typer.echo(f"{item['status'].upper()}: {item['check']} — {item['detail']}")
     if require_sources:
         raise typer.Exit(1)
 

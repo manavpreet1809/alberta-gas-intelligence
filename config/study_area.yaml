@@ -1,3 +1,14 @@
-# M0 template: no source assumptions are executable.
 verification_status: pending
-notes: "TODO(human): verify DLS boundaries, frozen cohort and fixed 24-month window during M1"
+notes: 'TODO(human): verify DLS boundaries, frozen cohort and fixed 24-month window
+  during M1'
+candidate_proposal:
+  township_min: 60
+  township_max: 65
+  range_min: 3
+  range_max: 7
+  meridian: 6
+  start_month: 2024-01
+  end_month: 2025-12
+  context_start_month: 2023-12
+  approved: false
+  evidence: docs/study_scope_proposal.md
