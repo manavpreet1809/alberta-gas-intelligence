@@ -28,3 +28,7 @@ alone does not freeze source revisions. Retain container and all member hashes.
 Study boundaries, 24-month window, cohort location policy and cohort-specific
 baseline remain pending. Province-wide exploratory totals must never be labelled
 Kakwa totals. See source_verification.md for observations and unresolved contracts.
+
+Archive inspection uses a shared bounded reader: root and uncompressed member sizes
+are checked, ambiguous/multiply nested archives fail, and member paths are never
+extracted. CRC errors propagate rather than being treated as empty data.

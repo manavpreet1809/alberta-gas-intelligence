@@ -106,6 +106,19 @@ def test_duplicate_detail_and_operator_conflicts_are_visible(tmp_path: Path) -> 
 def test_archive_size_limit_is_checked_before_reading(tmp_path: Path, monkeypatch) -> None:
     path = tmp_path / "source.zip"
     path.write_bytes(zipped(FIXTURE.read_bytes()))
-    monkeypatch.setattr("gas_intel.profiling.MAX_MEMBER_BYTES", 1)
+    monkeypatch.setattr("gas_intel.ingestion.parsers.MAX_MEMBER_BYTES", 1)
     with pytest.raises(ValueError, match="size limit"):
         profile_source(path, "2025-01")
+
+
+def test_archive_member_paths_are_never_extracted(tmp_path: Path) -> None:
+    path = tmp_path / "source.zip"
+    path.write_bytes(zipped(FIXTURE.read_bytes(), "../../outside.csv"))
+    assert profile_source(path, "2025-01")["row_count"] == 7
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["source.zip"]
+
+
+def test_plain_source_size_is_bounded(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("gas_intel.ingestion.parsers.MAX_MEMBER_BYTES", 1)
+    with pytest.raises(ValueError, match="size limit"):
+        profile_source(FIXTURE, "2025-01")
