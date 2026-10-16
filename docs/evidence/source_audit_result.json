@@ -1,0 +1,81 @@
+{
+  "verified_at_utc": "2026-10-16T20:01:05.027157+00:00",
+  "scope": "Stage 2 source verification only; scope/cohort approval pending",
+  "checks": [
+    {
+      "period": "2025-01",
+      "passed": true,
+      "checks": [
+        "source hash",
+        "source contract hash",
+        "payload hash",
+        "exact ordered schema",
+        "accepted volumes",
+        "detail uniqueness",
+        "Python totals",
+        "independent SQL totals"
+      ]
+    },
+    {
+      "period": "2025-02",
+      "passed": true,
+      "checks": [
+        "source hash",
+        "source contract hash",
+        "payload hash",
+        "exact ordered schema",
+        "accepted volumes",
+        "detail uniqueness",
+        "Python totals",
+        "independent SQL totals"
+      ]
+    },
+    {
+      "check": "reference_facilities",
+      "passed": true
+    },
+    {
+      "check": "reference_operators",
+      "passed": true
+    },
+    {
+      "check": "reference_operator_history",
+      "passed": true
+    },
+    {
+      "check": "history_intervals",
+      "passed": true
+    },
+    {
+      "check": "monthly_continuity",
+      "passed": true
+    },
+    {
+      "check": "operator_assignment_2025-01",
+      "passed": true
+    },
+    {
+      "check": "operator_assignment_2025-02",
+      "passed": true
+    },
+    {
+      "check": "candidate_coverage_2025-01",
+      "passed": true
+    },
+    {
+      "check": "candidate_coverage_2025-02",
+      "passed": true
+    }
+  ],
+  "code_sha256": {
+    "src/gas_intel/source_audit.py": "56d22bb76e6775881667fda198571fbcf9157e452d50c58a2b6933f4fb7de36c",
+    "src/gas_intel/baselines.py": "2c34bcc4f2221231e77a2a85a83fc75efb1a5ef4a487875de327b0f31fb7ac8a",
+    "src/gas_intel/profiling.py": "7ea1110efb925f9f1b4458caa8c754d7e2c4ea8a8e675a44322f9d31a07fc52b",
+    "src/gas_intel/reference_profiling.py": "d399a2aa01e5bebfa693be806724faefddce15c85a24457c75aa856f5f48cf2d",
+    "src/gas_intel/history_profiling.py": "971eb6d0302992a4000b8e8b4ba43ea80c48c9cbd9fb503a05e33b943cf379aa",
+    "src/gas_intel/continuity.py": "49315e6fe102c67ef6c003c6c8c1570c75238d9b6f9116262977f81d98072d3f",
+    "src/gas_intel/geography.py": "c7d2bf410fd448bde392d63cb76f156ff4c2a2951a1b55598ce35631a08f8ba7",
+    "src/gas_intel/ingestion/parsers.py": "bd0f489b6d1d00c16315280e08675067ded7315b10be5f7ea1b66cf993e4567f",
+    "src/gas_intel/validation/values.py": "4526361d718aa081d4498eeb5110178eddd027f2fa835a33c6be9a91ace58818"
+  }
+}

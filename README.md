@@ -90,3 +90,17 @@ missing evidence, failed reference key checks, pinned baseline configuration and
 pending scope/cohort decisions. This summary does not rerun the full-source verifier
 and cannot certify source contracts. `--require-sources` continues to fail while
 Stage 2 is incomplete.
+
+Run the integrated Stage 2 audit against all five pinned local downloads:
+
+```bash
+python -m gas_intel.source_audit
+gas-intel doctor --details
+```
+
+The audit rechecks monthly regressions, reference schemas/keys, history intervals,
+monthly continuity, operator assignments and candidate-box coverage. It makes no
+network requests, never overwrites evidence, and does not publish pipeline exports.
+The proposed study box and dates remain unapproved; passing this audit alone does
+not finish Stage 2. See [scope proposal](docs/study_scope_proposal.md) and
+[reference contracts](docs/reference_contracts.md).

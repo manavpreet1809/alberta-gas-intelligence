@@ -69,7 +69,9 @@ def test_doctor_rejects_missing_config(config_dir: Path) -> None:
     assert "codes.yaml" in result.output
 
 
-def test_doctor_details_explains_missing_evidence_without_certifying_sources(config_dir: Path) -> None:
+def test_doctor_details_explains_missing_evidence_without_certifying_sources(
+    config_dir: Path,
+) -> None:
     result = runner.invoke(app, ["doctor", "--config-dir", str(config_dir), "--details"])
     assert result.exit_code == 0
     assert "PENDING: reference_facilities" in result.output

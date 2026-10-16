@@ -6,7 +6,7 @@ partially or wholly unresolved.
 For each item record evidence URL/file/hash, observation, decision, reviewer and
 verification date. A tick without evidence is not a completed contract.
 
-- [x] Acquire and hash two representative official volumetric files; record endpoint, packaging, headers, encoding and sample months. Reference-source verification remains pending.
+- [x] Acquire and hash two representative official volumetric files; record endpoint, packaging, headers, encoding and sample months. Facility, BA and operator-history snapshots are also acquired and profiled; see reference_contracts.md.
 - [ ] Establish revision behavior from official documentation and available snapshots. Separate published evidence from observed changes; do not assert a revision horizon without evidence.
 - [ ] Choose a pinned acquisition vintage for every month. V1 uses the selected versions as downloaded, not an as-first-reported series unless actual historical vintages exist. Disclose unequal download dates.
 - [ ] Verify GAS/PROD codes, source units, source precision and eligible facilities against actual rows and official definitions. Exclude movements, processing, flaring and fuel from production.
@@ -22,3 +22,14 @@ verification date. A tick without evidence is not a completed contract.
 - [ ] Record unresolved questions, their dependent tasks and final exit decision. Material ambiguity blocks those tasks.
 
 This is the source checklist for Stage 2 (legacy name M1). After passing, deliver Stage 3: the first working month. Expand the same implementation in Stage 4, then build the bridge in Stage 5.
+
+## Progress details
+
+- Completed: observed schemas and packaging; documented code/unit definitions;
+  reference key checks; two-month historical operator cross-check; history interval
+  diagnostics; candidate-box coverage; source-wide independent regressions.
+- Pending: human scope confirmation; stable full-window cohort/location policy;
+  all selected-month availability; cohort-specific reviewed baseline; final
+  source-contract exit review and intended publication-use review.
+
+Ticked acquisition items do not certify these remaining requirements.
