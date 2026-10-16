@@ -1,0 +1,26 @@
+[
+  {
+    "period": "2025-01",
+    "scope": "entire downloaded AB extract, not Kakwa study cohort",
+    "source_sha256": "3e1313f6e6d7f736b41f6f4352e69cf4b239b7ded73fd4e2afc6ae9efe08d3d4",
+    "payload_sha256": "fcd7746bd0b54efdfbc9f08083779ab3763220f158a9c5607a3e718b3cb3ab59",
+    "source_rows": 564749,
+    "qualifying_rows": 135264,
+    "facilities": 13358,
+    "volume_e3m3": "13080721.600",
+    "method": "Independent DuckDB SQL on all-string CSV; matched Python csv/Decimal profile",
+    "sql": "SELECT count(*) AS source_rows,\n count(*) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS qualifying_rows,\n count(DISTINCT ReportingFacilityID) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS facilities,\n sum(try_cast(Volume AS DECIMAL(18,3))) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS volume_e3m3\n FROM read_csv(?, all_varchar=true, header=true)"
+  },
+  {
+    "period": "2025-02",
+    "scope": "entire downloaded AB extract, not Kakwa study cohort",
+    "source_sha256": "875508f48967d4f12256128181076137aa0e70c7286355289059b303f4303980",
+    "payload_sha256": "c33df20b2d98eaf64e938961fd2334f501b967edb8f2f0c09e5ce29371ad1607",
+    "source_rows": 556305,
+    "qualifying_rows": 135011,
+    "facilities": 13344,
+    "volume_e3m3": "12171055.600",
+    "method": "Independent DuckDB SQL on all-string CSV; matched Python csv/Decimal profile",
+    "sql": "SELECT count(*) AS source_rows,\n count(*) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS qualifying_rows,\n count(DISTINCT ReportingFacilityID) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS facilities,\n sum(try_cast(Volume AS DECIMAL(18,3))) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS volume_e3m3\n FROM read_csv(?, all_varchar=true, header=true)"
+  }
+]

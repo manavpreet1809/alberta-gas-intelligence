@@ -8,8 +8,8 @@ remains the authority for metric definitions, source handling and bridge rules.
 
 | Stage | Deliverable | Status |
 |---|---|---|
-| 1. Foundation | Installable package, honest CLI, tests and CI workflow | Implemented; local checks passed, remote CI not yet verified |
-| 2. Verify source and scope | Evidence-backed data contract and frozen study definition | Next |
+| 1. Foundation | Installable package, honest CLI, tests and CI workflow | Implemented; local checks and remote CI passed |
+| 2. Verify source and scope | Evidence-backed data contract and frozen study definition | In progress: two real months profiled; scope decisions pending |
 | 3. First working result | One real month through every layer to validated exports and one visual | Pending |
 | 4. Complete data pipeline | Reproducible 24-month warehouse with integrated validation | Pending |
 | 5. Explain reported changes | Reconciled facility, operator and area bridges | Pending |
@@ -151,6 +151,6 @@ Code completion, dashboard completion and portfolio completion are distinct stat
 - Keep synthetic and real-source verification distinct. Tests cannot certify
   unverified source assumptions. No guarantee of 100 percent real-world accuracy.
 
-The two existing commits (specification and foundation) are useful history and
+Existing specification, foundation and planning commits are useful history and
 remain intact. Future progress should be judged by working deliverables, not the
 number of commits.

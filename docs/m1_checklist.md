@@ -1,10 +1,12 @@
 # M1 verification checklist
 
-Status: pending. No actual source files have been profiled yet.
+Status: in progress. January and February 2025 official volumetric downloads have
+been profiled; see source_verification.md and evidence/. Unticked items remain
+partially or wholly unresolved.
 For each item record evidence URL/file/hash, observation, decision, reviewer and
 verification date. A tick without evidence is not a completed contract.
 
-- [ ] Acquire and hash representative official files; record endpoint, packaging, headers, encoding and selected months.
+- [x] Acquire and hash two representative official volumetric files; record endpoint, packaging, headers, encoding and sample months. Reference-source verification remains pending.
 - [ ] Establish revision behavior from official documentation and available snapshots. Separate published evidence from observed changes; do not assert a revision horizon without evidence.
 - [ ] Choose a pinned acquisition vintage for every month. V1 uses the selected versions as downloaded, not an as-first-reported series unless actual historical vintages exist. Disclose unequal download dates.
 - [ ] Verify GAS/PROD codes, source units, source precision and eligible facilities against actual rows and official definitions. Exclude movements, processing, flaring and fuel from production.

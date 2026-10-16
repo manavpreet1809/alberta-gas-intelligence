@@ -1,0 +1,8 @@
+ProductionMonth,OperatorBAID,OperatorName,ReportingFacilityID,ReportingFacilityProvinceState,ReportingFacilityType,ReportingFacilityIdentifier,ReportingFacilityName,ReportingFacilitySubType,ReportingFacilitySubTypeDesc,ReportingFacilityLocation,FacilityLegalSubdivision,FacilitySection,FacilityTownship,FacilityRange,FacilityMeridian,SubmissionDate,ActivityID,ProductID,FromToID,FromToIDProvinceState,FromToIDType,FromToIDIdentifier,Volume,Energy,Hours,CCICode,ProrationProduct,ProrationFactor,Heat
+2025-01,0012,,ABBT0000001,,BT,,,,,,,,,,,2025-02-20,PROD,GAS,ABWI0000001,,,,100.125,,,,,,
+2025-01,0012,,ABBT0000001,,BT,,,,,,,,,,,2025-02-20,PROD,GAS,ABWI0000002,,,,2.375,,,,,,
+2025-01,0013,,ABBT0000002,,BT,,,,,,,,,,,2025-02-20,PROD,GAS,***,,,,0,,,,,,
+2025-01,,,ABBT0000003,,BT,,,,,,,,,,,2025-02-20,PROD,GAS,ABWI0000003,,,,,,,,,,
+2025-01,0014,,ABBT0000004,,BT,,,,,,,,,,,2025-02-20,PROD,GAS,ABWI0000004,,,,-1.000,,,,,,
+2025-01,0012,,ABBT0000001,,BT,,,,,,,,,,,2025-02-20,REC,GAS,ABWI0000001,,,,999,,,,,,
+2025-01,0012,,ABBT0000001,,BT,,,,,,,,,,,2025-02-20,,,,,,,,,,,,,

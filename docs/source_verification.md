@@ -1,36 +1,60 @@
 # Source verification register
 
-Reviewed 2026-10-14. This register distinguishes official documentation from
-verification against actual downloaded files. No real production files have yet
-been profiled and no pipeline or dashboard has been built.
+Updated 2026-10-16. Stage 2 is in progress, not complete.
 
-## Official evidence
+## Evidence and scope
 
-- [Petrinex Alberta Public Data](https://petrinex.ca/public-data/apd/): entrypoint for volumetrics, reference reports and operator-history learning aids. The page's general update wording must not be interpreted as the volumetric release cadence.
-- [Alberta Conventional Volumetric Download learning aid, September 2022](https://www.petrinex.ca/media/4gfhoah5/pd_conventional_volumetrics_report.pdf): primary source for the statements below. Recheck the current aid and real downloads during M1.
+Two official downloads returned HTTP 200. Original containers remain in ignored,
+content-addressed data/raw storage. Acquisition URL, UTC timestamp, byte counts,
+container hash and every member hash are in [profile evidence](evidence/profile_2025-01.json)
+and [February evidence](evidence/profile_2025-02.json). No bulk source rows are committed.
 
-Documentation-derived facts (not live endpoint tests):
+The samples are January and February 2025; they are not the approved 24-month study
+window. All counts below cover the entire downloaded Alberta extract, not Kakwa,
+and are exploratory source checks rather than dashboard findings.
 
-- Pages 4–5 describe monthly generation, revisions and CSV/XML requests. Do not infer that a fixed analysis window freezes the data vintage.
-- Page 6 defines Operator BA ID and Operator Name for the production month. An additional history join is unnecessary when these fields provide valid monthly assignment.
-- Pages 6–8 show From/To fields and confidentiality rules. A simplistic facility/product/activity key is not established as the detail-row grain.
-- Pages 7–8 describe withheld rows and masked identifiers. Missing qualifying rows cannot establish physical inactivity or a failed submission.
-- Page 9 describes ZIP packaging for CSV downloads. Validate actual API response packaging before implementation.
-- Pages 7 and 11 document gas volume in thousands of cubic metres (e3m3 / 10^3 m3), and the GAS product. This is a documented unit contract, not an observed unit column: preserve unit metadata even if the CSV has no unit column.
-- Page 13 lists PROD as production and includes facility-type applicability. It also lists SHUTIN separately. A code listing alone does not establish a complete nonoverlapping aggregation strategy.
+| Month | Source rows | GAS/PROD rows | Facilities | Operators | GAS/PROD sum (e3m3) |
+|---|---:|---:|---:|---:|---:|
+| 2025-01 | 564,749 | 135,264 | 13,358 | 366 | 13080721.6 |
+| 2025-02 | 556,305 | 135,011 | 13,344 | 369 | 12171055.6 |
 
-## Required M1 evidence — pending
+## Verified observations
 
-- Exact official endpoints used, access time, response status, packaging and hashes.
-- Actual headers, types, precision, encoding, row counts and masked values.
-- Verified detail grain, duplicate semantics, revisions and nonoverlapping GAS/PROD aggregation.
-- Valid facility types and whether selected rows represent complete or partial public coverage.
-- Monthly operator consistency and conflicts; any history interval interpretation.
-- Zero-row availability and absence semantics; negative and malformed volume policy.
-- DLS cohort boundaries, location vintage, facility-location versus well-origin limitations.
-- Fixed analysis window and optional historical context; source availability for each month.
-- Source access and fixture redistribution terms.
+- Response format is an outer ZIP containing a monthly ZIP, containing one CSV.
+- CSV strictly decodes as UTF-8, uses comma-separated fields and has 30 headers.
+- Blank activity/product/volume rows exist; not every source row is a volume fact.
+- GAS/PROD detail rows are positive, finite and nonblank in both samples. There are
+  no qualifying explicit zeros, negative volumes or masked FromToID values in these samples.
+- Qualifying rows have one consistent nonblank operator ID per facility/month.
+  All observed GAS/PROD reporting facilities are type BT. This is not a rule to
+  exclude other documented valid types without inspecting their data.
+- The detail candidate key including FromToID has no duplicate extra rows in either
+  sample. Facility-month requires aggregation; metadata rows need separate treatment.
+- Source SubmissionDate includes dates after the production month. An acquisition
+  in 2026 is not an as-first-reported 2025 vintage.
+- Independent DuckDB DECIMAL totals and counts match the Python csv/Decimal profiler;
+  [baselines](evidence/known_month_baselines.json) retain the query and hashes.
 
-Implementation must not convert documentation-derived facts into a claim that real
-data has passed validation. Record each contract's status, evidence path/hash,
-reviewer and decision before source-dependent milestones proceed.
+## Official documentation checked
+
+- [Alberta Public Data](https://petrinex.ca/public-data/apd/) links the official reports.
+- [Conventional volumetric learning aid](https://www.petrinex.ca/media/4gfhoah5/pd_conventional_volumetrics_report.pdf), September 2022: pages 5–8 document the endpoint, monthly operator, gas units and suppression; page 13 defines PROD and its applicable facility types.
+- [Public-data notice](https://www.petrinex.ca/public-data/) warns about excluded confidential information.
+- [Terms](https://www.petrinex.ca/terms) require Crown copyright acknowledgement for non-commercial reuse and prior consent for commercial use. Do not treat access as an unrestricted open-data licence. This project does not publish source rows; fixture values are synthetic.
+
+Revisions are possible: the learning aid describes monthly generation and refreshes
+triggered by confidentiality and identifier changes. It does not establish a maximum
+revision horizon or promise an as-first-reported archive. We have only one acquisition
+vintage per sample and have not measured change between vintages.
+
+## Remaining exit requirements
+
+- TODO(human): approve exact DLS study boundaries and fixed 24-month window after evidence-backed coverage review. No Kakwa box has been asserted or configured.
+- Verify a stable cohort and location policy across selected months; build a cohort-specific independent regression baseline with configuration hashes.
+- Verify any necessary reference sources and cross-period operator/location conflicts.
+- Resolve absence/zero treatment with source-supported semantics. An absent qualifying row remains unavailable, not proven zero output or shut-in.
+- Verify all selected months, final aggregation eligibility and invalid-value policy.
+- Review source-use conditions for the intended portfolio publication; no source extracts are redistributed in this commit.
+
+No Stage 3 pipeline or Power BI dashboard has been implemented. doctor must continue
+to report source contracts as unverified until all material Stage 2 decisions pass.

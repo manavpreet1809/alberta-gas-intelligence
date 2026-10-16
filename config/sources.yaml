@@ -1,3 +1,43 @@
-# M0 template: no source assumptions are executable.
-verification_status: pending
-notes: "TODO(human): verify official download endpoints, packaging and schema during M1"
+verification_status: sample_verified_scope_pending
+documentation_url: https://www.petrinex.ca/media/4gfhoah5/pd_conventional_volumetrics_report.pdf
+volumetrics:
+  url_template: https://www.petrinex.gov.ab.ca/publicdata/API/Files/AB/Vol/{month}/CSV
+  sample_months:
+  - 2025-01
+  - 2025-02
+  packaging: zip containing one zip containing one csv
+  encoding: utf-8-sig
+  delimiter: ','
+  expected_headers:
+  - ProductionMonth
+  - OperatorBAID
+  - OperatorName
+  - ReportingFacilityID
+  - ReportingFacilityProvinceState
+  - ReportingFacilityType
+  - ReportingFacilityIdentifier
+  - ReportingFacilityName
+  - ReportingFacilitySubType
+  - ReportingFacilitySubTypeDesc
+  - ReportingFacilityLocation
+  - FacilityLegalSubdivision
+  - FacilitySection
+  - FacilityTownship
+  - FacilityRange
+  - FacilityMeridian
+  - SubmissionDate
+  - ActivityID
+  - ProductID
+  - FromToID
+  - FromToIDProvinceState
+  - FromToIDType
+  - FromToIDIdentifier
+  - Volume
+  - Energy
+  - Hours
+  - CCICode
+  - ProrationProduct
+  - ProrationFactor
+  - Heat
+notes: 'TODO(human): approve study boundaries and fixed window; complete remaining
+  Stage 2 contracts before pipeline use'

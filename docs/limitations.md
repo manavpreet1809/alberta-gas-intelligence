@@ -1,3 +1,11 @@
-# Limitations
+# Current limitations
 
-Pending. M0 contains no real-data analysis. See the M1 checklist and source verification register.
+- Stage 2 is incomplete; no study-area production claims or dashboard findings exist.
+- Public extracts can withhold confidential data and do not measure all physical output.
+- Facilities can receive production from wells outside the facility-location box.
+- Two sample months establish observations, not permanent source guarantees.
+- No explicit zero GAS/PROD rows were found; absence cannot prove zero or shutdown.
+- Operator reporting changes do not establish ownership transactions or causes.
+- Current downloads can include revisions; original reporting vintages are not available here.
+- The exact study boundary, dates and cohort are pending approval and verification.
+- Source-use terms require acknowledgement and distinguish non-commercial/commercial use; no unrestricted redistribution claim is made.

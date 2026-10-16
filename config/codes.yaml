@@ -1,3 +1,15 @@
-# M0 template: no source assumptions are executable.
-verification_status: pending
-notes: "TODO(human): verify production/product codes, units and eligible facility types during M1"
+verification_status: documentation_and_two_samples_verified
+product: GAS
+activity: PROD
+volume_unit: e3m3
+documented_scale: 3
+conversion: null
+observed_production_facility_types:
+- BT
+documentation_production_facility_types:
+- BT
+- GS
+- OS
+evidence: docs/source_verification.md
+notes: 'Observed types are sample coverage, not a final facility exclusion list. TODO(human):
+  review final source contract and cohort before pipeline use.'
