@@ -1,0 +1,42 @@
+[
+  {
+    "period": "2025-01",
+    "box": {
+      "township_min": 60,
+      "township_max": 65,
+      "range_min": 3,
+      "range_max": 7,
+      "meridian": 6
+    },
+    "status": "candidate coverage only; scope approval and frozen cohort pending",
+    "source_sha256": "3e1313f6e6d7f736b41f6f4352e69cf4b239b7ded73fd4e2afc6ae9efe08d3d4",
+    "gas_prod_rows": 2385,
+    "producing_facility_count": 337,
+    "operator_count_including_unknown": 20,
+    "accepted_volume_e3m3": "1366116.0",
+    "invalid_location_source_rows": 0,
+    "invalid_selected_volume_rows": 0,
+    "conflicting_location_facilities": 0,
+    "qualifying_facility_set_sha256": "1dd7a04cadf9ffc33d50be7f04207ac56d58aaa7847b6d000df9766a707576b0"
+  },
+  {
+    "period": "2025-02",
+    "box": {
+      "township_min": 60,
+      "township_max": 65,
+      "range_min": 3,
+      "range_max": 7,
+      "meridian": 6
+    },
+    "status": "candidate coverage only; scope approval and frozen cohort pending",
+    "source_sha256": "875508f48967d4f12256128181076137aa0e70c7286355289059b303f4303980",
+    "gas_prod_rows": 2407,
+    "producing_facility_count": 342,
+    "operator_count_including_unknown": 20,
+    "accepted_volume_e3m3": "1202281.3",
+    "invalid_location_source_rows": 0,
+    "invalid_selected_volume_rows": 0,
+    "conflicting_location_facilities": 0,
+    "qualifying_facility_set_sha256": "42580d4054870b92870c63581ce386a84aa109632caccb28a1f5b6c783ed819b"
+  }
+]
