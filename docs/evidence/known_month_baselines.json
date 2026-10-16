@@ -9,7 +9,8 @@
     "facilities": 13358,
     "volume_e3m3": "13080721.600",
     "method": "Independent DuckDB SQL on all-string CSV; matched Python csv/Decimal profile",
-    "sql": "SELECT count(*) AS source_rows,\n count(*) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS qualifying_rows,\n count(DISTINCT ReportingFacilityID) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS facilities,\n sum(try_cast(Volume AS DECIMAL(18,3))) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS volume_e3m3\n FROM read_csv(?, all_varchar=true, header=true)"
+    "sql": "SELECT count(*) AS source_rows,\n count(*) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS qualifying_rows,\n count(DISTINCT ReportingFacilityID) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS facilities,\n sum(try_cast(Volume AS DECIMAL(18,3))) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS volume_e3m3\n FROM read_csv(?, all_varchar=true, header=true)",
+    "source_contract_sha256": "03d35dfb4e4f4751cb0281d5eac7620bf76f50534d43b743be38172945df9abc"
   },
   {
     "period": "2025-02",
@@ -21,6 +22,7 @@
     "facilities": 13344,
     "volume_e3m3": "12171055.600",
     "method": "Independent DuckDB SQL on all-string CSV; matched Python csv/Decimal profile",
-    "sql": "SELECT count(*) AS source_rows,\n count(*) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS qualifying_rows,\n count(DISTINCT ReportingFacilityID) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS facilities,\n sum(try_cast(Volume AS DECIMAL(18,3))) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS volume_e3m3\n FROM read_csv(?, all_varchar=true, header=true)"
+    "sql": "SELECT count(*) AS source_rows,\n count(*) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS qualifying_rows,\n count(DISTINCT ReportingFacilityID) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS facilities,\n sum(try_cast(Volume AS DECIMAL(18,3))) FILTER (WHERE ActivityID='PROD' AND ProductID='GAS') AS volume_e3m3\n FROM read_csv(?, all_varchar=true, header=true)",
+    "source_contract_sha256": "03d35dfb4e4f4751cb0281d5eac7620bf76f50534d43b743be38172945df9abc"
   }
 ]

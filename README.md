@@ -73,3 +73,14 @@ Use notebooks/01_source_profiling.ipynb to reproduce the evidence and independen
 cross-check against pinned local source files. Fixture values in tests are invented;
 source headers match observed downloads. Crown copyright acknowledged: Government
 of Alberta, Petrinex public data. Source use remains subject to provider terms.
+
+Recheck the reviewed, source-wide regression baselines offline:
+
+```bash
+python -m gas_intel.baselines
+```
+
+This fails on source/configuration/payload hash changes, schema drift, unresolved
+selected volumes, duplicate detail, or count/volume mismatches. It never silently
+updates expected values. CI uses independently specified synthetic expectations;
+full-source verification needs the pinned local downloads.
