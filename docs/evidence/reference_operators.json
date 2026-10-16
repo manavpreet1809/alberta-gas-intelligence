@@ -1,0 +1,66 @@
+{
+  "source": "operators",
+  "source_sha256": "ffa9c11abc7b7576c3157cf7bdf503a2bdd4c25be72caa9e7dd794ff5dfcb9bd",
+  "payload_sha256": "cb2c2eeb8ac23f51628343a06dc1d829a53465eaf175fd5ef6cc2be6301bb097",
+  "archive_lineage": [
+    {
+      "name": "Business Associate-AB.csv.zip",
+      "bytes": 817070,
+      "sha256": "2f3a86b43061895888912f6bcb18d9461de8c243f1e41f9ac3823d7dda8d5933"
+    },
+    {
+      "name": "Business Associate-AB.CSV",
+      "bytes": 2770564,
+      "sha256": "cb2c2eeb8ac23f51628343a06dc1d829a53465eaf175fd5ef6cc2be6301bb097"
+    }
+  ],
+  "headers": [
+    "BAIdentifier",
+    "BALegalName",
+    "BAAddress",
+    "BAPhoneNumber",
+    "BACorporateStatus",
+    "BACorporateStatusEffectiveDate",
+    "AmalgamatedIntoBAID",
+    "AmalgamatedIntoBALegalName",
+    "BAAmalgamationEstablishedDate",
+    "BALicenceEligibilityType",
+    "BALicenceEligibiltyDesc",
+    "BAAbbreviatedName"
+  ],
+  "row_count": 19376,
+  "key_fields": [
+    "BAIdentifier"
+  ],
+  "distinct_keys": 19376,
+  "blank_key_rows": 0,
+  "duplicate_extra_rows": 0,
+  "blank_counts": {
+    "AmalgamatedIntoBAID": 16165,
+    "AmalgamatedIntoBALegalName": 16165,
+    "BAAmalgamationEstablishedDate": 16170,
+    "BAAbbreviatedName": 8641,
+    "BAAddress": 1
+  },
+  "acquisition": {
+    "source": "Business Associate",
+    "url": "https://www.petrinex.gov.ab.ca/publicdata/API/Files/AB/Infra/Business%20Associate/CSV",
+    "sha256": "ffa9c11abc7b7576c3157cf7bdf503a2bdd4c25be72caa9e7dd794ff5dfcb9bd",
+    "bytes": 817726,
+    "local_path": "data/raw/ffa9c11abc7b7576c3157cf7bdf503a2bdd4c25be72caa9e7dd794ff5dfcb9bd/source.zip",
+    "retrieved_at_utc": "2026-10-16T19:44:57.883283+00:00",
+    "status": 200,
+    "archive_lineage": [
+      {
+        "name": "Business Associate-AB.csv.zip",
+        "bytes": 817070,
+        "sha256": "2f3a86b43061895888912f6bcb18d9461de8c243f1e41f9ac3823d7dda8d5933"
+      },
+      {
+        "name": "Business Associate-AB.CSV",
+        "bytes": 2770564,
+        "sha256": "cb2c2eeb8ac23f51628343a06dc1d829a53465eaf175fd5ef6cc2be6301bb097"
+      }
+    ]
+  }
+}

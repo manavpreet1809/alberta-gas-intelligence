@@ -1,0 +1,120 @@
+{
+  "source": "facilities",
+  "source_sha256": "2311c478e9e7442a51fc7dd6d440b35de7e7f13e9f7b3fbdaff279f0e134c12e",
+  "payload_sha256": "6a43199816f0d7e1272611c4acab221864012282a5bbad6408b2987875b86576",
+  "archive_lineage": [
+    {
+      "name": "Facility Infrastructure-AB.csv.zip",
+      "bytes": 7810388,
+      "sha256": "affd9002b795b58a0122d5527d980231375d88bc08d5724e106c6449c6676683"
+    },
+    {
+      "name": "Facility Infrastructure-AB.CSV",
+      "bytes": 35534953,
+      "sha256": "6a43199816f0d7e1272611c4acab221864012282a5bbad6408b2987875b86576"
+    }
+  ],
+  "headers": [
+    "FacilityID",
+    "FacilityProvinceState",
+    "FacilityType",
+    "FacilityIdentifier",
+    "FacilityName",
+    "FacilitySubType",
+    "FacilitySubTypeDesc",
+    "ExperimentalConfidential",
+    "FacilityStartDate",
+    "FacilityLocation",
+    "FacilityLegalSubdivision",
+    "FacilitySection",
+    "FacilityTownship",
+    "FacilityRange",
+    "FacilityMeridian",
+    "FacilityLicenceStatus",
+    "FacilityOperationalStatus",
+    "FacilityOperationalStatusDate",
+    "LicenceType",
+    "LicenceNumber",
+    "EnergyDevelopmentCategoryType",
+    "LicenceIssueDate",
+    "LicenseeBAID",
+    "LicenseeName",
+    "OperatorBAID",
+    "OperatorName",
+    "OperatorStartDate",
+    "TerminalPipelineLink",
+    "TPFacilityProvinceState",
+    "TPFacilityType",
+    "TPFacilityIdentifier",
+    "MeterStationPipelineLink",
+    "MPFacilityProvinceState",
+    "MPFacilityType",
+    "MPFacilityIdentifier",
+    "EnergyDevelopmentCategoryID",
+    "OrphanWellFlg",
+    "TierAggregateID",
+    "TierAggregatePR",
+    "PreviousYearTierAggregateID",
+    "PreviousYearTierAggregatePR",
+    "MaxApprovedRawGasRate",
+    "MaxApprovedSulphurInletRate"
+  ],
+  "row_count": 125129,
+  "key_fields": [
+    "FacilityID"
+  ],
+  "distinct_keys": 125129,
+  "blank_key_rows": 0,
+  "duplicate_extra_rows": 0,
+  "blank_counts": {
+    "FacilityLicenceStatus": 39477,
+    "LicenceType": 39477,
+    "LicenceNumber": 39477,
+    "EnergyDevelopmentCategoryType": 89719,
+    "LicenceIssueDate": 39477,
+    "LicenseeBAID": 39477,
+    "LicenseeName": 39477,
+    "TerminalPipelineLink": 125010,
+    "TPFacilityProvinceState": 125010,
+    "TPFacilityType": 125010,
+    "TPFacilityIdentifier": 125010,
+    "MeterStationPipelineLink": 122430,
+    "MPFacilityProvinceState": 122430,
+    "MPFacilityType": 122430,
+    "MPFacilityIdentifier": 122430,
+    "EnergyDevelopmentCategoryID": 89719,
+    "OrphanWellFlg": 39477,
+    "TierAggregateID": 121509,
+    "TierAggregatePR": 121509,
+    "MaxApprovedRawGasRate": 124056,
+    "MaxApprovedSulphurInletRate": 124317,
+    "PreviousYearTierAggregateID": 65424,
+    "PreviousYearTierAggregatePR": 65424,
+    "FacilityLocation": 7,
+    "FacilitySection": 7,
+    "FacilityTownship": 7,
+    "FacilityRange": 7,
+    "FacilityMeridian": 7
+  },
+  "acquisition": {
+    "source": "Facility Infrastructure",
+    "url": "https://www.petrinex.gov.ab.ca/publicdata/API/Files/AB/Infra/Facility%20Infrastructure/CSV",
+    "sha256": "2311c478e9e7442a51fc7dd6d440b35de7e7f13e9f7b3fbdaff279f0e134c12e",
+    "bytes": 7813214,
+    "local_path": "data/raw/2311c478e9e7442a51fc7dd6d440b35de7e7f13e9f7b3fbdaff279f0e134c12e/source.zip",
+    "retrieved_at_utc": "2026-10-16T19:44:54.796445+00:00",
+    "status": 200,
+    "archive_lineage": [
+      {
+        "name": "Facility Infrastructure-AB.csv.zip",
+        "bytes": 7810388,
+        "sha256": "affd9002b795b58a0122d5527d980231375d88bc08d5724e106c6449c6676683"
+      },
+      {
+        "name": "Facility Infrastructure-AB.CSV",
+        "bytes": 35534953,
+        "sha256": "6a43199816f0d7e1272611c4acab221864012282a5bbad6408b2987875b86576"
+      }
+    ]
+  }
+}

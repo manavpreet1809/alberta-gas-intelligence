@@ -1,0 +1,62 @@
+{
+  "source": "operator_history",
+  "source_sha256": "27c2f1585471fcb81deb056531e848515384f3fa181c37c495ad4575ab4cfeca",
+  "payload_sha256": "3d8a425a7d40c4cc78280fb5d52da0f0e7844c96cb2983610baf7d6b9461b06d",
+  "archive_lineage": [
+    {
+      "name": "Facility Operator History-AB.csv.zip",
+      "bytes": 7218429,
+      "sha256": "ce51e4bebf8ac93a9fa5399d60309b5aba8060d28f42ace9cca439926bf41f44"
+    },
+    {
+      "name": "Facility Operator History-AB.CSV",
+      "bytes": 48916005,
+      "sha256": "3d8a425a7d40c4cc78280fb5d52da0f0e7844c96cb2983610baf7d6b9461b06d"
+    }
+  ],
+  "headers": [
+    "FacilityID",
+    "FacilityProvinceState",
+    "FacilityType",
+    "FacilityIdentifier",
+    "FacilityName",
+    "FacilitySubType",
+    "FacilitySubTypeDesc",
+    "OperatorBAID",
+    "OperatorName",
+    "StartDate",
+    "EndDate"
+  ],
+  "row_count": 376004,
+  "key_fields": [
+    "FacilityID",
+    "OperatorBAID",
+    "StartDate",
+    "EndDate"
+  ],
+  "distinct_keys": 376004,
+  "blank_key_rows": 0,
+  "duplicate_extra_rows": 0,
+  "blank_counts": {},
+  "acquisition": {
+    "source": "Facility Operator History",
+    "url": "https://www.petrinex.gov.ab.ca/publicdata/API/Files/AB/Infra/Facility%20Operator%20History/CSV",
+    "sha256": "27c2f1585471fcb81deb056531e848515384f3fa181c37c495ad4575ab4cfeca",
+    "bytes": 7218549,
+    "local_path": "data/raw/27c2f1585471fcb81deb056531e848515384f3fa181c37c495ad4575ab4cfeca/source.zip",
+    "retrieved_at_utc": "2026-10-16T19:44:57.377934+00:00",
+    "status": 200,
+    "archive_lineage": [
+      {
+        "name": "Facility Operator History-AB.csv.zip",
+        "bytes": 7218429,
+        "sha256": "ce51e4bebf8ac93a9fa5399d60309b5aba8060d28f42ace9cca439926bf41f44"
+      },
+      {
+        "name": "Facility Operator History-AB.CSV",
+        "bytes": 48916005,
+        "sha256": "3d8a425a7d40c4cc78280fb5d52da0f0e7844c96cb2983610baf7d6b9461b06d"
+      }
+    ]
+  }
+}

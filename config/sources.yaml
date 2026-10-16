@@ -41,3 +41,85 @@ volumetrics:
   - Heat
 notes: 'TODO(human): approve study boundaries and fixed window; complete remaining
   Stage 2 contracts before pipeline use'
+references:
+  facilities:
+    url: https://www.petrinex.gov.ab.ca/publicdata/API/Files/AB/Infra/Facility%20Infrastructure/CSV
+    expected_headers:
+    - FacilityID
+    - FacilityProvinceState
+    - FacilityType
+    - FacilityIdentifier
+    - FacilityName
+    - FacilitySubType
+    - FacilitySubTypeDesc
+    - ExperimentalConfidential
+    - FacilityStartDate
+    - FacilityLocation
+    - FacilityLegalSubdivision
+    - FacilitySection
+    - FacilityTownship
+    - FacilityRange
+    - FacilityMeridian
+    - FacilityLicenceStatus
+    - FacilityOperationalStatus
+    - FacilityOperationalStatusDate
+    - LicenceType
+    - LicenceNumber
+    - EnergyDevelopmentCategoryType
+    - LicenceIssueDate
+    - LicenseeBAID
+    - LicenseeName
+    - OperatorBAID
+    - OperatorName
+    - OperatorStartDate
+    - TerminalPipelineLink
+    - TPFacilityProvinceState
+    - TPFacilityType
+    - TPFacilityIdentifier
+    - MeterStationPipelineLink
+    - MPFacilityProvinceState
+    - MPFacilityType
+    - MPFacilityIdentifier
+    - EnergyDevelopmentCategoryID
+    - OrphanWellFlg
+    - TierAggregateID
+    - TierAggregatePR
+    - PreviousYearTierAggregateID
+    - PreviousYearTierAggregatePR
+    - MaxApprovedRawGasRate
+    - MaxApprovedSulphurInletRate
+    snapshot_sha256: 2311c478e9e7442a51fc7dd6d440b35de7e7f13e9f7b3fbdaff279f0e134c12e
+    role: current reference only; never overwrite historical operator
+  operator_history:
+    url: https://www.petrinex.gov.ab.ca/publicdata/API/Files/AB/Infra/Facility%20Operator%20History/CSV
+    expected_headers:
+    - FacilityID
+    - FacilityProvinceState
+    - FacilityType
+    - FacilityIdentifier
+    - FacilityName
+    - FacilitySubType
+    - FacilitySubTypeDesc
+    - OperatorBAID
+    - OperatorName
+    - StartDate
+    - EndDate
+    snapshot_sha256: 27c2f1585471fcb81deb056531e848515384f3fa181c37c495ad4575ab4cfeca
+    role: supporting history; temporal join semantics require verification
+  operators:
+    url: https://www.petrinex.gov.ab.ca/publicdata/API/Files/AB/Infra/Business%20Associate/CSV
+    expected_headers:
+    - BAIdentifier
+    - BALegalName
+    - BAAddress
+    - BAPhoneNumber
+    - BACorporateStatus
+    - BACorporateStatusEffectiveDate
+    - AmalgamatedIntoBAID
+    - AmalgamatedIntoBALegalName
+    - BAAmalgamationEstablishedDate
+    - BALicenceEligibilityType
+    - BALicenceEligibiltyDesc
+    - BAAbbreviatedName
+    snapshot_sha256: ffa9c11abc7b7576c3157cf7bdf503a2bdd4c25be72caa9e7dd794ff5dfcb9bd
+    role: current reference only; never overwrite historical operator
