@@ -13,7 +13,7 @@ from gas_intel.ingestion.parsers import read_csv_payload
 def monthly_metadata(path: Path, month: str) -> dict[str, dict[str, set]]:
     """Collect presence and distinct metadata independently of volume totals."""
     payload, _ = read_csv_payload(path)
-    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""))
+    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""), strict=True)
     required = {
         "ProductionMonth",
         "ReportingFacilityID",
@@ -79,7 +79,7 @@ def compare_assignments(volumetrics: Path, month: str, history: Path, infrastruc
     monthly = monthly_metadata(volumetrics, month)
     intervals = history_intervals(history)
     payload, _ = read_csv_payload(infrastructure)
-    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""))
+    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""), strict=True)
     if not {"FacilityID", "OperatorBAID"}.issubset(reader.fieldnames or []):
         raise ValueError("Missing infrastructure assignment columns")
     current: dict[str, str] = {}

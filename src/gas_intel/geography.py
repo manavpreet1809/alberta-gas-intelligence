@@ -43,7 +43,7 @@ class DLSBox:
 def profile_box(path: Path, month: str, box: DLSBox) -> dict[str, object]:
     """Report sample coverage using that month's locations, not a frozen cohort."""
     payload, _ = read_csv_payload(path)
-    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""))
+    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""), strict=True)
     required = {
         "ProductionMonth",
         "ReportingFacilityID",

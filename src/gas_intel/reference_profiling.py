@@ -1,12 +1,10 @@
 """Measure reference-file schemas and key cardinality without publishing source rows."""
 
-import csv
 import hashlib
-import io
 from collections import Counter
 from pathlib import Path
 
-from gas_intel.ingestion.parsers import read_csv_payload
+from gas_intel.ingestion.parsers import csv_records, read_csv_payload
 
 REFERENCE_KEYS = {
     "facilities": ("FacilityID",),
@@ -20,11 +18,8 @@ def profile_reference(path: Path, source: str) -> dict[str, object]:
     if source not in REFERENCE_KEYS:
         raise ValueError(f"Unknown reference category: {source}")
     payload, lineage = read_csv_payload(path)
-    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""))
-    headers = reader.fieldnames or []
     key_fields = REFERENCE_KEYS[source]
-    if len(set(headers)) != len(headers) or not set(key_fields).issubset(headers):
-        raise ValueError("Missing key columns or duplicate headers")
+    headers, reader = csv_records(payload, set(key_fields))
     blanks: Counter[str] = Counter()
     keys: Counter[tuple[str, ...]] = Counter()
     rows = blank_keys = 0

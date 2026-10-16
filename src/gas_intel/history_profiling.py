@@ -23,7 +23,7 @@ def month_number(text: str) -> int:
 def history_intervals(path: Path) -> dict[str, list[tuple[int, int, str]]]:
     """Read documented month intervals; end-of-time stays an integer, not a timestamp."""
     payload, _ = read_csv_payload(path)
-    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""))
+    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""), strict=True)
     required = {"FacilityID", "OperatorBAID", "StartDate", "EndDate"}
     headers = reader.fieldnames or []
     if len(set(headers)) != len(headers) or not required.issubset(headers):

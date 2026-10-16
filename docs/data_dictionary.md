@@ -27,3 +27,11 @@ future month; sample uniqueness does not establish a provider-guaranteed key.
 Raw lineage key remains source hash + archive-member chain + row ordinal.
 Aggregate validated qualifying detail rows to facility-month without including
 receipt or disposition rows. Exact headers and blank counts are in docs/evidence/.
+
+## Schema drift checks
+
+The shared CSV reader rejects blank/duplicate headers, missing required columns,
+malformed quoting and unequal column counts. The production profiler optionally
+accepts the exact ordered expected_headers contract from config/sources.yaml;
+when supplied, additions, removals and reordering all require explicit review.
+Exploratory checks that supply only required columns do not certify the full schema.

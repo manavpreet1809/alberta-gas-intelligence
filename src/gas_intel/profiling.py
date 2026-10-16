@@ -1,22 +1,20 @@
 """Offline source profiling for Stage 2; never modifies or extracts raw files."""
 
-import csv
 import hashlib
-import io
 import json
 from collections import Counter, defaultdict
 from decimal import Decimal
 from pathlib import Path
 
-from gas_intel.ingestion.parsers import read_csv_payload
+from gas_intel.ingestion.parsers import csv_records, read_csv_payload
 from gas_intel.validation.values import classify_volume
 
 
-def profile_source(path: Path, expected_month: str) -> dict[str, object]:
+def profile_source(
+    path: Path, expected_month: str, expected_headers: list[str] | None = None
+) -> dict[str, object]:
     """Measure observed GAS/PROD rows without claiming a final study-area metric."""
     payload, lineage = read_csv_payload(path)
-    reader = csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline=""))
-    headers = reader.fieldnames or []
     required = {
         "ProductionMonth",
         "ReportingFacilityID",
@@ -28,8 +26,7 @@ def profile_source(path: Path, expected_month: str) -> dict[str, object]:
         "ReportingFacilityType",
         "SubmissionDate",
     }
-    if len(set(headers)) != len(headers) or not required.issubset(headers):
-        raise ValueError("Missing required or duplicate source headers")
+    headers, reader = csv_records(payload, required, expected_headers)
     blanks: Counter[str] = Counter()
     codes: dict[str, Counter[str]] = {key: Counter() for key in ["ActivityID", "ProductID"]}
     facility_types: Counter[str] = Counter()
