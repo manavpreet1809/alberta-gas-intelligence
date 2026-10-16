@@ -1,0 +1,42 @@
+{
+  "continuity": {
+    "previous_month": "2025-01",
+    "current_month": "2025-02",
+    "source_sha256_previous": "3e1313f6e6d7f736b41f6f4352e69cf4b239b7ded73fd4e2afc6ae9efe08d3d4",
+    "source_sha256_current": "875508f48967d4f12256128181076137aa0e70c7286355289059b303f4303980",
+    "qualifying_in_both": 13124,
+    "qualifying_only_previous": 234,
+    "qualifying_only_current": 220,
+    "previous_qualifying_now_other_rows_only": 217,
+    "previous_qualifying_now_no_facility_rows": 17,
+    "operator_metadata_changed": 73,
+    "location_metadata_changed": 0,
+    "interpretation": "Source presence changes only; no physical newness or shut-in inference"
+  },
+  "assignments": [
+    {
+      "period": "2025-01",
+      "checks": {
+        "qualifying_facilities": 13358,
+        "history_match": 13358,
+        "current_operator_differs": 1862
+      },
+      "volumetrics_sha256": "3e1313f6e6d7f736b41f6f4352e69cf4b239b7ded73fd4e2afc6ae9efe08d3d4",
+      "history_sha256": "27c2f1585471fcb81deb056531e848515384f3fa181c37c495ad4575ab4cfeca",
+      "infrastructure_sha256": "2311c478e9e7442a51fc7dd6d440b35de7e7f13e9f7b3fbdaff279f0e134c12e",
+      "policy": "Monthly source operator stays authoritative; no automatic fallback from this diagnostic"
+    },
+    {
+      "period": "2025-02",
+      "checks": {
+        "qualifying_facilities": 13344,
+        "history_match": 13344,
+        "current_operator_differs": 1829
+      },
+      "volumetrics_sha256": "875508f48967d4f12256128181076137aa0e70c7286355289059b303f4303980",
+      "history_sha256": "27c2f1585471fcb81deb056531e848515384f3fa181c37c495ad4575ab4cfeca",
+      "infrastructure_sha256": "2311c478e9e7442a51fc7dd6d440b35de7e7f13e9f7b3fbdaff279f0e134c12e",
+      "policy": "Monthly source operator stays authoritative; no automatic fallback from this diagnostic"
+    }
+  ]
+}

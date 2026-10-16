@@ -40,3 +40,17 @@ intervals as a hypothesis. It counts overlaps and gaps and returns every candida
 rather than arbitrarily resolving multiple matches. See history_intervals.json
 under docs/evidence/. Cross-check assignments with reporting-month volumetrics
 before allowing any history fallback in production.
+
+## Cross-snapshot results
+
+All 13,358 January and 13,344 February qualifying facilities match exactly one
+inclusive-month history assignment in the inspected snapshots. Current reference
+operators differ at 1,862 January and 1,829 February facilities. This is evidence
+against substituting current operator values into historical production, not proof
+of ownership transactions. Future months still require the same checks.
+
+Of 234 January qualifying facilities without a February GAS/PROD row, 217 retain
+other February rows and 17 have no February facility rows. These are distinct
+extract-presence states, not demonstrated shut-ins or closures. No shared facility
+changes its source location between these two months. See
+[evidence/cross_snapshot_checks.json](evidence/cross_snapshot_checks.json).
