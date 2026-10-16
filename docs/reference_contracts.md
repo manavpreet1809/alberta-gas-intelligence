@@ -31,3 +31,12 @@ pin exactly which current reference snapshots were inspected.
 Evidence: reference_facilities.json, reference_operators.json and
 reference_operator_history.json under docs/evidence/. Do not infer historical
 nonexistence from missing current infrastructure rows.
+
+## Temporal interval checks
+
+The history profiler reads production-month strings as integer month indices,
+including 9999-12 without timestamp overflow. It explicitly tests inclusive-end
+intervals as a hypothesis. It counts overlaps and gaps and returns every candidate
+rather than arbitrarily resolving multiple matches. See history_intervals.json
+under docs/evidence/. Cross-check assignments with reporting-month volumetrics
+before allowing any history fallback in production.

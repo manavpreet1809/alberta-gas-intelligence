@@ -1,0 +1,10 @@
+{
+  "source_sha256": "27c2f1585471fcb81deb056531e848515384f3fa181c37c495ad4575ab4cfeca",
+  "interval_hypothesis": "inclusive production-month endpoints; diagnostics only",
+  "row_count": 376004,
+  "facility_count": 155952,
+  "open_end_rows": 155952,
+  "overlap_events": 0,
+  "gap_events": 0,
+  "policy": "Do not choose arbitrary assignments; compare against monthly volumetrics first"
+}
