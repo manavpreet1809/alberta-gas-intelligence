@@ -23,8 +23,10 @@ def test_profile_preserves_detail_and_reports_invalid_states() -> None:
     assert result["row_count"] == 7
     gas = result["gas_prod"]
     assert gas["row_count"] == 5
-    assert gas["valid_volume_sum_e3m3"] == "101.500"
+    assert gas["finite_volume_sum_e3m3"] == "101.500"
     assert gas["volume_states"] == {"positive": 2, "zero": 1, "negative": 1, "invalid_or_blank": 1}
+    assert gas["accepted_volume_sum_e3m3"] == "102.500"
+    assert gas["unresolved_volume_facility_count"] == 2
     assert gas["facility_aggregate_zero_count"] == 1
     assert gas["masked_from_to_count"] == 1
     assert gas["missing_operator_facility_count"] == 1

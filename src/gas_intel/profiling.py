@@ -5,10 +5,11 @@ import hashlib
 import io
 import json
 from collections import Counter, defaultdict
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal
 from pathlib import Path
 
 from gas_intel.ingestion.parsers import read_csv_payload
+from gas_intel.validation.values import classify_volume
 
 
 def profile_source(path: Path, expected_month: str) -> dict[str, object]:
@@ -36,7 +37,8 @@ def profile_source(path: Path, expected_month: str) -> dict[str, object]:
     facility_volumes: dict[str, Decimal] = defaultdict(Decimal)
     operators: dict[str, set[str]] = defaultdict(set)
     keys: Counter[tuple[str, ...]] = Counter()
-    total = Decimal(0)
+    total = accepted_total = Decimal(0)
+    unresolved_facilities: set[str] = set()
     rows = qualifying = masked = 0
     submissions: list[str] = []
     for row in reader:
@@ -60,17 +62,16 @@ def profile_source(path: Path, expected_month: str) -> dict[str, object]:
         facility_types[row["ReportingFacilityType"]] += 1
         keys[(expected_month, facility, row["ActivityID"], row["ProductID"], row["FromToID"])] += 1
         masked += row["FromToID"] == "***"
-        try:
-            volume = Decimal(row["Volume"])
-            if not volume.is_finite():
-                raise InvalidOperation
-        except InvalidOperation:
-            volume_states["invalid_or_blank"] += 1
+        state, volume = classify_volume(row["Volume"])
+        volume_states[state] += 1
+        if volume is None:
+            unresolved_facilities.add(facility)
             continue
-        if volume.as_tuple().exponent < -3:
-            volume_states["exceeds_documented_scale"] += 1
-        volume_states["negative" if volume < 0 else "zero" if volume == 0 else "positive"] += 1
         total += volume
+        if state in {"negative", "outside_documented_precision"}:
+            unresolved_facilities.add(facility)
+            continue
+        accepted_total += volume
         facility_volumes[facility] += volume
     return {
         "period": expected_month,
@@ -90,8 +91,13 @@ def profile_source(path: Path, expected_month: str) -> dict[str, object]:
             "operator_count": len({op for values in operators.values() for op in values if op}),
             "facility_types": dict(facility_types),
             "volume_states": dict(volume_states),
-            "valid_volume_sum_e3m3": str(total),
-            "facility_aggregate_zero_count": sum(v == 0 for v in facility_volumes.values()),
+            "finite_volume_sum_e3m3": str(total),
+            "accepted_volume_sum_e3m3": str(accepted_total),
+            "unresolved_volume_facility_count": len(unresolved_facilities),
+            "facility_aggregate_zero_count": sum(
+                value == 0 and facility not in unresolved_facilities
+                for facility, value in facility_volumes.items()
+            ),
             "masked_from_to_count": masked,
             "missing_operator_facility_count": sum("" in values for values in operators.values()),
             "conflicting_operator_facility_count": sum(

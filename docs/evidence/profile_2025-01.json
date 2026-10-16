@@ -147,7 +147,9 @@
     "volume_states": {
       "positive": 135264
     },
-    "valid_volume_sum_e3m3": "13080721.6",
+    "finite_volume_sum_e3m3": "13080721.6",
+    "accepted_volume_sum_e3m3": "13080721.6",
+    "unresolved_volume_facility_count": 0,
     "facility_aggregate_zero_count": 0,
     "masked_from_to_count": 0,
     "missing_operator_facility_count": 0,

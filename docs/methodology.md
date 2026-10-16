@@ -32,3 +32,9 @@ Kakwa totals. See source_verification.md for observations and unresolved contrac
 Archive inspection uses a shared bounded reader: root and uncompressed member sizes
 are checked, ambiguous/multiply nested archives fail, and member paths are never
 extracted. CRC errors propagate rather than being treated as empty data.
+
+Profiling reports distinguish finite-volume sums (diagnostic, including rejected
+negative/precision values) from accepted nonnegative source-scale sums. Invalid,
+negative or out-of-precision detail makes that facility unresolved; partial valid
+detail cannot establish a facility's reported-zero status. This is a conservative
+project policy, not a claim that all possible source corrections are nonnegative.
