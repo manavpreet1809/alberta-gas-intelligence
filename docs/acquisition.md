@@ -39,9 +39,7 @@ from pathlib import Path
 from gas_intel.ingestion.download import acquire_month
 
 root = Path.cwd()
-months = ["2023-12"] + [
-    f"{year}-{number:02d}" for year in (2024, 2025) for number in range(1, 13)
-]
+months = ["2023-12"] + [f"{year}-{number:02d}" for year in (2024, 2025) for number in range(1, 13)]
 for month in months:
     inventory = root / "data/verification" / f"{month}.json"
     if inventory.exists():

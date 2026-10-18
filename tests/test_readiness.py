@@ -84,3 +84,59 @@ def test_duplicate_reference_keys_fail_summary(tmp_path: Path) -> None:
         )
     )
     assert source_readiness(tmp_path)[0]["status"] == "fail"
+
+
+def test_window_evidence_must_match_proposed_box_and_month_sequence(tmp_path: Path) -> None:
+    import hashlib
+    import shutil
+
+    from gas_intel.window_verification import month_sequence
+
+    config = tmp_path / "config"
+    config.mkdir()
+    repository = Path(__file__).parents[1]
+    for name in ["sources.yaml", "study_area.yaml"]:
+        shutil.copy(repository / "config" / name, config / name)
+    study = yaml.safe_load((config / "study_area.yaml").read_text())["candidate_proposal"]
+    evidence = tmp_path / "docs/evidence"
+    evidence.mkdir(parents=True)
+    report = {
+        "month_count": 24,
+        "start_month": study["start_month"],
+        "end_month": study["end_month"],
+        "box": {
+            key: study[key]
+            for key in ["township_min", "township_max", "range_min", "range_max", "meridian"]
+        },
+        "source_contract_sha256": hashlib.sha256(
+            (config / "sources.yaml").read_bytes()
+        ).hexdigest(),
+        "candidate_location_conflict_facility_count": 0,
+        "candidate_unresolved_location_facilities": 0,
+        "monthly_checks": [
+            {
+                "period": month,
+                "unresolved_volume_facilities": 0,
+                "candidate_key_duplicate_extra_rows": 0,
+            }
+            for month in month_sequence(study["start_month"], study["end_month"])
+        ],
+    }
+    path = evidence / "candidate_window_verification.json"
+    path.write_text(json.dumps(report))
+
+    def selected() -> dict[str, str]:
+        return next(
+            item for item in source_readiness(tmp_path) if item["check"] == "selected_window"
+        )
+
+    assert selected()["status"] == "pass"
+    report["monthly_checks"][1]["period"] = report["monthly_checks"][0]["period"]
+    path.write_text(json.dumps(report))
+    assert selected()["status"] == "fail"
+    report["monthly_checks"][1]["period"] = month_sequence(
+        study["start_month"], study["end_month"]
+    )[1]
+    report["box"]["range_min"] = 1
+    path.write_text(json.dumps(report))
+    assert selected()["status"] == "fail"

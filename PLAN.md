@@ -9,7 +9,7 @@ remains the authority for metric definitions, source handling and bridge rules.
 | Stage | Deliverable | Status |
 |---|---|---|
 | 1. Foundation | Installable package, honest CLI, tests and CI workflow | Implemented; local checks and remote CI passed |
-| 2. Verify source and scope | Evidence-backed data contract and frozen study definition | In progress: monthly/reference evidence cross-checked; scope and cohort decisions pending |
+| 2. Verify source and scope | Evidence-backed data contract and frozen study definition | In progress: all 24 candidate months and context checked; scope/cohort freeze pending |
 | 3. First working result | One real month through every layer to validated exports and one visual | Pending |
 | 4. Complete data pipeline | Reproducible 24-month warehouse with integrated validation | Pending |
 | 5. Explain reported changes | Reconciled facility, operator and area bridges | Pending |

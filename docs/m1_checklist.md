@@ -33,3 +33,14 @@ This is the source checklist for Stage 2 (legacy name M1). After passing, delive
   source-contract exit review and intended publication-use review.
 
 Ticked acquisition items do not certify these remaining requirements.
+
+## Full-window evidence added 2026-10-18
+
+All 24 proposed analysis months and December 2023 context have been acquired.
+Independent counts and exact source-wide totals match every monthly profile.
+Candidate cohort union and cross-month locations have been checked; no candidate
+location conflicts or unresolved locations were found. See window_verification.md.
+
+Availability is no longer an unresolved data-access question. Scope confirmation,
+final cohort freeze, approved-configuration baseline and source exit review remain
+pending; these are not replaced by passing profiling tests.

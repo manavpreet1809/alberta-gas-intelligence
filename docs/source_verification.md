@@ -82,3 +82,17 @@ Run `python -m gas_intel.source_audit` to reproduce all evidence from local raw
 snapshots. [Latest audit result](evidence/source_audit_result.json) records checks
 and code hashes. It does not certify approved scope, the complete 24-month cohort
 or operational causes.
+
+## Full proposed-window check, 2026-10-18
+
+The entire proposed 2024–2025 window plus December 2023 context is now available
+locally as pinned source files. Every month has passed schema, period, independent
+count/volume and location-stability checks. The analysis-window extracts total
+13,207,735 source rows. Details and remaining scope/cohort decisions are recorded
+in [window_verification.md](window_verification.md). Earlier references above to
+selected-month availability being pending are superseded by this evidence.
+
+Reliable acquisition now records attempt history and validates temporary downloads
+before atomic content-addressed publication. Accepted files are never overwritten
+by invalid responses. See [acquisition.md](acquisition.md). No source rows are
+redistributed in this update.

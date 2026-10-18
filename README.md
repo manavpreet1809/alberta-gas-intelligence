@@ -3,8 +3,8 @@
 A planned Python, SQL, DuckDB and Power BI pipeline to examine changes in publicly
 reported natural gas production for facilities in Alberta's Kakwa area.
 
-**Status: Stage 2 source verification in progress.** Two real monthly extracts
-have been profiled locally; no warehouse, dashboard or analytical findings exist yet. Source interpretation, the exact DLS
+**Status: Stage 2 source verification in progress.** All 24 candidate analysis months and one context month
+have now been acquired and checked locally; no warehouse, dashboard or analytical findings exist yet. Source interpretation, the exact DLS
 study boundary and fixed 24-month window remain subject to M1 verification.
 
 ```mermaid
@@ -106,3 +106,15 @@ network requests, never overwrites evidence, and does not publish pipeline expor
 The proposed study box and dates remain unapproved; passing this audit alone does
 not finish Stage 2. See [scope proposal](docs/study_scope_proposal.md) and
 [reference contracts](docs/reference_contracts.md).
+
+
+## Full-window source evidence
+
+The proposed 2024–2025 window covers **13,207,735 source rows**. All monthly
+counts and source-wide gas totals match independent SQL checks. Candidate-box
+coverage has 551 facilities in the full-period union, of which 389 have qualifying
+production rows; observed cohort locations are consistent across the window.
+These are verification results, not approved dashboard findings.
+
+See [full-window verification](docs/window_verification.md) for provenance,
+reproduction steps, candidate cohort policy and remaining Stage 2 decisions.
