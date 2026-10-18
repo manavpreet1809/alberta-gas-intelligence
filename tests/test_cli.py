@@ -26,7 +26,7 @@ def test_help_lists_all_commands() -> None:
         assert command in result.output
 
 
-@pytest.mark.parametrize("command", ["download", "load", "build", "validate", "export", "run-all"])
+@pytest.mark.parametrize("command", ["load", "build", "validate", "export", "run-all"])
 def test_stubs_fail_without_creating_outputs(command: str, tmp_path: Path, monkeypatch) -> None:
     monkeypatch.chdir(tmp_path)
     result = runner.invoke(app, [command])
@@ -77,3 +77,34 @@ def test_doctor_details_explains_missing_evidence_without_certifying_sources(
     assert "PENDING: reference_facilities" in result.output
     assert "PENDING: source_exit_review" in result.output
     assert "Source contracts NOT verified" in result.output
+
+
+def test_download_requires_an_explicit_verification_month() -> None:
+    result = runner.invoke(app, ["download"])
+    assert result.exit_code == 2
+    assert "Specify --verification-month" in result.output
+
+
+def test_download_verification_command_calls_acquisition(tmp_path: Path, monkeypatch) -> None:
+    calls = []
+
+    def acquire(root: Path, month: str) -> dict:
+        calls.append((root, month))
+        return {"event": {"reporting_period": month, "status": "downloaded", "sha256": "a" * 64}}
+
+    monkeypatch.setattr("gas_intel.cli.acquire_month", acquire)
+    result = runner.invoke(
+        app, ["download", "--verification-month", "2025-01", "--project-root", str(tmp_path)]
+    )
+    assert result.exit_code == 0
+    assert calls == [(tmp_path, "2025-01")]
+
+
+def test_download_failure_has_nonzero_exit(monkeypatch) -> None:
+    def acquire(root: Path, month: str) -> dict:
+        raise ValueError("Wrong month")
+
+    monkeypatch.setattr("gas_intel.cli.acquire_month", acquire)
+    result = runner.invoke(app, ["download", "--verification-month", "2025-01"])
+    assert result.exit_code == 1
+    assert "Wrong month" in result.output

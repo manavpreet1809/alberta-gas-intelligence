@@ -38,9 +38,11 @@ that source contracts remain unverified. `doctor --require-sources` fails until
 a later milestone implements real contract verification. Use `--config-dir` to
 check a different configuration directory.
 
-`download`, `load`, `build`, `validate`, `export` and `run-all` are honest stubs:
-they exit with code 2 and perform no pipeline work. No networking, database
-creation or export takes place in M0.
+`load`, `build`, `validate`, `export` and `run-all` remain honest stubs:
+they exit with code 2 and perform no pipeline work. No warehouse creation or
+analytical export is implemented yet. Explicit source-verification acquisition is
+available through `gas-intel download --verification-month YYYY-MM`; see
+[acquisition and revision handling](docs/acquisition.md).
 
 ## Next stage
 

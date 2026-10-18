@@ -6,6 +6,7 @@ from typing import Annotated
 import typer
 
 from gas_intel.doctor import check_scaffold
+from gas_intel.ingestion.download import acquire_month
 from gas_intel.readiness import source_readiness
 
 app = typer.Typer(no_args_is_help=True, help="Alberta Gas Production Intelligence Platform")
@@ -47,9 +48,25 @@ def not_implemented(command: str) -> None:
 
 
 @app.command()
-def download() -> None:
-    """Download verified source files (pending)."""
-    not_implemented("download")
+def download(
+    verification_month: Annotated[
+        str | None, typer.Option(help="Acquire one explicit source-verification month (YYYY-MM)")
+    ] = None,
+    project_root: Annotated[Path, typer.Option(help="Repository root")] = Path("."),
+) -> None:
+    """Acquire a verification sample; approved production-window downloads remain pending."""
+    if verification_month is None:
+        typer.echo(
+            "Specify --verification-month YYYY-MM; production scope is not approved.", err=True
+        )
+        raise typer.Exit(2)
+    try:
+        result = acquire_month(project_root.resolve(), verification_month)
+    except Exception as exc:
+        typer.echo(f"Acquisition failed: {type(exc).__name__}: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    event = result["event"]
+    typer.echo(f"{event['reporting_period']}: {event['status']} — SHA-256 {event['sha256']}")
 
 
 @app.command()
