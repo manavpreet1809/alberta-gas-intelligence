@@ -1,120 +1,125 @@
 # Alberta Gas Production Intelligence Platform
 
-A planned Python, SQL, DuckDB and Power BI pipeline to examine changes in publicly
-reported natural gas production for facilities in Alberta's Kakwa area.
+A Python, SQL and DuckDB pipeline for tracing reported natural-gas production to
+public Petrinex source files, with validated exports for Power BI.
 
-**Status: Stage 2 source verification in progress.** All 24 candidate analysis months and one context month
-have now been acquired and checked locally; no warehouse, dashboard or analytical findings exist yet. Source interpretation, the exact DLS
-study boundary and fixed 24-month window remain subject to M1 verification.
+**Status: the first real-data warehouse pipeline works.** A two-month run for
+January–February 2025 loaded 1,121,054 source rows and produced validated CSV and
+Parquet exports. The Power BI dashboard and production-change bridge are pending.
+
+The working study definition is facilities in the Kakwa area of Alberta
+(Twp 60–65, Rge 3–7 W6M), with a fixed January 2024–December 2025 analysis window.
+Pilot runs use an explicit subset of months. The exports label this working scope
+and preserve the actual approval status; development no longer waits on the old
+AGENTS.md confirmation gates, which the user retired on October 19, 2026.
 
 ```mermaid
 flowchart LR
     A[Petrinex files] --> B[Immutable raw snapshots]
     B --> C[DuckDB staging]
-    C --> D[Core model]
-    D --> E[Analytics]
-    E --> F[Validation]
-    F --> G[CSV and Parquet]
-    G --> H[Power BI]
+    C --> D[Core facility-month model]
+    D --> E[Area and operator totals]
+    E --> F[Mandatory reconciliation]
+    F --> G[Immutable CSV and Parquet bundles]
+    G --> H[Power BI import]
 ```
 
-## Setup
+## Run
 
-Use Python 3.11 or newer. From the repository root:
+Use Python 3.11 or newer from the repository root:
 
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e ".[dev]"
-gas-intel --help
-gas-intel doctor
+gas-intel run-all --month 2025-01 --month 2025-02
+```
+
+The first run acquires missing explicitly requested months. Subsequent runs reuse
+pinned local inventories. To prohibit all network access:
+
+```bash
+gas-intel run-all --month 2025-01 --month 2025-02 --offline
+```
+
+The same operations can be inspected separately:
+
+```bash
+gas-intel load --month 2025-01 --month 2025-02 --offline
+gas-intel build
+gas-intel validate
+gas-intel export
+```
+
+Use `--project-root /path/to/repository` when running elsewhere. CLI failures exit
+nonzero. Months must be unique, explicit and inside the configured analysis/context
+window. An unavailable month fails rather than becoming zero production.
+
+## What the pipeline guarantees
+
+- Source bytes are immutable and identified by hash; revisions are retained.
+- Staging preserves source strings, leading-zero IDs and row/file/run provenance.
+- Reloading replaces the selected snapshot transactionally without duplicating it.
+- The cohort is a fixed union of in-box facilities across the loaded months.
+- Operators are assigned by reporting month; UNKNOWN remains in totals.
+- Positive, explicit-zero and absent qualifying rows remain distinct.
+- Selected invalid volumes, duplicate detail, operator conflicts and location
+  conflicts stop the model build; a failed transaction does not publish a partial model.
+- Source, staging, core, area and operator totals must reconcile exactly by month.
+- Export always validates the current raw hashes, configuration, model and tables.
+  It reads a consistent database transaction and cannot reuse a stale validation pass.
+- Export writes a new bundle, then atomically updates latest.json. Failure leaves
+  the previous accepted bundle available.
+
+The pipeline does not explain operational causes, identify formations, infer
+ownership transfers, or treat absent reports as proven shut-ins.
+
+## Outputs
+
+The local database is `data/warehouse.duckdb`. `data/exports/latest.json` identifies
+the accepted bundle containing eight tables in CSV and Parquet, a manifest with
+file hashes, source/configuration/model metadata and a validation report.
+
+[Power BI model and first visual](dashboard/model.md) documents actual export grains
+and import relationships. A dashboard has not been created yet.
+
+## Verified pilot result
+
+| Month | Reported volume (e3m3) | Qualifying facilities | Operators |
+|---|---:|---:|---:|
+| 2025-01 | 1,366,116.000 | 337 | 20 |
+| 2025-02 | 1,202,281.300 | 342 | 20 |
+
+The two-month cohort has 477 facilities with any source rows inside the box. It is
+not the 551-facility union previously researched across the entire 24-month window.
+See [pilot validation evidence](docs/evidence/pilot_warehouse_validation.json).
+These numbers describe reported extract contributions, not all physical gas output.
+
+## Tests and source verification
+
+```bash
 pytest
 ruff check .
 ruff format --check .
 ```
 
-`doctor` checks runtime and YAML template readability only. It explicitly reports
-that source contracts remain unverified. `doctor --require-sources` fails until
-a later milestone implements real contract verification. Use `--config-dir` to
-check a different configuration directory.
+Offline fixture tests exercise the full CLI/pipeline, exact totals, historical
+operators, missing-versus-zero states, rollback, reruns, corrupt sources, configuration
+changes and export blocking. They do not require public source files in CI.
 
-`load`, `build`, `validate`, `export` and `run-all` remain honest stubs:
-they exit with code 2 and perform no pipeline work. No warehouse creation or
-analytical export is implemented yet. Explicit source-verification acquisition is
-available through `gas-intel download --verification-month YYYY-MM`; see
-[acquisition and revision handling](docs/acquisition.md).
+The earlier [source audit](docs/source_verification.md) and
+[full-window research](docs/window_verification.md) remain provenance evidence.
+Following recovery of the deleted local checkout, only the two pilot raw months
+have been reacquired; the other source files must be reacquired before extending
+the actual warehouse to the full window. Provider revisions may prevent recreation
+of earlier exact hashes; never silently update reviewed expectations.
 
-## Next stage
+## Next
 
-Complete Stage 2 using the [source checklist](docs/m1_checklist.md), then deliver
-the first working month in Stage 3 before expanding to 24 months. See [PLAN.md](PLAN.md) and
-[AGENTS.md](AGENTS.md) for the bridge definitions and acceptance requirements.
+Extend the tested model to the complete window and comparison context, formalize
+the full-period cohort, add the reconciled production-change bridge, then build
+Power BI and write evidence-backed findings. See [PLAN.md](PLAN.md).
 
-Missing rows do not establish zero output or physical shut-in. Reporting-month
-operators do not establish asset ownership. Source revisions must be retained;
-raw data, local warehouses and generated bulk exports are excluded from Git.
-Power BI is built manually from validated exports in a later milestone.
-
-
-## Verified source profiling
-
-January and February 2025 official downloads have been inspected and independently
-cross-checked. See [source verification](docs/source_verification.md) for exact
-counts, hashes, observed schema and remaining decisions. These are province-wide
-source checks, not approved Kakwa totals. Raw files remain local and ignored by Git.
-
-```bash
-python -m gas_intel.profiling data/raw/<sha256>/source.zip \
-  --month 2025-01 --output data/processed/profile_2025-01.json
-```
-
-The profiler reads plain CSV or the observed two nested ZIP layers without extracting
-member paths. It preserves identifiers, reports blanks/invalid volumes and candidate
-key duplicates, and performs no network calls or production pipeline operations.
-Use notebooks/01_source_profiling.ipynb to reproduce the evidence and independent SQL
-cross-check against pinned local source files. Fixture values in tests are invented;
-source headers match observed downloads. Crown copyright acknowledged: Government
-of Alberta, Petrinex public data. Source use remains subject to provider terms.
-
-Recheck the reviewed, source-wide regression baselines offline:
-
-```bash
-python -m gas_intel.baselines
-```
-
-This fails on source/configuration/payload hash changes, schema drift, unresolved
-selected volumes, duplicate detail, or count/volume mismatches. It never silently
-updates expected values. CI uses independently specified synthetic expectations;
-full-source verification needs the pinned local downloads.
-
-Use `gas-intel doctor --details` for a Stage 2 evidence summary. It distinguishes
-missing evidence, failed reference key checks, pinned baseline configuration and
-pending scope/cohort decisions. This summary does not rerun the full-source verifier
-and cannot certify source contracts. `--require-sources` continues to fail while
-Stage 2 is incomplete.
-
-Run the integrated Stage 2 audit against all five pinned local downloads:
-
-```bash
-python -m gas_intel.source_audit
-gas-intel doctor --details
-```
-
-The audit rechecks monthly regressions, reference schemas/keys, history intervals,
-monthly continuity, operator assignments and candidate-box coverage. It makes no
-network requests, never overwrites evidence, and does not publish pipeline exports.
-The proposed study box and dates remain unapproved; passing this audit alone does
-not finish Stage 2. See [scope proposal](docs/study_scope_proposal.md) and
-[reference contracts](docs/reference_contracts.md).
-
-
-## Full-window source evidence
-
-The proposed 2024–2025 window covers **13,207,735 source rows**. All monthly
-counts and source-wide gas totals match independent SQL checks. Candidate-box
-coverage has 551 facilities in the full-period union, of which 389 have qualifying
-production rows; observed cohort locations are consistent across the window.
-These are verification results, not approved dashboard findings.
-
-See [full-window verification](docs/window_verification.md) for provenance,
-reproduction steps, candidate cohort policy and remaining Stage 2 decisions.
+Raw files, warehouses, generated bulk exports, environments and secrets stay out
+of Git. Source copyright acknowledged: Government of Alberta, Petrinex public data.
+Use remains subject to [Petrinex terms](https://www.petrinex.ca/terms).

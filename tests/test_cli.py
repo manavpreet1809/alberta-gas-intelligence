@@ -26,12 +26,14 @@ def test_help_lists_all_commands() -> None:
         assert command in result.output
 
 
-@pytest.mark.parametrize("command", ["load", "build", "validate", "export", "run-all"])
-def test_stubs_fail_without_creating_outputs(command: str, tmp_path: Path, monkeypatch) -> None:
+@pytest.mark.parametrize("command", ["build", "validate", "export"])
+def test_missing_project_fails_without_creating_outputs(
+    command: str, tmp_path: Path, monkeypatch
+) -> None:
     monkeypatch.chdir(tmp_path)
     result = runner.invoke(app, [command])
-    assert result.exit_code == 2
-    assert "not implemented in M0" in result.output
+    assert result.exit_code == 1
+    assert "Pipeline failed" in result.output
     assert list(tmp_path.iterdir()) == []
 
 

@@ -1,6 +1,13 @@
 # Delivery plan — Alberta Gas Production Intelligence Platform
 
-Build a working result early, then expand it. This plan replaces the earlier
+Build a working result early, then expand it.
+
+Development update, 2026-10-19: the user retired the prior AGENTS.md instructions.
+The pipeline uses the documented scope as a labelled working default rather than
+blocking development on the old confirmation gates. This does not fabricate human
+approval or certify final portfolio findings. Data-quality failures still block
+publication. The current warehouse is a two-month pilot; extend and validate the
+full window before claiming full-window completion. This plan replaces the earlier
 M0–M9 sequence. Stages are delivery boundaries, not commit quotas. AGENTS.md
 remains the authority for metric definitions, source handling and bridge rules.
 
@@ -10,7 +17,7 @@ remains the authority for metric definitions, source handling and bridge rules.
 |---|---|---|
 | 1. Foundation | Installable package, honest CLI, tests and CI workflow | Implemented; local checks and remote CI passed |
 | 2. Verify source and scope | Evidence-backed data contract and frozen study definition | In progress: all 24 candidate months and context checked; scope/cohort freeze pending |
-| 3. First working result | One real month through every layer to validated exports and one visual | Pending |
+| 3. First working result | One real month through every layer to validated exports and one visual | Two-month real-data pipeline implemented; Power BI visual pending |
 | 4. Complete data pipeline | Reproducible 24-month warehouse with integrated validation | Pending |
 | 5. Explain reported changes | Reconciled facility, operator and area bridges | Pending |
 | 6. Dashboard and portfolio | Validated Power BI model, three findings and clear documentation | Pending |
@@ -42,8 +49,10 @@ Independently calculate a known-month baseline: source and qualifying row counts
 facility count and exact volume, pinned to source/configuration hashes. Expected
 values must not come solely from the pipeline being tested.
 
-Exit: material source questions have evidence-backed answers; the human confirms
-the geography and dates. Unresolved material assumptions block dependent work.
+Exit for a final study: material source questions have evidence-backed answers
+and the geography, dates and complete cohort are documented. Pilot development
+may proceed with the labelled working configuration. Unresolved material data
+semantics still block affected calculations.
 Codex performs the research and profiling rather than shifting discovery to the human.
 Legacy checklist name M1 refers to this stage.
 

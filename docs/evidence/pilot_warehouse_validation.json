@@ -1,0 +1,31 @@
+{
+  "run_id": "4a72a7f9-123e-47fd-8904-f14a2678c085",
+  "passed": true,
+  "checks": [
+    {
+      "month": "2025-01",
+      "passed": true,
+      "volume_e3m3": "1366116.000",
+      "selected_rows": 2385
+    },
+    {
+      "month": "2025-02",
+      "passed": true,
+      "volume_e3m3": "1202281.300",
+      "selected_rows": 2407
+    }
+  ],
+  "cohort_facilities": 477,
+  "scope_status": "working_scope",
+  "pilot": true,
+  "configuration_hash": "49c23db1c8c26c3c2555c3eaab25b86c6b0d565bc4b9aa3b189c18f0d8b51979",
+  "model_hash": "5d720f5b848bb1bed37554c68cc9e6deb7855143ab715f1ebd52240e2afab69c",
+  "source_sha256_by_month": {
+    "2025-01": "3e1313f6e6d7f736b41f6f4352e69cf4b239b7ded73fd4e2afc6ae9efe08d3d4",
+    "2025-02": "875508f48967d4f12256128181076137aa0e70c7286355289059b303f4303980"
+  },
+  "warnings": {
+    "unknown_operator_fact_rows": 0,
+    "absent_qualifying_facility_months": 275
+  }
+}

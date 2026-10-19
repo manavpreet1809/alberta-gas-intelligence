@@ -1,5 +1,7 @@
 """Command-line entry point for the milestone-driven pipeline."""
 
+import json
+from collections.abc import Callable
 from pathlib import Path
 from typing import Annotated
 
@@ -7,6 +9,13 @@ import typer
 
 from gas_intel.doctor import check_scaffold
 from gas_intel.ingestion.download import acquire_month
+from gas_intel.pipeline import (
+    build_model,
+    export_tables,
+    load_sources,
+    run_pipeline,
+    validate_warehouse,
+)
 from gas_intel.readiness import source_readiness
 
 app = typer.Typer(no_args_is_help=True, help="Alberta Gas Production Intelligence Platform")
@@ -69,31 +78,55 @@ def download(
     typer.echo(f"{event['reporting_period']}: {event['status']} — SHA-256 {event['sha256']}")
 
 
-@app.command()
-def load() -> None:
-    """Load a pinned source snapshot into staging (pending)."""
-    not_implemented("load")
+def execute(operation: Callable[[], object]) -> None:
+    """Report a CLI result and propagate pipeline failures as a nonzero exit."""
+    try:
+        result = operation()
+    except Exception as exc:
+        typer.echo(f"Pipeline failed: {type(exc).__name__}: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    typer.echo(json.dumps(result, default=str, indent=2))
 
 
 @app.command()
-def build() -> None:
-    """Build core and analytics tables (pending)."""
-    not_implemented("build")
+def load(
+    month: Annotated[
+        list[str], typer.Option(help="Explicit reporting month; repeat for multiple months")
+    ],
+    project_root: Annotated[Path, typer.Option(help="Repository root")] = Path("."),
+    offline: Annotated[bool, typer.Option(help="Require pinned local inventories")] = False,
+) -> None:
+    """Load selected source snapshots into staging without duplicating prior loads."""
+    execute(lambda: load_sources(project_root.resolve(), month, offline=offline))
 
 
 @app.command()
-def validate() -> None:
-    """Run data quality and reconciliation checks (pending)."""
-    not_implemented("validate")
+def build(project_root: Annotated[Path, typer.Option(help="Repository root")] = Path(".")) -> None:
+    """Build the fixed loaded-month cohort, production fact and analytical totals."""
+    execute(lambda: build_model(project_root.resolve()))
 
 
 @app.command()
-def export() -> None:
-    """Validate and publish analytics exports (pending)."""
-    not_implemented("export")
+def validate(
+    project_root: Annotated[Path, typer.Option(help="Repository root")] = Path("."),
+) -> None:
+    """Recheck source, staging, core and analytics reconciliation."""
+    execute(lambda: validate_warehouse(project_root.resolve()))
+
+
+@app.command()
+def export(project_root: Annotated[Path, typer.Option(help="Repository root")] = Path(".")) -> None:
+    """Validate the current state and publish a new CSV/Parquet bundle."""
+    execute(lambda: export_tables(project_root.resolve()))
 
 
 @app.command("run-all")
-def run_all() -> None:
-    """Run the validated end-to-end pipeline (pending)."""
-    not_implemented("run-all")
+def run_all(
+    month: Annotated[
+        list[str], typer.Option(help="Explicit reporting month; repeat for multiple months")
+    ],
+    project_root: Annotated[Path, typer.Option(help="Repository root")] = Path("."),
+    offline: Annotated[bool, typer.Option(help="Use pinned local sources only")] = False,
+) -> None:
+    """Run the selected-month pipeline, including mandatory validation before export."""
+    execute(lambda: run_pipeline(project_root.resolve(), month, offline=offline))

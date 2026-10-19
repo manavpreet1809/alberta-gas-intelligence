@@ -38,3 +38,50 @@ negative/precision values) from accepted nonnegative source-scale sums. Invalid,
 negative or out-of-precision detail makes that facility unresolved; partial valid
 detail cannot establish a facility's reported-zero status. This is a conservative
 project policy, not a claim that all possible source corrections are nonnegative.
+
+## Implemented warehouse pilot — 2026-10-19
+
+Two explicit months now run through staging, core, analytics, mandatory validation
+and versioned exports. Source configuration, raw hashes and model hashes bind each
+built snapshot. Staging is replaced transactionally for the selected inventory,
+not appended blindly on reruns. Every row preserves source_file, source_sha256,
+downloaded_at, ingestion_run_id and a one-based logical source-row ordinal.
+
+The cohort is the union of in-box facilities in the months actually loaded. It is
+fixed across those months, including facilities without qualifying production rows.
+The January–February pilot has 477 cohort facilities; do not confuse this with the
+previously researched 551-facility full-window cohort. Exports explicitly record
+pilot status, cohort policy and working-scope status. No approval is invented.
+
+Reporting-month BA IDs determine operator allocation. Reporting-month source names
+label operator-month totals; missing IDs enter UNKNOWN. A facility's monthly
+metadata must not contain conflicting operators or changing observed locations.
+The pipeline rejects duplicate selected detail and invalid selected volume before
+publication. Selected detail is aggregated once to the facility-month fact.
+
+Monthly source totals are independently computed using the Python/Decimal source
+profiler before loading. SQL staging/core/area/operator totals must equal those
+values exactly; row-count and exclusion conservation are checked separately.
+Additional checks cover operator attribution, dimension/fact keys, complete
+facility-month spine and consistency of reporting states with nullable volumes.
+
+Export validation and table reads share one database transaction. A new bundle is
+written before latest.json changes, preserving previous accepted exports on failure.
+The latest pointer identifies a bundle; it is not permission to reuse its validation
+for changed source/configuration/model state. Direct export always revalidates.
+
+To trace an exported facility-month value to logical input records:
+
+```sql
+SELECT ProductionMonth, ReportingFacilityID, FromToID, Volume,
+       source_file, source_sha256, source_row_number, ingestion_run_id
+FROM staging.volumetrics
+WHERE ReportingFacilityID = 'your-facility-id'
+  AND ProductionMonth = '2025-01'
+  AND ActivityID = 'PROD' AND ProductID = 'GAS';
+```
+
+The Power BI import contract is in dashboard/model.md. No bridge or causal findings
+are implemented in this pilot. The original local checkout was missing at the start
+of recovery; the repository and two raw months were restored, while other ignored
+raw files must be reacquired before a full-window run.
