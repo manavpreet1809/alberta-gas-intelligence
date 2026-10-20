@@ -30,6 +30,36 @@ TABLES = {
 }
 
 
+def table_fingerprint(db: duckdb.DuckDBPyConnection, table: str) -> str:
+    """Hash schema and the row multiset, retaining duplicates with bounded Python memory."""
+    # Table names come only from the internal model contract, never CLI input.
+    schema = db.execute(f"DESCRIBE {table}").fetchall()
+    digest = hashlib.sha256(json.dumps(schema).encode())
+    cursor = db.execute(
+        f"SELECT sha256(to_json(record)) AS row_hash FROM {table} record ORDER BY row_hash"
+    )
+    while rows := cursor.fetchmany(8192):
+        for (row_hash,) in rows:
+            digest.update(row_hash.encode("ascii"))
+    return digest.hexdigest()
+
+
+def require_staging_integrity(db: duckdb.DuckDBPyConnection, info: dict) -> None:
+    """Reject modified loaded rows before they can become a new accepted model."""
+    expected = info.get("staging_fingerprint")
+    if not expected or table_fingerprint(db, "staging.volumetrics") != expected:
+        raise ValueError("Staging snapshot integrity failed; reload the pinned sources")
+
+
+def require_model_integrity(db: duckdb.DuckDBPyConnection, info: dict) -> None:
+    """Check all exported model data and intermediate selection/exclusion lineage."""
+    expected = info.get("table_fingerprints", {})
+    tables = [*TABLES.values(), "core.selected_records", "core.excluded_records"]
+    for table in tables:
+        if table not in expected or table_fingerprint(db, table) != expected[table]:
+            raise ValueError(f"Built table snapshot integrity failed: {table}; rebuild the model")
+
+
 def atomic_json(path: Path, value: object) -> None:
     """Replace metadata only after the complete JSON has been flushed."""
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -187,6 +217,7 @@ def load_sources(root: Path, months: list[str], *, offline: bool = False) -> dic
                             item["csv_path"],
                         ],
                     )
+                info["staging_fingerprint"] = table_fingerprint(db, "staging.volumetrics")
                 db.execute(
                     "CREATE OR REPLACE TABLE staging.run_info AS SELECT ? AS metadata",
                     [json.dumps(info)],
@@ -222,6 +253,7 @@ def build_model(root: Path) -> dict:
             raise ValueError("Configuration changed; reload the selected sources")
         db.execute("BEGIN")
         try:
+            require_staging_integrity(db, info)
             db.execute(
                 "CREATE OR REPLACE TEMP TABLE pipeline_settings AS SELECT ?::INT "
                 "township_min, ?::INT township_max, ?::INT range_min, ?::INT range_max, "
@@ -267,7 +299,18 @@ def build_model(root: Path) -> dict:
                     f"Core data checks failed: invalid={invalid}, duplicate={duplicates}, "
                     f"operator_conflict={conflicts}, location_conflict={locations}"
                 )
-            info.update(status="built", model_hash=model_hash(root))
+            info.update(
+                status="built",
+                model_hash=model_hash(root),
+                table_fingerprints={
+                    table: table_fingerprint(db, table)
+                    for table in [
+                        *TABLES.values(),
+                        "core.selected_records",
+                        "core.excluded_records",
+                    ]
+                },
+            )
             db.execute("UPDATE staging.run_info SET metadata=?", [json.dumps(info)])
             db.execute("COMMIT")
         except Exception:
@@ -291,6 +334,7 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
         raise ValueError("Build the current transformation model before validation")
     if info["configuration_hash"] != digest:
         raise ValueError("Configuration changed since loading")
+    require_staging_integrity(db, info)
     checks = []
     for source in info["sources"]:
         path = root / source["source_file"]
@@ -396,9 +440,15 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
     """).fetchone()[0]
     if state_errors:
         raise ValueError("Facility reporting-state reconciliation failed")
+    require_model_integrity(db, info)
     return {
         "run_id": info["run_id"],
         "passed": True,
+        "snapshot_integrity": {
+            "algorithm": "sha256_schema_and_sorted_row_hashes_v1",
+            "staging_fingerprint": info["staging_fingerprint"],
+            "table_fingerprints": info["table_fingerprints"],
+        },
         "checks": checks,
         "cohort_facilities": expected_spine // len(info["months"]),
         "scope_status": info["scope_status"],

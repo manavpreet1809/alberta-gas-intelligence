@@ -2,14 +2,12 @@
 
 Build a working result early, then expand it.
 
-Development update, 2026-10-19: the user retired the prior AGENTS.md instructions.
-The pipeline uses the documented scope as a labelled working default rather than
-blocking development on the old confirmation gates. This does not fabricate human
-approval or certify final portfolio findings. Data-quality failures still block
-publication. The current warehouse is a two-month pilot; extend and validate the
-full window before claiming full-window completion. This plan replaces the earlier
-M0–M9 sequence. Stages are delivery boundaries, not commit quotas. AGENTS.md
-remains the authority for metric definitions, source handling and bridge rules.
+Development update, 2026-10-20: AGENTS.md is the active authority for scope,
+metric definitions, source handling and bridge rules. The existing two-month
+pilot uses a labelled working configuration; it does not record scope approval
+or certify the final cohort. Complete source/cohort verification before claiming
+a final study. Stages are delivery boundaries, not commit quotas. This plan
+replaces the earlier M0–M9 sequence.
 
 ## Stages and current status
 
@@ -17,7 +15,7 @@ remains the authority for metric definitions, source handling and bridge rules.
 |---|---|---|
 | 1. Foundation | Installable package, honest CLI, tests and CI workflow | Implemented; local checks and remote CI passed |
 | 2. Verify source and scope | Evidence-backed data contract and frozen study definition | In progress: all 24 candidate months and context checked; scope/cohort freeze pending |
-| 3. First working result | One real month through every layer to validated exports and one visual | Two-month real-data pipeline implemented; Power BI visual pending |
+| 3. First working result | One real month through every layer to validated exports and one visual | Two-month real-data pipeline and snapshot integrity checks implemented; Power BI visual pending |
 | 4. Complete data pipeline | Reproducible 24-month warehouse with integrated validation | Pending |
 | 5. Explain reported changes | Reconciled facility, operator and area bridges | Pending |
 | 6. Dashboard and portfolio | Validated Power BI model, three findings and clear documentation | Pending |

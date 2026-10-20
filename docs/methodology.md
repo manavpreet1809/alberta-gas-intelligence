@@ -85,3 +85,28 @@ The Power BI import contract is in dashboard/model.md. No bridge or causal findi
 are implemented in this pilot. The original local checkout was missing at the start
 of recovery; the repository and two raw months were restored, while other ignored
 raw files must be reacquired before a full-window run.
+
+## Snapshot integrity — 2026-10-20
+
+A loaded snapshot now records a SHA-256 fingerprint of the staging table. Before
+building or validating, the pipeline checks that fingerprint in the same database
+transaction. A successful build records fingerprints for all eight exported tables
+plus selected detail and exclusion lineage. Direct export and run-all check these
+fingerprints as well as the independent monthly volume/count reconciliations.
+This detects changed facility names, operator assignments, detail lineage, shares,
+reporting counts, duplicate aggregate rows and balanced edits that preserve totals.
+
+The versioned algorithm `sha256_schema_and_sorted_row_hashes_v1` hashes DuckDB's
+DESCRIBE schema and the sorted multiset of SHA-256 hashes of JSON row structures.
+Nulls and text IDs are preserved, duplicate rows remain in the multiset, and
+physical row order has no effect. Python reads hashes in bounded batches; sorting
+is managed by DuckDB. Fingerprints are recorded in the validation/export manifest.
+They prove consistency with accepted load/build state, not correctness of source
+semantics, and are not a signature against someone rewriting database metadata.
+Independent source regressions and scope verification remain necessary.
+
+Legacy warehouses lack these fingerprints and must be reloaded and rebuilt from
+the pinned inventory. Never populate fingerprints from an unreviewed old database
+just to pass validation. Modified staging requires reload; rebuild repairs changed
+derived tables. Validation failure leaves the previous accepted bundle and latest
+pointer intact. Raw source files and source selections are unchanged by these checks.

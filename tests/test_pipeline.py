@@ -260,3 +260,71 @@ def test_inconsistent_monthly_operator_assignment_fails_build(project: Path) -> 
     load_sources(project, ["2025-01"], offline=True)
     with pytest.raises(ValueError, match="operator_conflict=1"):
         build_model(project)
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "UPDATE staging.volumetrics SET FromToID='different-origin'",
+        "UPDATE staging.volumetrics SET downloaded_at='2099-01-01'",
+        "UPDATE staging.volumetrics SET Volume=CASE WHEN Volume='100.125' "
+        "THEN '99.125' WHEN Volume='2.375' THEN '3.375' ELSE Volume END",
+    ],
+)
+def test_modified_staging_cannot_be_rebuilt_or_exported(project: Path, mutation: str) -> None:
+    seed(project)
+    accepted = run_pipeline(project, ["2025-01"], offline=True)
+    latest = (project / "data/exports/latest.json").read_bytes()
+    with duckdb.connect(str(project / "data/warehouse.duckdb")) as db:
+        db.execute(mutation)
+    for operation in [build_model, export_tables]:
+        with pytest.raises(ValueError, match="Staging snapshot integrity"):
+            operation(project)
+    assert (project / "data/exports/latest.json").read_bytes() == latest
+    assert accepted.is_dir()
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "UPDATE core.dim_facility SET facility_name='incorrect name'",
+        "UPDATE core.excluded_records SET source_row_number=999",
+        "UPDATE core.selected_records SET FromToID='incorrect origin'",
+        "UPDATE core.facility_month SET operator_id='UNKNOWN'",
+        "UPDATE analytics.operator_monthly_production SET area_share=0.123",
+        "UPDATE analytics.data_quality_summary SET facility_count=999",
+        "INSERT INTO analytics.monthly_area_production SELECT * "
+        "FROM analytics.monthly_area_production",
+    ],
+)
+def test_model_detail_changes_preserving_totals_block_publication(
+    project: Path, mutation: str
+) -> None:
+    seed(project)
+    run_pipeline(project, ["2025-01"], offline=True)
+    latest = (project / "data/exports/latest.json").read_bytes()
+    with duckdb.connect(str(project / "data/warehouse.duckdb")) as db:
+        db.execute(mutation)
+    with pytest.raises(ValueError, match="Built table snapshot integrity"):
+        export_tables(project)
+    assert (project / "data/exports/latest.json").read_bytes() == latest
+    # A clean rebuild from the accepted staging snapshot repairs derived tables.
+    build_model(project)
+    assert validate_warehouse(project)["passed"]
+
+
+def test_snapshot_hash_retains_duplicates_and_ignores_physical_row_order() -> None:
+    from gas_intel.pipeline import table_fingerprint
+
+    with duckdb.connect() as db:
+        db.execute(
+            "CREATE TABLE example AS SELECT * FROM (VALUES ('001', 10), ('002', 20)) t(id,v)"
+        )
+        original = table_fingerprint(db, "example")
+        db.execute("CREATE OR REPLACE TABLE example AS SELECT * FROM example ORDER BY id DESC")
+        assert table_fingerprint(db, "example") == original
+        db.execute("INSERT INTO example VALUES ('001', 10)")
+        assert table_fingerprint(db, "example") != original
+        with_duplicates = table_fingerprint(db, "example")
+        db.execute("CREATE OR REPLACE TABLE example AS SELECT id, v::VARCHAR AS v FROM example")
+        assert table_fingerprint(db, "example") != with_duplicates

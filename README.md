@@ -68,6 +68,9 @@ window. An unavailable month fails rather than becoming zero production.
 - Source, staging, core, area and operator totals must reconcile exactly by month.
 - Export always validates the current raw hashes, configuration, model and tables.
   It reads a consistent database transaction and cannot reuse a stale validation pass.
+- Full staging and built-table fingerprints detect detail, lineage, share or
+  reporting-count changes even when monthly volume totals remain unchanged.
+  Modified staging requires reloading; modified derived tables require rebuilding.
 - Export writes a new bundle, then atomically updates latest.json. Failure leaves
   the previous accepted bundle available.
 
@@ -105,7 +108,8 @@ ruff format --check .
 
 Offline fixture tests exercise the full CLI/pipeline, exact totals, historical
 operators, missing-versus-zero states, rollback, reruns, corrupt sources, configuration
-changes and export blocking. They do not require public source files in CI.
+changes, total-preserving detail corruption and export blocking. They do not require
+public source files in CI.
 
 The earlier [source audit](docs/source_verification.md) and
 [full-window research](docs/window_verification.md) remain provenance evidence.
