@@ -113,10 +113,13 @@ public source files in CI.
 
 The earlier [source audit](docs/source_verification.md) and
 [full-window research](docs/window_verification.md) remain provenance evidence.
-Following recovery of the deleted local checkout, only the two pilot raw months
-have been reacquired; the other source files must be reacquired before extending
-the actual warehouse to the full window. Provider revisions may prevent recreation
-of earlier exact hashes; never silently update reviewed expectations.
+All 24 analysis-month raw snapshots and December 2023 context have now been
+restored with hashes matching the earlier evidence. The warehouse remains a
+two-month pilot. `python -m gas_intel.cohort` prepares a pinned candidate cohort
+and independently reconciled monthly baselines; see
+[cohort preparation](docs/window_verification.md). Historical reference snapshots
+remain unavailable locally. Provider revisions may prevent recreation of earlier
+exact hashes in future; never silently update reviewed expectations.
 
 ## Next
 

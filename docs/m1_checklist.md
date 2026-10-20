@@ -44,3 +44,16 @@ location conflicts or unresolved locations were found. See window_verification.m
 Availability is no longer an unresolved data-access question. Scope confirmation,
 final cohort freeze, approved-configuration baseline and source exit review remain
 pending; these are not replaced by passing profiling tests.
+
+## Cohort preparation and recovery — 2026-10-20
+
+All 25 volumetric snapshots are restored locally with hashes matching the prior
+window evidence. A candidate cohort artifact now pins 551 facilities from the
+24 analysis months, locations checked across analysis plus context, and independent
+Python/SQL monthly cohort baselines. Context cannot enlarge membership. See
+[evidence/candidate_cohort_preparation.json](evidence/candidate_cohort_preparation.json).
+This resolves the missing-local-volumetrics issue after recovery; it does not
+restore historical reference snapshots or record final scope approval.
+
+Final scope confirmation and source-contract exit review remain pending. The
+warehouse has not yet been expanded to consume the full-window cohort artifact.

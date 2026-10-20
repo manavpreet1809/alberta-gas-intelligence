@@ -26,7 +26,15 @@ def month_sequence(start: str, end: str) -> list[str]:
     return [f"{number // 12:04d}-{number % 12 + 1:02d}" for number in range(first, last + 1)]
 
 
-def verify_window(root: Path, start: str, end: str, box: DLSBox) -> dict[str, object]:
+def verify_window(
+    root: Path,
+    start: str,
+    end: str,
+    box: DLSBox,
+    *,
+    include_members: bool = False,
+    tracked_facilities: set[str] | None = None,
+) -> dict[str, object]:
     """Independently check pinned monthly inventory, exact totals and cohort-location stability."""
     summaries = []
     contract = yaml.safe_load((root / "config/sources.yaml").read_text())["volumetrics"]
@@ -112,6 +120,14 @@ def verify_window(root: Path, start: str, end: str, box: DLSBox) -> dict[str, ob
                     f"FROM source WHERE {scope_sql} AND {qualifiers}",
                     bounds,
                 ).fetchone()
+                tracked_rows = tracked_volume = None
+                if tracked_facilities is not None:
+                    tracked_rows, tracked_volume = db.execute(
+                        "SELECT count(*), coalesce(sum(try_cast(Volume AS DECIMAL(18,3))),0) "
+                        f"FROM source WHERE {qualifiers} AND ReportingFacilityID IN "
+                        "(SELECT unnest(?))",
+                        [sorted(tracked_facilities)],
+                    ).fetchone()
                 operators = db.execute(
                     "SELECT count(DISTINCT coalesce(nullif(OperatorBAID, ''), 'UNKNOWN')) "
                     f"FROM source WHERE {scope_sql} AND {qualifiers}",
@@ -129,6 +145,8 @@ def verify_window(root: Path, start: str, end: str, box: DLSBox) -> dict[str, ob
                 "candidate_facilities_with_rows": len({row[0] for row in selected}),
                 "candidate_qualifying_facilities": len(qualified),
                 "candidate_operators": operators,
+                "tracked_gas_prod_rows": tracked_rows,
+                "tracked_volume_e3m3": str(tracked_volume) if tracked_volume is not None else None,
                 "candidate_gas_prod_rows": candidate_rows,
                 "candidate_volume_e3m3": str(candidate_volume or Decimal(0)),
                 "unresolved_volume_facilities": gas["unresolved_volume_facility_count"],
@@ -139,7 +157,7 @@ def verify_window(root: Path, start: str, end: str, box: DLSBox) -> dict[str, ob
                 "archive_layers": len(lineage),
             }
         )
-    return {
+    report = {
         "status": "candidate-window evidence only; human scope confirmation pending",
         "box": asdict(box),
         "start_month": start,
@@ -159,6 +177,18 @@ def verify_window(root: Path, start: str, end: str, box: DLSBox) -> dict[str, ob
             (root / "config/sources.yaml").read_bytes()
         ).hexdigest(),
     }
+
+    if include_members:
+        report["candidate_facility_ids"] = sorted(cohort)
+        report["location_evidence"] = [
+            {
+                "facility_id": facility,
+                "positions": sorted(locations[facility]),
+                "has_unresolved_location": facility in invalid_locations,
+            }
+            for facility in sorted(cohort | (tracked_facilities or set()))
+        ]
+    return report
 
 
 def main() -> None:

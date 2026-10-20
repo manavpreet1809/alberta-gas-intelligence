@@ -58,3 +58,15 @@ inventory remain excluded from Git.
 
 Current files may change at the provider. Reacquiring a different hash requires a
 reviewed new inventory selection; do not silently overwrite reviewed expectations.
+
+## Recovery of reviewed monthly snapshots — 2026-10-20
+
+The 24 analysis-month snapshots and December 2023 context have been restored after
+checkout recovery. Every restored source hash matches the earlier October 18
+window evidence; no changed provider vintage was substituted. Acquisition events
+retain the actual new retrieval dates, while the earlier evidence retains its
+original dates. This demonstrates matching bytes on reacquisition, not a promise
+that future provider downloads will remain identical.
+
+The recovered files and local inventory remain excluded from Git. Historical
+reference snapshots were not restored as part of this volumetric recovery.

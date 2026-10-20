@@ -75,3 +75,37 @@ as-first-reported series or a claim that all files have the same source revision
    within-month consistency.
 
 No approved study findings or Power BI dashboard are claimed.
+
+## Candidate cohort artifact — 2026-10-20
+
+The new preparation command checks all 24 analysis months and the preceding
+context month before writing a candidate membership artifact:
+
+```bash
+python -m gas_intel.cohort
+```
+
+It reads the explicit dates and box from config/study_area.yaml. Membership is the
+union of in-box facilities observed in the analysis months. Context-only facilities
+are excluded. All observed locations of cohort members are checked across the
+analysis and context months, including outside-box positions; a conflicting or
+unresolved location blocks the artifact. Qualifying invalid volumes, duplicate
+detail and within-month operator conflicts also block it.
+
+For each month, a Python CSV/Decimal pass over that fixed membership must match
+independent DuckDB counts and exact totals. Context baselines use the same cohort,
+not every facility appearing in the context-month box. This distinction is tested
+with a synthetic context-only facility. Missing monthly inventory is a hard failure.
+
+The artifact in `data/processed/cohorts/<sha256>.json` records sorted membership,
+observed locations, the 24 analysis months, separate context, configuration/code
+hashes and monthly source/payload hashes with acquisition dates and baselines.
+Publication uses a complete flushed temporary file and an exclusive atomic link;
+existing artifact bytes are checked before reuse. Identical inputs produce the
+same artifact. Facility-level artifacts remain local and excluded from Git;
+only aggregate evidence is included in documentation.
+
+This prepares a reproducible candidate cohort; it does not grant human scope
+approval, update config approval flags, rebuild the warehouse or certify a
+completed dashboard. The existing pilot still uses its two-month cohort. The full
+warehouse must explicitly consume the reviewed full-window cohort in Stage 4.

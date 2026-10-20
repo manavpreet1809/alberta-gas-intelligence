@@ -96,3 +96,15 @@ Reliable acquisition now records attempt history and validates temporary downloa
 before atomic content-addressed publication. Accepted files are never overwritten
 by invalid responses. See [acquisition.md](acquisition.md). No source rows are
 redistributed in this update.
+
+## Current implementation status — 2026-10-20
+
+The earlier statement that no Stage 3 pipeline exists is superseded: a validated
+two-month warehouse and exports exist, while the Power BI visual is pending.
+After local recovery, all 25 volumetric snapshots are again present with the same
+hashes as the prior full-window evidence. The new candidate cohort preparation
+checks membership, analysis/context location consistency and exact monthly cohort
+baselines independently in Python and DuckDB. Its aggregate evidence is in
+[evidence/candidate_cohort_preparation.json](evidence/candidate_cohort_preparation.json).
+The source/cohort approval fields remain pending. Reference raw snapshots are
+still missing locally; the earlier reference evidence has not been discarded.
