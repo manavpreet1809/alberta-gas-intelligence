@@ -110,3 +110,32 @@ the pinned inventory. Never populate fingerprints from an unreviewed old databas
 just to pass validation. Modified staging requires reload; rebuild repairs changed
 derived tables. Validation failure leaves the previous accepted bundle and latest
 pointer intact. Raw source files and source selections are unchanged by these checks.
+
+## Full-window cohort consumption — 2026-10-21
+
+`load` and `run-all` now accept `--cohort-artifact` as an alternative to explicit
+pilot months. Loading checks the content-addressed artifact hash, study configuration,
+24 analysis months, preceding context, unique string facility IDs, location box,
+set fingerprint and one baseline per month. Every selected source must match the
+artifact's hash and independent source row count. A different provider revision
+cannot silently replace a reviewed month.
+
+The artifact's cohort is staged and fingerprinted alongside the immutable source
+selection. Build independently reconstructs the analysis-month in-box union and
+requires exact membership equality, matching pinned locations and consistent
+observed positions. This prevents a missing, extra or context-only member from
+changing the reporting population. Per-month selected row counts and DECIMAL totals
+must match the artifact's independent cohort baselines through staging, core and
+internal area/operator aggregates. Invalid selected rows still fail the build.
+
+The database retains all 25 months for comparison, with `core.dim_month.is_analysis`
+marking the 24 display months. Reporting analytics and all month-grained exports
+exclude context. Internal area/operator tables cover all selected months and are
+fingerprinted and reconciled, including context. The complete fixed-cohort spine
+contains one facility row per loaded month; absence never changes membership.
+
+Warehouse connections use a 1 GB DuckDB memory limit and two execution threads;
+large sorts can spill to disk. Fingerprinting and raw verification are mandatory,
+so a full run is more expensive than simply reading precomputed exports. No raw
+source or earlier accepted export is overwritten. Scope remains `working_scope`
+unless explicit approval is recorded; `pilot=false` describes temporal coverage only.

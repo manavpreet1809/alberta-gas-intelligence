@@ -1,18 +1,26 @@
 CREATE SCHEMA IF NOT EXISTS core;
 CREATE SCHEMA IF NOT EXISTS analytics;
 CREATE OR REPLACE TABLE core.dim_month AS
-SELECT DISTINCT ProductionMonth AS month FROM staging.volumetrics ORDER BY month;
+SELECT DISTINCT ProductionMonth AS month,
+       ProductionMonth BETWEEN start_month AND end_month AS is_analysis
+FROM staging.volumetrics CROSS JOIN pipeline_settings ORDER BY month;
 
-CREATE OR REPLACE TABLE core.dim_facility AS
-WITH cohort AS (
+CREATE OR REPLACE TEMP TABLE candidate_cohort AS
     SELECT DISTINCT ReportingFacilityID AS facility_id
     FROM staging.volumetrics CROSS JOIN pipeline_settings
-    WHERE regexp_full_match(FacilityTownship, '[0-9]+')
+    WHERE ProductionMonth BETWEEN start_month AND end_month
+      AND regexp_full_match(FacilityTownship, '[0-9]+')
       AND regexp_full_match(FacilityRange, '[0-9]+')
       AND regexp_full_match(FacilityMeridian, '[0-9]+')
       AND try_cast(FacilityTownship AS INTEGER) BETWEEN township_min AND township_max
       AND try_cast(FacilityRange AS INTEGER) BETWEEN range_min AND range_max
-      AND try_cast(FacilityMeridian AS INTEGER) = meridian
+      AND try_cast(FacilityMeridian AS INTEGER) = meridian;
+
+CREATE OR REPLACE TABLE core.dim_facility AS
+WITH cohort AS (
+    SELECT facility_id FROM staging.cohort
+    UNION ALL
+    SELECT facility_id FROM candidate_cohort WHERE NOT EXISTS (SELECT 1 FROM staging.cohort)
 )
 SELECT ReportingFacilityID AS facility_id, ReportingFacilityName AS facility_name,
        ReportingFacilityType AS facility_type, ReportingFacilitySubType AS facility_subtype,

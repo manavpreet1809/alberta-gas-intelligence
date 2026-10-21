@@ -1,4 +1,4 @@
-# Pilot Power BI model
+# Power BI import model
 
 Status: validated CSV/Parquet bundles exist; no Power BI dashboard has been created.
 Use the bundle selected by `data/exports/latest.json`. Each bundle is immutable and
@@ -37,3 +37,24 @@ The pilot cohort changes only when the selection of loaded months changes; the
 cohort remains fixed inside each built snapshot. A two-month pilot cohort is not
 the previously researched full 24-month cohort. Export metadata explicitly records
 `pilot`, `scope_status` and `cohort_policy`. No human approval is fabricated.
+
+
+## Full-window contract
+
+A run selected with `--cohort-artifact` uses the same fixed analysis-window cohort
+for every analysis and context month. The current candidate set has 551 facilities.
+`core.dim_month` has an `is_analysis` flag; the database keeps the context month,
+but all month-grained reporting exports contain only analysis months. Internal
+`analytics.monthly_area_all` and `analytics.operator_monthly_all` retain context for
+reconciliation and later comparisons. They are not Power BI exports.
+
+The full facility_month export has 551 × 24 = 13,224 facility-month rows when all
+configured months pass validation. The warehouse also retains 551 context rows.
+Fact volume is additive across exported months in e3m3; blank facility-month volume
+remains distinct from explicit zero. Shares remain nonadditive. The YYYY-MM text
+month key is unique in dim_month; its exported `is_analysis` values are all true.
+Existing one-to-many dimension relationships and measure definitions still apply.
+
+`pilot=false` means all 24 analysis months were loaded. It does not mean scope
+approval or dashboard completion. See `scope_status`, `human_scope_approval_recorded`,
+`cohort_artifact_sha256`, `analysis_months` and `context_months` in the bundle manifest.

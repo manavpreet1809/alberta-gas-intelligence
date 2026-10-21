@@ -109,3 +109,14 @@ This prepares a reproducible candidate cohort; it does not grant human scope
 approval, update config approval flags, rebuild the warehouse or certify a
 completed dashboard. The existing pilot still uses its two-month cohort. The full
 warehouse must explicitly consume the reviewed full-window cohort in Stage 4.
+
+## Full-window warehouse expansion — 2026-10-21
+
+The candidate artifact can now be consumed directly by `gas-intel load` or
+`gas-intel run-all --cohort-artifact <artifact-path> --offline`. The real run
+loaded all 25 pinned snapshots with 13,783,410 source rows. It preserved the
+551-member analysis cohort, reconciled every month to the independent baselines,
+and exported only the 24 analysis months. See
+[evidence/full_window_warehouse_validation.json](evidence/full_window_warehouse_validation.json).
+This supersedes the earlier statement that the current warehouse is only a
+two-month pilot. Scope approval, final source exit review and Power BI remain pending.

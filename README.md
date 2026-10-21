@@ -3,15 +3,18 @@
 A Python, SQL and DuckDB pipeline for tracing reported natural-gas production to
 public Petrinex source files, with validated exports for Power BI.
 
-**Status: the first real-data warehouse pipeline works.** A two-month run for
-January–February 2025 loaded 1,121,054 source rows and produced validated CSV and
-Parquet exports. The Power BI dashboard and production-change bridge are pending.
+**Status: the full-window warehouse works with a provisional study scope.**
+The January 2024–December 2025 run, plus December 2023 context, loaded 13,783,410
+source rows into a fixed 551-facility model. Validated CSV/Parquet reporting exports
+contain exactly 24 analysis months. Power BI, change metrics and the production-change
+bridge remain pending.
 
 The working study definition is facilities in the Kakwa area of Alberta
 (Twp 60–65, Rge 3–7 W6M), with a fixed January 2024–December 2025 analysis window.
-Pilot runs use an explicit subset of months. The exports label this working scope
-and preserve the actual approval status; development no longer waits on the old
-AGENTS.md confirmation gates, which the user retired on October 19, 2026.
+Pilot runs use an explicit subset of months. Full-window runs consume a pinned
+candidate cohort artifact. Exports label this working scope and preserve the
+actual approval status. Final scope confirmation and source-contract exit review
+remain pending; a working warehouse does not certify final portfolio findings.
 
 ```mermaid
 flowchart LR
@@ -42,6 +45,17 @@ pinned local inventories. To prohibit all network access:
 gas-intel run-all --month 2025-01 --month 2025-02 --offline
 ```
 
+For a full-window run, first restore the reviewed source inventory and prepare
+its cohort with `python -m gas_intel.cohort`. Use the returned artifact path:
+
+```bash
+gas-intel run-all --cohort-artifact data/processed/cohorts/<sha256>.json --offline
+```
+
+This selects all 24 configured analysis months plus the fixed preceding context
+month. Do not combine `--cohort-artifact` and `--month`. The artifact pins one exact
+source revision per month and independently calculated cohort baselines.
+
 The same operations can be inspected separately:
 
 ```bash
@@ -60,7 +74,8 @@ window. An unavailable month fails rather than becoming zero production.
 - Source bytes are immutable and identified by hash; revisions are retained.
 - Staging preserves source strings, leading-zero IDs and row/file/run provenance.
 - Reloading replaces the selected snapshot transactionally without duplicating it.
-- The cohort is a fixed union of in-box facilities across the loaded months.
+- The full-window cohort is pinned to the 24 analysis months; context cannot add members.
+- Context is retained for comparison in the database and excluded from reporting exports.
 - Operators are assigned by reporting month; UNKNOWN remains in totals.
 - Positive, explicit-zero and absent qualifying rows remain distinct.
 - Selected invalid volumes, duplicate detail, operator conflicts and location
@@ -85,6 +100,17 @@ file hashes, source/configuration/model metadata and a validation report.
 
 [Power BI model and first visual](dashboard/model.md) documents actual export grains
 and import relationships. A dashboard has not been created yet.
+
+## Verified full-window result
+
+- Analysis window: January 2024–December 2025; context: December 2023.
+- Fixed cohort: 551 facilities; warehouse spine: 13,775 facility-month rows.
+- Reporting exports: 24 months, 13,224 facility-month rows and 8,120 production facts.
+- All 25 monthly source/core/operator/area checks passed; all 16 export file hashes checked.
+- No UNKNOWN production fact operators were observed. Absent qualifying rows remain warnings.
+
+See [full-window validation evidence](docs/evidence/full_window_warehouse_validation.json).
+This is a working candidate study, not approved final findings or a completed dashboard.
 
 ## Verified pilot result
 
@@ -114,8 +140,8 @@ public source files in CI.
 The earlier [source audit](docs/source_verification.md) and
 [full-window research](docs/window_verification.md) remain provenance evidence.
 All 24 analysis-month raw snapshots and December 2023 context have now been
-restored with hashes matching the earlier evidence. The warehouse remains a
-two-month pilot. `python -m gas_intel.cohort` prepares a pinned candidate cohort
+restored with hashes matching the earlier evidence. The warehouse now consumes
+the full-window cohort. `python -m gas_intel.cohort` prepares a pinned candidate cohort
 and independently reconciled monthly baselines; see
 [cohort preparation](docs/window_verification.md). Historical reference snapshots
 remain unavailable locally. Provider revisions may prevent recreation of earlier
@@ -123,9 +149,9 @@ exact hashes in future; never silently update reviewed expectations.
 
 ## Next
 
-Extend the tested model to the complete window and comparison context, formalize
-the full-period cohort, add the reconciled production-change bridge, then build
-Power BI and write evidence-backed findings. See [PLAN.md](PLAN.md).
+Complete the final scope/source review, add MoM/YoY metrics, concentration and
+facility drivers, then implement the reconciled production-change bridge and
+build Power BI with evidence-backed findings. See [PLAN.md](PLAN.md).
 
 Raw files, warehouses, generated bulk exports, environments and secrets stay out
 of Git. Source copyright acknowledged: Government of Alberta, Petrinex public data.

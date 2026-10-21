@@ -91,13 +91,20 @@ def execute(operation: Callable[[], object]) -> None:
 @app.command()
 def load(
     month: Annotated[
-        list[str], typer.Option(help="Explicit reporting month; repeat for multiple months")
-    ],
+        list[str] | None, typer.Option(help="Explicit reporting month; repeat for multiple months")
+    ] = None,
     project_root: Annotated[Path, typer.Option(help="Repository root")] = Path("."),
     offline: Annotated[bool, typer.Option(help="Require pinned local inventories")] = False,
+    cohort_artifact: Annotated[
+        Path | None, typer.Option(help="Pinned full-window cohort JSON")
+    ] = None,
 ) -> None:
     """Load selected source snapshots into staging without duplicating prior loads."""
-    execute(lambda: load_sources(project_root.resolve(), month, offline=offline))
+    execute(
+        lambda: load_sources(
+            project_root.resolve(), month or [], offline=offline, cohort_artifact=cohort_artifact
+        )
+    )
 
 
 @app.command()
@@ -123,10 +130,17 @@ def export(project_root: Annotated[Path, typer.Option(help="Repository root")] =
 @app.command("run-all")
 def run_all(
     month: Annotated[
-        list[str], typer.Option(help="Explicit reporting month; repeat for multiple months")
-    ],
+        list[str] | None, typer.Option(help="Explicit reporting month; repeat for multiple months")
+    ] = None,
     project_root: Annotated[Path, typer.Option(help="Repository root")] = Path("."),
     offline: Annotated[bool, typer.Option(help="Use pinned local sources only")] = False,
+    cohort_artifact: Annotated[
+        Path | None, typer.Option(help="Pinned full-window cohort JSON")
+    ] = None,
 ) -> None:
     """Run the selected-month pipeline, including mandatory validation before export."""
-    execute(lambda: run_pipeline(project_root.resolve(), month, offline=offline))
+    execute(
+        lambda: run_pipeline(
+            project_root.resolve(), month or [], offline=offline, cohort_artifact=cohort_artifact
+        )
+    )

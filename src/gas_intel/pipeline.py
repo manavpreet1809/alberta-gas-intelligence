@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import logging
 import os
 import tempfile
 import uuid
@@ -17,6 +18,9 @@ from gas_intel.history_profiling import month_number
 from gas_intel.ingestion.download import acquire_month
 from gas_intel.ingestion.parsers import read_csv_payload
 from gas_intel.profiling import profile_source
+from gas_intel.snapshot_selection import read_cohort
+
+LOGGER = logging.getLogger(__name__)
 
 TABLES = {
     "dim_month": "core.dim_month",
@@ -28,6 +32,14 @@ TABLES = {
     "operator_monthly_production": "analytics.operator_monthly_production",
     "data_quality_summary": "analytics.data_quality_summary",
 }
+
+
+INTERNAL_TABLES = [
+    "core.selected_records",
+    "core.excluded_records",
+    "analytics.monthly_area_all",
+    "analytics.operator_monthly_all",
+]
 
 
 def table_fingerprint(db: duckdb.DuckDBPyConnection, table: str) -> str:
@@ -46,6 +58,8 @@ def table_fingerprint(db: duckdb.DuckDBPyConnection, table: str) -> str:
 
 def require_staging_integrity(db: duckdb.DuckDBPyConnection, info: dict) -> None:
     """Reject modified loaded rows before they can become a new accepted model."""
+    if info.get("cohort_fingerprint") != table_fingerprint(db, "staging.cohort"):
+        raise ValueError("Staging cohort integrity failed; reload the pinned sources")
     expected = info.get("staging_fingerprint")
     if not expected or table_fingerprint(db, "staging.volumetrics") != expected:
         raise ValueError("Staging snapshot integrity failed; reload the pinned sources")
@@ -54,10 +68,12 @@ def require_staging_integrity(db: duckdb.DuckDBPyConnection, info: dict) -> None
 def require_model_integrity(db: duckdb.DuckDBPyConnection, info: dict) -> None:
     """Check all exported model data and intermediate selection/exclusion lineage."""
     expected = info.get("table_fingerprints", {})
-    tables = [*TABLES.values(), "core.selected_records", "core.excluded_records"]
+    tables = [*TABLES.values(), *INTERNAL_TABLES]
     for table in tables:
         if table not in expected or table_fingerprint(db, table) != expected[table]:
-            raise ValueError(f"Built table snapshot integrity failed: {table}; rebuild the model")
+            raise ValueError(
+                f"Built table snapshot integrity reconciliation failed: {table}; rebuild the model"
+            )
 
 
 def atomic_json(path: Path, value: object) -> None:
@@ -119,15 +135,26 @@ def model_hash(root: Path) -> str:
     """Bind a built warehouse to the exact transformation code."""
     values = [path.read_bytes() for path in model_files(root)]
     values.append(Path(__file__).read_bytes())
+    values.append((Path(__file__).parent / "snapshot_selection.py").read_bytes())
     return hashlib.sha256(b"\0".join(values)).hexdigest()
 
 
-def load_sources(root: Path, months: list[str], *, offline: bool = False) -> dict:
+def load_sources(
+    root: Path, months: list[str], *, offline: bool = False, cohort_artifact: Path | None = None
+) -> dict:
     """Replace the selected staging snapshot atomically; preserve all raw source rows."""
     study, config_hash = configuration(root)
+    artifact, artifact_hash = None, None
+    if cohort_artifact is not None:
+        artifact, artifact_hash = read_cohort(root, cohort_artifact, study, config_hash)
+        if months:
+            raise ValueError("Select either explicit months or a full-window cohort artifact")
+        months = [artifact["context_month"], *artifact["analysis_months"]]
     if not months or len(set(months)) != len(months):
         raise ValueError("Supply unique explicit reporting months")
     months = sorted(months)
+    if not any(study["start_month"] <= month <= study["end_month"] for month in months):
+        raise ValueError("Load at least one analysis month; context alone is not a study")
     allowed_start = month_number(study["context_start_month"])
     allowed_end = month_number(study["end_month"])
     if any(not allowed_start <= month_number(month) <= allowed_end for month in months):
@@ -158,9 +185,24 @@ def load_sources(root: Path, months: list[str], *, offline: bool = False) -> dic
             if digest != event["sha256"]:
                 raise ValueError(f"Pinned source hash mismatch for {month}")
             profile = profile_source(source, month, headers)
-            scoped = profile_box(source, month, box)
-            if scoped["invalid_selected_volume_rows"]:
-                raise ValueError(f"Unresolved selected volumes for {month}")
+            LOGGER.info("Verified source %s: %s rows", month, profile["row_count"])
+            if artifact is not None:
+                baseline = next(
+                    row for row in artifact["monthly_source_baselines"] if row["period"] == month
+                )
+                if (
+                    digest != baseline["source_sha256"]
+                    or profile["row_count"] != baseline["source_rows"]
+                ):
+                    raise ValueError(f"Pinned cohort source revision differs for {month}")
+                scoped = {
+                    "gas_prod_rows": baseline["cohort_gas_prod_rows"],
+                    "accepted_volume_e3m3": baseline["cohort_volume_e3m3"],
+                }
+            else:
+                scoped = profile_box(source, month, box)
+                if scoped["invalid_selected_volume_rows"]:
+                    raise ValueError(f"Unresolved selected volumes for {month}")
             payload, _ = read_csv_payload(source)
             csv_path = Path(temporary) / f"{month}.csv"
             csv_path.write_bytes(payload)
@@ -181,9 +223,15 @@ def load_sources(root: Path, months: list[str], *, offline: bool = False) -> dic
             "status": "loaded",
             "months": months,
             "configuration_hash": config_hash,
+            "analysis_months": [month for month in months if month >= study["start_month"]],
+            "context_months": [month for month in months if month < study["start_month"]],
+            "cohort_artifact": str(cohort_artifact) if cohort_artifact is not None else None,
+            "cohort_artifact_sha256": artifact_hash,
             "scope_status": "working_scope",
             "human_scope_approval_recorded": study.get("approved") is True,
-            "cohort_policy": "fixed union of in-box facilities in the loaded months",
+            "cohort_policy": artifact["cohort_policy"]
+            if artifact is not None
+            else "fixed union of in-box facilities in the loaded analysis months",
             "pilot": sum(
                 month_number(study["start_month"]) <= month_number(month) for month in months
             )
@@ -192,12 +240,24 @@ def load_sources(root: Path, months: list[str], *, offline: bool = False) -> dic
         }
         database_path(root).parent.mkdir(parents=True, exist_ok=True)
         with duckdb.connect(str(database_path(root))) as db:
+            db.execute("SET memory_limit='1GB'")
+            db.execute("SET threads=2")
             db.execute("BEGIN")
             try:
                 db.execute("DROP SCHEMA IF EXISTS analytics CASCADE")
                 db.execute("DROP SCHEMA IF EXISTS core CASCADE")
                 db.execute("DROP SCHEMA IF EXISTS staging CASCADE")
                 db.execute("CREATE SCHEMA staging")
+                db.execute(
+                    "CREATE TABLE staging.cohort (facility_id VARCHAR, township INT, "
+                    "range INT, meridian INT)"
+                )
+                if artifact is not None:
+                    db.executemany(
+                        "INSERT INTO staging.cohort VALUES (?,?,?,?)",
+                        [[row["facility_id"], *row["location"]] for row in artifact["facilities"]],
+                    )
+                info["cohort_fingerprint"] = table_fingerprint(db, "staging.cohort")
                 for index, item in enumerate(selections):
                     mode = (
                         "CREATE TABLE staging.volumetrics AS"
@@ -241,7 +301,10 @@ def open_existing(root: Path, *, read_only: bool = False) -> duckdb.DuckDBPyConn
     """Fail without creating files when no warehouse has been loaded."""
     if not database_path(root).exists():
         raise FileNotFoundError("Run gas-intel load first; no warehouse exists")
-    return duckdb.connect(str(database_path(root)), read_only=read_only)
+    db = duckdb.connect(str(database_path(root)), read_only=read_only)
+    db.execute("SET memory_limit='1GB'")
+    db.execute("SET threads=2")
+    return db
 
 
 def build_model(root: Path) -> dict:
@@ -257,20 +320,42 @@ def build_model(root: Path) -> dict:
             db.execute(
                 "CREATE OR REPLACE TEMP TABLE pipeline_settings AS SELECT ?::INT "
                 "township_min, ?::INT township_max, ?::INT range_min, ?::INT range_max, "
-                "?::INT meridian",
+                "?::INT meridian, ?::VARCHAR start_month, ?::VARCHAR end_month",
                 [
-                    study[key]
-                    for key in [
-                        "township_min",
-                        "township_max",
-                        "range_min",
-                        "range_max",
-                        "meridian",
-                    ]
+                    *[
+                        study[key]
+                        for key in [
+                            "township_min",
+                            "township_max",
+                            "range_min",
+                            "range_max",
+                            "meridian",
+                        ]
+                    ],
+                    study["start_month"],
+                    study["end_month"],
                 ],
             )
             for path in model_files(root):
                 db.execute(path.read_text())
+            if info.get("cohort_artifact_sha256"):
+                cohort_errors = db.execute("""
+                    SELECT count(*) FROM (
+                        (SELECT facility_id FROM candidate_cohort
+                         EXCEPT SELECT facility_id FROM staging.cohort)
+                        UNION ALL
+                        (SELECT facility_id FROM staging.cohort
+                         EXCEPT SELECT facility_id FROM candidate_cohort)
+                    )
+                """).fetchone()[0]
+                location_errors = db.execute("""
+                    SELECT count(*) FROM staging.cohort s
+                    JOIN core.dim_facility d USING(facility_id)
+                    WHERE s.township IS DISTINCT FROM d.township OR s.range IS DISTINCT FROM d.range
+                       OR s.meridian IS DISTINCT FROM d.meridian
+                """).fetchone()[0]
+                if cohort_errors or location_errors:
+                    raise ValueError("Frozen cohort does not match analysis-month source evidence")
             invalid = db.execute(
                 "SELECT count(*) FROM core.selected_records WHERE "
                 "NOT coalesce(regexp_full_match(trim(Volume), "
@@ -306,8 +391,7 @@ def build_model(root: Path) -> dict:
                     table: table_fingerprint(db, table)
                     for table in [
                         *TABLES.values(),
-                        "core.selected_records",
-                        "core.excluded_records",
+                        *INTERNAL_TABLES,
                     ]
                 },
             )
@@ -335,6 +419,12 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
     if info["configuration_hash"] != digest:
         raise ValueError("Configuration changed since loading")
     require_staging_integrity(db, info)
+    if info.get("cohort_artifact"):
+        _, artifact_hash = read_cohort(
+            root, Path(info["cohort_artifact"]), configuration(root)[0], digest
+        )
+        if artifact_hash != info["cohort_artifact_sha256"]:
+            raise ValueError("Cohort artifact changed after loading")
     checks = []
     for source in info["sources"]:
         path = root / source["source_file"]
@@ -357,11 +447,10 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
             [month],
         ).fetchone()
         area = db.execute(
-            "SELECT volume FROM analytics.monthly_area_production WHERE month=?", [month]
+            "SELECT volume FROM analytics.monthly_area_all WHERE month=?", [month]
         ).fetchone()
         operator_volume = db.execute(
-            "SELECT coalesce(sum(volume),0) FROM "
-            "analytics.operator_monthly_production WHERE month=?",
+            "SELECT coalesce(sum(volume),0) FROM analytics.operator_monthly_all WHERE month=?",
             [month],
         ).fetchone()[0]
         excluded = db.execute(
@@ -409,12 +498,12 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
         ), keys AS (
             SELECT month,operator_id FROM source_totals UNION
             SELECT month,operator_id FROM fact_totals UNION
-            SELECT month,operator_id FROM analytics.operator_monthly_production
+            SELECT month,operator_id FROM analytics.operator_monthly_all
         )
         SELECT count(*) FROM keys k
         LEFT JOIN source_totals s USING(month,operator_id)
         LEFT JOIN fact_totals f USING(month,operator_id)
-        LEFT JOIN analytics.operator_monthly_production a USING(month,operator_id)
+        LEFT JOIN analytics.operator_monthly_all a USING(month,operator_id)
         WHERE coalesce(s.volume,0)<>coalesce(f.volume,0)
            OR coalesce(f.volume,0)<>coalesce(a.volume,0)
     """).fetchone()[0]
@@ -453,6 +542,9 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
         "cohort_facilities": expected_spine // len(info["months"]),
         "scope_status": info["scope_status"],
         "pilot": info["pilot"],
+        "analysis_months": info["analysis_months"],
+        "context_months": info["context_months"],
+        "cohort_artifact_sha256": info["cohort_artifact_sha256"],
         "configuration_hash": info["configuration_hash"],
         "model_hash": info["model_hash"],
         "source_sha256_by_month": {item["month"]: item["sha256"] for item in info["sources"]},
@@ -483,8 +575,13 @@ def export_tables(root: Path) -> Path:
         for name, table in TABLES.items():
             for extension, format_ in [("csv", "CSV, HEADER true"), ("parquet", "PARQUET")]:
                 path = temporary / f"{name}.{extension}"
+                selection = f"SELECT * FROM {table}"
+                if table in {"core.dim_month", "core.fact_gas_production", "core.facility_month"}:
+                    selection += (
+                        " WHERE month IN (SELECT month FROM core.dim_month WHERE is_analysis)"
+                    )
                 db.execute(
-                    f"COPY (SELECT * FROM {table} ORDER BY ALL) TO ? (FORMAT {format_})",
+                    f"COPY ({selection} ORDER BY ALL) TO ? (FORMAT {format_})",
                     [str(path)],
                 )
                 files[path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
@@ -508,8 +605,10 @@ def export_tables(root: Path) -> Path:
     return published
 
 
-def run_pipeline(root: Path, months: list[str], *, offline: bool = False) -> Path:
+def run_pipeline(
+    root: Path, months: list[str], *, offline: bool = False, cohort_artifact: Path | None = None
+) -> Path:
     """Load, build, validate and export the explicit selection with no skipped checks."""
-    load_sources(root, months, offline=offline)
+    load_sources(root, months, offline=offline, cohort_artifact=cohort_artifact)
     build_model(root)
     return export_tables(root)
