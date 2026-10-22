@@ -19,6 +19,7 @@ from gas_intel.ingestion.download import acquire_month
 from gas_intel.ingestion.parsers import read_csv_payload
 from gas_intel.profiling import profile_source
 from gas_intel.snapshot_selection import read_cohort
+from gas_intel.validation.analytics import validate_analytics
 
 LOGGER = logging.getLogger(__name__)
 
@@ -31,6 +32,8 @@ TABLES = {
     "monthly_area_production": "analytics.monthly_area_production",
     "operator_monthly_production": "analytics.operator_monthly_production",
     "data_quality_summary": "analytics.data_quality_summary",
+    "operator_concentration": "analytics.operator_concentration",
+    "facility_drivers": "analytics.facility_drivers",
 }
 
 
@@ -136,6 +139,7 @@ def model_hash(root: Path) -> str:
     values = [path.read_bytes() for path in model_files(root)]
     values.append(Path(__file__).read_bytes())
     values.append((Path(__file__).parent / "snapshot_selection.py").read_bytes())
+    values.append((Path(__file__).parent / "validation/analytics.py").read_bytes())
     return hashlib.sha256(b"\0".join(values)).hexdigest()
 
 
@@ -530,6 +534,7 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
     if state_errors:
         raise ValueError("Facility reporting-state reconciliation failed")
     require_model_integrity(db, info)
+    analytics_checks = validate_analytics(db)
     return {
         "run_id": info["run_id"],
         "passed": True,
@@ -539,6 +544,7 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
             "table_fingerprints": info["table_fingerprints"],
         },
         "checks": checks,
+        "analytics_checks": analytics_checks,
         "cohort_facilities": expected_spine // len(info["months"]),
         "scope_status": info["scope_status"],
         "pilot": info["pilot"],

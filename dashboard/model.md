@@ -14,6 +14,8 @@ contains source/configuration/model hashes and its own validation result.
 | monthly_area_production | month | Area validation totals and reporting-state counts |
 | operator_monthly_production | month × operator_id | Monthly source operator name, volume and area share |
 | data_quality_summary | month × report_status | Facility reporting-state counts |
+| operator_concentration | month | Nonadditive top-N shares, UNKNOWN share and HHI |
+| facility_drivers | facility_id × month transition | Signed reported-contribution change, states and both operator roles |
 
 ## First visual
 
@@ -58,3 +60,24 @@ Existing one-to-many dimension relationships and measure definitions still apply
 `pilot=false` means all 24 analysis months were loaded. It does not mean scope
 approval or dashboard completion. See `scope_status`, `human_scope_approval_recorded`,
 `cohort_artifact_sha256`, `analysis_months` and `context_months` in the bundle manifest.
+
+
+## Analytical relationships and measures
+
+The operator monthly export now retains exited operators with zero reported
+contribution and has_qualifying_row=false. Use the `(month, operator_id)` key;
+operator names are display labels and need not be unique. MoM percent fields are
+already percentages (25 means 25%), while area_share and top-N shares are fractions
+(0.25 means 25%). Avoid applying Power BI percentage formatting twice.
+
+Relate dim_month to operator_concentration; keep the relationship single-direction.
+Concentration cannot be filtered by a facility or operator through an absent key.
+For facility_drivers, relate dim_month to the current `month` and dim_facility to
+`facility_id`. Keep previous_operator_id and current_operator_id as detail fields,
+or use explicitly separate role-playing operator dimensions. Do not create two
+active relationships from the same operator dimension or attribute every driver
+change to the current operator. This table is not a signed operator bridge.
+
+Sum driver volume_change only across consecutive transitions for a fixed cohort.
+Starting production is a level, not part of the change sum. Rank values are local
+to a month and never additive. See [analytics definitions](../docs/analytics.md).

@@ -1,4 +1,4 @@
-# Implemented pilot measures
+# Implemented measures
 
 - Reported gas volume: exact sum of verified GAS/PROD detail, aggregated to
   facility-month, in e3m3. Missing source rows are not physical zero production.
@@ -13,4 +13,8 @@ Monthly operator IDs and names come from that month's source, with UNKNOWN kept
 in totals when assignment is absent. None of these measures establishes asset
 ownership, operational causation or geological formation membership.
 
-MoM/YoY measures, concentration and the change bridge remain future implementation.
+Area MoM/YoY and operator MoM changes, top-1/3/5 shares, HHI, UNKNOWN share and
+ranked facility contribution changes are implemented. Definitions and nullable
+baseline rules are in [analytics.md](../docs/analytics.md). A percent-change value
+of 25 means 25%; share fields use fractions, where 0.25 means 25%. These values
+cannot be summed across months. The signed production-change bridge remains pending.

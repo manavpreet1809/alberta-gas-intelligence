@@ -113,8 +113,8 @@ def test_pipeline_preserves_states_historical_operators_and_exact_totals(
     seed(project)
     output = run_pipeline(project, ["2025-01", "2025-02"], offline=True)
     assert output.is_dir()
-    assert len(list(output.glob("*.csv"))) == 8
-    assert len(list(output.glob("*.parquet"))) == 8
+    assert len(list(output.glob("*.csv"))) == 10
+    assert len(list(output.glob("*.parquet"))) == 10
     with (output / "fact_gas_production.csv").open() as file:
         exported_rows = list(csv.DictReader(file))
     assert {row["operator_id"] for row in exported_rows if row["month"] == "2025-01"} == {"0012"}

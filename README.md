@@ -6,8 +6,9 @@ public Petrinex source files, with validated exports for Power BI.
 **Status: the full-window warehouse works with a provisional study scope.**
 The January 2024–December 2025 run, plus December 2023 context, loaded 13,783,410
 source rows into a fixed 551-facility model. Validated CSV/Parquet reporting exports
-contain exactly 24 analysis months. Power BI, change metrics and the production-change
-bridge remain pending.
+contain exactly 24 analysis months. Area/operator changes, concentration and ranked
+facility drivers are implemented. Power BI and the signed production-change bridge
+remain pending.
 
 The working study definition is facilities in the Kakwa area of Alberta
 (Twp 60–65, Rge 3–7 W6M), with a fixed January 2024–December 2025 analysis window.
@@ -95,21 +96,35 @@ ownership transfers, or treat absent reports as proven shut-ins.
 ## Outputs
 
 The local database is `data/warehouse.duckdb`. `data/exports/latest.json` identifies
-the accepted bundle containing eight tables in CSV and Parquet, a manifest with
+the accepted bundle containing ten tables in CSV and Parquet, a manifest with
 file hashes, source/configuration/model metadata and a validation report.
 
 [Power BI model and first visual](dashboard/model.md) documents actual export grains
 and import relationships. A dashboard has not been created yet.
+
+## Analytical outputs
+
+- Area month-over-month and year-over-year changes using exact calendar baselines.
+- Operator monthly changes that retain entries, exits and UNKNOWN attribution.
+- Top-1/3/5 operator shares and HHI, with UNKNOWN share alongside concentration.
+- Ranked facility increases/decreases with both operators, reporting states and
+  nullable observed volumes preserved.
+
+[Analytics definitions](docs/analytics.md) explain units, zero/missing baselines,
+rank ties and interpretation limits. Independent Python/Decimal checks recompute
+these SQL results before publication. These are reported-contribution comparisons;
+the signed operator reallocation bridge is still pending.
 
 ## Verified full-window result
 
 - Analysis window: January 2024–December 2025; context: December 2023.
 - Fixed cohort: 551 facilities; warehouse spine: 13,775 facility-month rows.
 - Reporting exports: 24 months, 13,224 facility-month rows and 8,120 production facts.
-- All 25 monthly source/core/operator/area checks passed; all 16 export file hashes checked.
+- All 25 monthly source/core/operator/area checks passed; all 20 export file hashes checked.
 - No UNKNOWN production fact operators were observed. Absent qualifying rows remain warnings.
 
-See [full-window validation evidence](docs/evidence/full_window_warehouse_validation.json).
+See [full-window validation evidence](docs/evidence/full_window_warehouse_validation.json)
+and [current analytics validation](docs/evidence/analytics_validation.json).
 This is a working candidate study, not approved final findings or a completed dashboard.
 
 ## Verified pilot result
@@ -149,9 +164,8 @@ exact hashes in future; never silently update reviewed expectations.
 
 ## Next
 
-Complete the final scope/source review, add MoM/YoY metrics, concentration and
-facility drivers, then implement the reconciled production-change bridge and
-build Power BI with evidence-backed findings. See [PLAN.md](PLAN.md).
+Complete the final scope/source review, implement the reconciled production-change
+bridge, then build Power BI with evidence-backed findings. See [PLAN.md](PLAN.md).
 
 Raw files, warehouses, generated bulk exports, environments and secrets stay out
 of Git. Source copyright acknowledged: Government of Alberta, Petrinex public data.

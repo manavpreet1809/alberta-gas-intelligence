@@ -35,3 +35,11 @@ malformed quoting and unequal column counts. The production profiler optionally
 accepts the exact ordered expected_headers contract from config/sources.yaml;
 when supplied, additions, removals and reordering all require explicit review.
 Exploratory checks that supply only required columns do not certify the full schema.
+
+
+## Analytical schema
+
+The exact implemented table grains, fields, units and comparison rules are in
+[analytics.md](analytics.md); dimension relationships and import rules are in
+[dashboard/model.md](../dashboard/model.md). Source and observed-volume nulls remain
+distinct from zero reported-total contributions in the driver tables.
