@@ -16,6 +16,11 @@ contains source/configuration/model hashes and its own validation result.
 | data_quality_summary | month × report_status | Facility reporting-state counts |
 | operator_concentration | month | Nonadditive top-N shares, UNKNOWN share and HHI |
 | facility_drivers | facility_id × month transition | Signed reported-contribution change, states and both operator roles |
+| facility_bridge_monthly | facility_id × month transition | Wide signed components, operator roles, states and history flags |
+| bridge_component_events | facility_id × month × component | Additive signed volume at explicit credited_operator_id |
+| operator_bridge_monthly | month × operator_id | Signed operator components and exact reconciliation |
+| area_bridge_monthly | month | Signed area components and exact reconciliation |
+| operator_transfers | facility_id × month | Known reassignments or UNKNOWN attribution changes by explicit type |
 
 ## First visual
 
@@ -81,3 +86,23 @@ change to the current operator. This table is not a signed operator bridge.
 Sum driver volume_change only across consecutive transitions for a fixed cohort.
 Starting production is a level, not part of the change sum. Rank values are local
 to a month and never additive. See [analytics definitions](../docs/analytics.md).
+
+
+## Signed bridge import
+
+Use dim_month.month → bridge_component_events.month, dim_facility.facility_id →
+bridge_component_events.facility_id and dim_operator.operator_id →
+bridge_component_events.credited_operator_id. All are one-to-many, single-direction
+relationships from dimensions. Aggregate component event volume at its original
+key. Do not connect events directly to other facts. Operator and area bridge tables
+have their own corresponding dimension relationships, with no facility filtering
+path into a table lacking facility_id.
+
+Wide facility bridge and operator-change detail contain previous/current operator
+roles. Keep them as detail fields or use separate role-playing dimensions; never
+create two active relationships to the same operator dimension. For waterfalls,
+use a start-month production level and component transitions strictly after start
+through end inclusive. A January bridge using December context does not belong in
+a waterfall whose starting level is January. Reject noncontiguous ranges.
+See [production_bridge.md](../docs/production_bridge.md) for exact signed examples.
+The .pbix and executed DAX validation remain human tasks.

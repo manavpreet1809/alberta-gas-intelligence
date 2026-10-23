@@ -1,7 +1,8 @@
 # Reported-production analytics
 
 Status: implemented analytical tables; final study scope and the human-built Power BI
-dashboard remain pending. The signed production-change bridge is a later stage.
+dashboard remain pending. The signed production-change bridge is now implemented;
+see [production_bridge.md](production_bridge.md).
 
 ## Area changes
 
@@ -28,7 +29,8 @@ change equal to its prior total. This does not prove zero physical output.
 rules as the area table. `area_share` is a fraction, so 0.25 means 25%. UNKNOWN is
 retained in totals, changes and denominators. Display names do not replace IDs.
 Summing signed operator changes, including exits, reproduces the area MoM change.
-These deltas do not yet separate reported operator reassignments from volume change.
+These monthly deltas do not separate reassignments themselves; use the signed
+bridge tables for that decomposition.
 
 ## Concentration
 
@@ -56,7 +58,8 @@ month produces no transition. No operator-transfer, new-facility, restart or shu
 claim follows from this arithmetic. For selected start/end months, use the start-month
 production level and sum only transitions strictly after start through end inclusive.
 Reject noncontiguous selections for that waterfall. Use the signed bridge in the next stage to
-allocate changes between previous and current operators.
+allocate changes between previous and current operators. The implementation is
+documented in [production_bridge.md](production_bridge.md).
 
 ## Independent validation
 

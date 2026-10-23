@@ -7,8 +7,8 @@ public Petrinex source files, with validated exports for Power BI.
 The January 2024–December 2025 run, plus December 2023 context, loaded 13,783,410
 source rows into a fixed 551-facility model. Validated CSV/Parquet reporting exports
 contain exactly 24 analysis months. Area/operator changes, concentration and ranked
-facility drivers are implemented. Power BI and the signed production-change bridge
-remain pending.
+facility drivers and the signed production-change bridge are implemented.
+Power BI and final scope/source review remain pending.
 
 The working study definition is facilities in the Kakwa area of Alberta
 (Twp 60–65, Rge 3–7 W6M), with a fixed January 2024–December 2025 analysis window.
@@ -96,7 +96,7 @@ ownership transfers, or treat absent reports as proven shut-ins.
 ## Outputs
 
 The local database is `data/warehouse.duckdb`. `data/exports/latest.json` identifies
-the accepted bundle containing ten tables in CSV and Parquet, a manifest with
+the accepted bundle containing fifteen tables in CSV and Parquet, a manifest with
 file hashes, source/configuration/model metadata and a validation report.
 
 [Power BI model and first visual](dashboard/model.md) documents actual export grains
@@ -113,14 +113,27 @@ and import relationships. A dashboard has not been created yet.
 [Analytics definitions](docs/analytics.md) explain units, zero/missing baselines,
 rank ties and interpretation limits. Independent Python/Decimal checks recompute
 these SQL results before publication. These are reported-contribution comparisons;
-the signed operator reallocation bridge is still pending.
+the signed operator reallocation bridge is now independently reconciled.
+
+## Signed production-change bridge
+
+The bridge allocates prior reported volume between monthly operators, then credits
+current-minus-prior volume to one reporting-state component. Known-ID changes and
+UNKNOWN attribution changes are separate; all components retain their signs.
+Facility, operator and area results reconcile exactly with no residual bucket.
+
+The real-data checks cover 13,224 facility transitions, 8,832 component events,
+513 operator-month rows and 300 contiguous start/end ranges. Source lineage covers
+both monthly evidence sets. See [worked examples](docs/production_bridge.md) and
+[current bridge validation](docs/evidence/bridge_validation.json). Reported operator
+changes do not establish acquisitions or ownership transfers.
 
 ## Verified full-window result
 
 - Analysis window: January 2024–December 2025; context: December 2023.
 - Fixed cohort: 551 facilities; warehouse spine: 13,775 facility-month rows.
 - Reporting exports: 24 months, 13,224 facility-month rows and 8,120 production facts.
-- All 25 monthly source/core/operator/area checks passed; all 20 export file hashes checked.
+- All 25 monthly source/core/operator/area checks passed; all 30 export file hashes checked.
 - No UNKNOWN production fact operators were observed. Absent qualifying rows remain warnings.
 
 See [full-window validation evidence](docs/evidence/full_window_warehouse_validation.json)
@@ -164,8 +177,8 @@ exact hashes in future; never silently update reviewed expectations.
 
 ## Next
 
-Complete the final scope/source review, implement the reconciled production-change
-bridge, then build Power BI with evidence-backed findings. See [PLAN.md](PLAN.md).
+Complete the final scope/source review, then build and manually reconcile Power BI
+and write evidence-backed findings. See [PLAN.md](PLAN.md).
 
 Raw files, warehouses, generated bulk exports, environments and secrets stay out
 of Git. Source copyright acknowledged: Government of Alberta, Petrinex public data.

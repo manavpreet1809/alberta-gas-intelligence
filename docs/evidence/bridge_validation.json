@@ -1,0 +1,307 @@
+{
+  "run_id": "dcfaca61-c84d-4702-bcc0-351747f91c35",
+  "passed": true,
+  "snapshot_integrity": {
+    "algorithm": "sha256_schema_and_sorted_row_hashes_v1",
+    "staging_fingerprint": "e46e16cba9d13fd689037ee0435e288b361e17ef333057378d2672efca51fd71",
+    "table_fingerprints": {
+      "core.dim_month": "b1b6ab74e592bdc605ca8b33925e99f0ce654fe7a5d99c9a4e08e55410223e8a",
+      "core.dim_facility": "3b0dbc568d78a74cc57b9cb9e103d0de1fd9bc6f5262a88c477447b246f5cf3f",
+      "core.dim_operator": "74151a9b3ea4917684b0303ec9a25356a190cebbd544666d41a51737771a79c1",
+      "core.facility_month": "f63bf40ccd1a3e6a7583fe73c26e48f14996da7e0b5cf27379df1f7dd9b69471",
+      "core.fact_gas_production": "26e30f4e0a75eeaa9823ae86ed100e45ed13439a3cb5268da292c77058198b69",
+      "analytics.monthly_area_production": "f53b12dcefb0877422344ab5d0f5d584d343a6419370d3355306925432110233",
+      "analytics.operator_monthly_production": "cb44b021e16feda847e82b054002eb9c820719ef0f67a7fa835727f7f5933e3a",
+      "analytics.data_quality_summary": "2303c6eb478788726638163fa5da5f97ef57c0072b5a15c213a13b1c2c5f1709",
+      "analytics.operator_concentration": "75cb7fdc3e76169dcf88dbf3739c543b1dd69cf383ebebb9b2c71dad848c87f0",
+      "analytics.facility_drivers": "794aa9240cfec35c4554512dd05f14adb30fe974b3d2072b16e2ef4ddd4ad520",
+      "analytics.facility_bridge_monthly": "96bfb0190061c74c0ef5a49093281d3115005f062257704bb2faf698ba9c260e",
+      "analytics.bridge_component_events": "3a0380c30f495f6f20fb1cb711f31ccf1e2aab1d53d12fc27d6f5152a2959ec2",
+      "analytics.operator_bridge_monthly": "dae2d8a9c69401ebf78a0d7c1c966eadaddc74e19b05ac28caa59c376b65d7b7",
+      "analytics.area_bridge_monthly": "0c12aec16960c12a2557f1af453eaf5422a69c2eb5ca9136882d2146988d9c82",
+      "analytics.operator_transfers": "237e63f1194d656510c1b18f8d8ad388a2b1c270f45d5cdaaf5c89f99558cfde",
+      "core.selected_records": "6d1cd14d72de849c53cb22e6ba6163de65f18294753475152df8ecfbe3c14b97",
+      "core.excluded_records": "6a81713c9268bc55a28016a5dea4fcf346f3a66fff6f1f01ddf25817946ec121",
+      "analytics.monthly_area_all": "c58ccd405e51d9dbde68667e411aeb381ccfbdf50d9c02a3ce0f3284a089b0a8",
+      "analytics.operator_monthly_all": "92e4550fa02d69ff34c7a2a274c0a6c4ccd9e54ffba4f4e6535f653603e73bad",
+      "analytics.bridge_source_lineage": "a2945b541401818f6a28f5aca5a270773e8a26286b91e849ff620758cfec4c84"
+    }
+  },
+  "checks": [
+    {
+      "month": "2023-12",
+      "passed": true,
+      "volume_e3m3": "1354587.200",
+      "selected_rows": 2245
+    },
+    {
+      "month": "2024-01",
+      "passed": true,
+      "volume_e3m3": "1300192.700",
+      "selected_rows": 2257
+    },
+    {
+      "month": "2024-02",
+      "passed": true,
+      "volume_e3m3": "1250426.400",
+      "selected_rows": 2270
+    },
+    {
+      "month": "2024-03",
+      "passed": true,
+      "volume_e3m3": "1329202.700",
+      "selected_rows": 2292
+    },
+    {
+      "month": "2024-04",
+      "passed": true,
+      "volume_e3m3": "1294534.300",
+      "selected_rows": 2320
+    },
+    {
+      "month": "2024-05",
+      "passed": true,
+      "volume_e3m3": "1257458.700",
+      "selected_rows": 2311
+    },
+    {
+      "month": "2024-06",
+      "passed": true,
+      "volume_e3m3": "1278048.200",
+      "selected_rows": 2317
+    },
+    {
+      "month": "2024-07",
+      "passed": true,
+      "volume_e3m3": "1307476.600",
+      "selected_rows": 2359
+    },
+    {
+      "month": "2024-08",
+      "passed": true,
+      "volume_e3m3": "1368020.800",
+      "selected_rows": 2357
+    },
+    {
+      "month": "2024-09",
+      "passed": true,
+      "volume_e3m3": "1327560.900",
+      "selected_rows": 2358
+    },
+    {
+      "month": "2024-10",
+      "passed": true,
+      "volume_e3m3": "1399375.800",
+      "selected_rows": 2371
+    },
+    {
+      "month": "2024-11",
+      "passed": true,
+      "volume_e3m3": "1320478.500",
+      "selected_rows": 2370
+    },
+    {
+      "month": "2024-12",
+      "passed": true,
+      "volume_e3m3": "1402421.300",
+      "selected_rows": 2378
+    },
+    {
+      "month": "2025-01",
+      "passed": true,
+      "volume_e3m3": "1366116.000",
+      "selected_rows": 2385
+    },
+    {
+      "month": "2025-02",
+      "passed": true,
+      "volume_e3m3": "1202281.300",
+      "selected_rows": 2407
+    },
+    {
+      "month": "2025-03",
+      "passed": true,
+      "volume_e3m3": "1379277.900",
+      "selected_rows": 2431
+    },
+    {
+      "month": "2025-04",
+      "passed": true,
+      "volume_e3m3": "1327507.600",
+      "selected_rows": 2434
+    },
+    {
+      "month": "2025-05",
+      "passed": true,
+      "volume_e3m3": "1334894.700",
+      "selected_rows": 2450
+    },
+    {
+      "month": "2025-06",
+      "passed": true,
+      "volume_e3m3": "1284163.800",
+      "selected_rows": 2461
+    },
+    {
+      "month": "2025-07",
+      "passed": true,
+      "volume_e3m3": "1349866.800",
+      "selected_rows": 2472
+    },
+    {
+      "month": "2025-08",
+      "passed": true,
+      "volume_e3m3": "1350646.500",
+      "selected_rows": 2468
+    },
+    {
+      "month": "2025-09",
+      "passed": true,
+      "volume_e3m3": "1272417.500",
+      "selected_rows": 2469
+    },
+    {
+      "month": "2025-10",
+      "passed": true,
+      "volume_e3m3": "1314071.300",
+      "selected_rows": 2486
+    },
+    {
+      "month": "2025-11",
+      "passed": true,
+      "volume_e3m3": "1264796.800",
+      "selected_rows": 2493
+    },
+    {
+      "month": "2025-12",
+      "passed": true,
+      "volume_e3m3": "1295276.400",
+      "selected_rows": 2488
+    }
+  ],
+  "analytics_checks": {
+    "passed": true,
+    "area_months": 24,
+    "operator_months": 482,
+    "concentration_months": 24,
+    "facility_transitions": 13224
+  },
+  "bridge_checks": {
+    "passed": true,
+    "facility_transitions": 13224,
+    "component_events": 8832,
+    "operator_months": 513,
+    "area_months": 24,
+    "operator_change_events": 295,
+    "multi_month_ranges_checked": 300,
+    "source_lineage_rows": 645151
+  },
+  "cohort_facilities": 551,
+  "scope_status": "working_scope",
+  "pilot": false,
+  "analysis_months": [
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12"
+  ],
+  "context_months": [
+    "2023-12"
+  ],
+  "cohort_artifact_sha256": "5e400c7523b95dcc706f00ac35f4c6299fae0298bbe04e92c31b24603849774e",
+  "configuration_hash": "49c23db1c8c26c3c2555c3eaab25b86c6b0d565bc4b9aa3b189c18f0d8b51979",
+  "model_hash": "db07b6febc38ff7200c6fe0968cb761db563020b65a1d8fd306db6d2d013cd72",
+  "source_sha256_by_month": {
+    "2023-12": "afe4592318787f8cb80a0e18071b4fef43d9f0326ecfd4f430131b0ded03f0c9",
+    "2024-01": "1de5dc0ac25904a13978ba1607c5ba2e17b6c32e1164209b83c54720f941fd00",
+    "2024-02": "1c4e008acb33827a3ce46260573f5ef4d53fbaa9f76e8207b85968d41bcfe194",
+    "2024-03": "5ba61bdecda2f6641567042f9473cffa500cd6a49a93a4dbe3e6f48f5fba7aec",
+    "2024-04": "ba2ba69782e60e2291031a92da25c42a5c6a3675c7b267483661bcdb56d9c96f",
+    "2024-05": "e953e4b6dff545188f5076c4993d110daae5c55f41a945931ad7c79b70b203d0",
+    "2024-06": "036904bac029da638a8146e1b2959d26d6c4dff10f3992caa63a63ad2977c07f",
+    "2024-07": "02fda9b1a7a849e8a7988aa44362293401c7505ff3d8d45e6a42e07a9bf95acd",
+    "2024-08": "b5c894b65aa6770edac0afd988f5f0cc52c3736776d640e1c4692571282990c5",
+    "2024-09": "b9feaba9c2a7893ac81b0e4283a4fd0eb294b8654fbf8abd95129a1f851c6cfc",
+    "2024-10": "a2ccae116f68e4e4334494e75bf0b02495bb5ceb9bf2a300bc9238a2a50bd8fa",
+    "2024-11": "0685888357099a5de3cb5418a4596034f85160870f4f8b11c389a786b9c52d50",
+    "2024-12": "fa66eb04fc250a4df8e587509519060393034fd439368c4e7f86d19c7af4d2c4",
+    "2025-01": "3e1313f6e6d7f736b41f6f4352e69cf4b239b7ded73fd4e2afc6ae9efe08d3d4",
+    "2025-02": "875508f48967d4f12256128181076137aa0e70c7286355289059b303f4303980",
+    "2025-03": "3a3b4a3cfab1c26daf13f9db4a4a27d759962b0477c02569393b20d10d5699f2",
+    "2025-04": "7d5f4e6eb68cd4ccadd7684fcd38eec8b67f5c6c564b2e8b08e4bbcff0f50c41",
+    "2025-05": "9425a521373dfbc75d24bb3b0486cba7e83c19b5499ad3a8f48351626efe6d1e",
+    "2025-06": "d347aa22ac265298141473697b77efd9b8d86a615515afc37b0042923434c841",
+    "2025-07": "9da89bb3e8097b9983307ed86f0d9eac46edf9838fa8b86122dbde34e949e9a9",
+    "2025-08": "422498477f47884d4daa3a7675f41d12fbef74b0f5470587469aef2c2250d348",
+    "2025-09": "28285b3f9472fa31edbdf2adfe7342871b9d45e75b2027bf53d1a81978cf04af",
+    "2025-10": "ac75d7ba94725a097bb616d755eb5f68d7645b48a76c4dd5b3bcc159f7eeaae2",
+    "2025-11": "33b9414d420a46e90bc3c74699f3321bcc73b0c70bd28fcf9b1f797b83c264b2",
+    "2025-12": "43d11f49fa199cb24a450df51330a4d5c7d764382c01009e88dc3bdf6232fd18"
+  },
+  "warnings": {
+    "unknown_operator_fact_rows": 0,
+    "absent_qualifying_facility_months": 5317
+  },
+  "export_file_count": 30,
+  "export_sha256_verified": true,
+  "published_bridge_reconciliation_passed": true,
+  "operator_change_counts_by_type": {
+    "reported_operator_reassignment": 116,
+    "attribution_change": 179
+  },
+  "component_summary": {
+    "absent_production_row": {
+      "event_count": 122,
+      "signed_volume_e3m3": "-54570.800"
+    },
+    "attribution_in": {
+      "event_count": 179,
+      "signed_volume_e3m3": "25771.600"
+    },
+    "attribution_out": {
+      "event_count": 179,
+      "signed_volume_e3m3": "-25771.600"
+    },
+    "continuing_change": {
+      "event_count": 8009,
+      "signed_volume_e3m3": "-119526.300"
+    },
+    "first_observed_positive": {
+      "event_count": 53,
+      "signed_volume_e3m3": "93208.600"
+    },
+    "returning_positive": {
+      "event_count": 58,
+      "signed_volume_e3m3": "21577.700"
+    },
+    "transfer_in": {
+      "event_count": 116,
+      "signed_volume_e3m3": "297901.400"
+    },
+    "transfer_out": {
+      "event_count": 116,
+      "signed_volume_e3m3": "-297901.400"
+    }
+  },
+  "human_scope_approval_recorded": false
+}

@@ -20,6 +20,7 @@ from gas_intel.ingestion.parsers import read_csv_payload
 from gas_intel.profiling import profile_source
 from gas_intel.snapshot_selection import read_cohort
 from gas_intel.validation.analytics import validate_analytics
+from gas_intel.validation.bridge import validate_bridge
 
 LOGGER = logging.getLogger(__name__)
 
@@ -34,6 +35,11 @@ TABLES = {
     "data_quality_summary": "analytics.data_quality_summary",
     "operator_concentration": "analytics.operator_concentration",
     "facility_drivers": "analytics.facility_drivers",
+    "facility_bridge_monthly": "analytics.facility_bridge_monthly",
+    "bridge_component_events": "analytics.bridge_component_events",
+    "operator_bridge_monthly": "analytics.operator_bridge_monthly",
+    "area_bridge_monthly": "analytics.area_bridge_monthly",
+    "operator_transfers": "analytics.operator_transfers",
 }
 
 
@@ -42,6 +48,7 @@ INTERNAL_TABLES = [
     "core.excluded_records",
     "analytics.monthly_area_all",
     "analytics.operator_monthly_all",
+    "analytics.bridge_source_lineage",
 ]
 
 
@@ -140,6 +147,7 @@ def model_hash(root: Path) -> str:
     values.append(Path(__file__).read_bytes())
     values.append((Path(__file__).parent / "snapshot_selection.py").read_bytes())
     values.append((Path(__file__).parent / "validation/analytics.py").read_bytes())
+    values.append((Path(__file__).parent / "validation/bridge.py").read_bytes())
     return hashlib.sha256(b"\0".join(values)).hexdigest()
 
 
@@ -535,6 +543,7 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
         raise ValueError("Facility reporting-state reconciliation failed")
     require_model_integrity(db, info)
     analytics_checks = validate_analytics(db)
+    bridge_checks = validate_bridge(db)
     return {
         "run_id": info["run_id"],
         "passed": True,
@@ -545,6 +554,7 @@ def validate_connection(root: Path, db: duckdb.DuckDBPyConnection) -> dict:
         },
         "checks": checks,
         "analytics_checks": analytics_checks,
+        "bridge_checks": bridge_checks,
         "cohort_facilities": expected_spine // len(info["months"]),
         "scope_status": info["scope_status"],
         "pilot": info["pilot"],

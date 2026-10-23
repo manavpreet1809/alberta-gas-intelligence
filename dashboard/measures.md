@@ -17,4 +17,6 @@ Area MoM/YoY and operator MoM changes, top-1/3/5 shares, HHI, UNKNOWN share and
 ranked facility contribution changes are implemented. Definitions and nullable
 baseline rules are in [analytics.md](../docs/analytics.md). A percent-change value
 of 25 means 25%; share fields use fractions, where 0.25 means 25%. These values
-cannot be summed across months. The signed production-change bridge remains pending.
+cannot be summed across months. The signed production-change bridge is implemented; see
+[production_bridge.md](../docs/production_bridge.md) for component definitions and
+credited-operator allocation. DAX execution and dashboard reconciliation remain pending.
