@@ -1,7 +1,16 @@
 # Power BI and portfolio handoff
 
-The Python/SQL pipeline and signed bridge work. The human builds the .pbix; no
-Power BI dashboard, executed DAX validation or screenshots are claimed yet.
+The Python/SQL pipeline and signed bridge work. A first web report and semantic
+model are saved, with production DAX controls checked against the exports. The
+full dashboard, bridge measure acceptance, screenshots and .pbix remain pending.
+See [observed draft evidence](../docs/evidence/powerbi_draft.json) and the executed
+[production control query](validation/production_controls.dax).
+
+Only fact_gas_production is imported so far. The draft still uses currency display
+formatting inherited from the fixed-decimal type; change this to a numeric e3m3
+format before presentation. The month chart also needs chronological sorting.
+The user authorized importing all remaining project CSVs to the same connected
+organizational OneDrive/Power BI account. Those imports have not happened yet.
 
 ## Verify the bundle first
 

@@ -1,0 +1,38 @@
+{
+  "observed_date": "2026-10-25",
+  "status": "saved draft report; full dashboard acceptance pending",
+  "report_name": "Alberta Gas Intelligence - Draft overview",
+  "report_url": "https://app.powerbi.com/groups/me/reports/3e25d1d3-f7c4-47d9-9d8c-b212f2759fa7",
+  "semantic_model_name": "Alberta Gas Intelligence \u2014 Provisional 2024\u20132025",
+  "semantic_model_id": "7859927e-3c36-4e4a-8b4c-72d0b2bf8c8e",
+  "export_id": "8f01c2ae-9596-441e-a2cd-c35f4d5e47f6",
+  "imported_tables": [
+    "fact_gas_production"
+  ],
+  "source_csv_sha256": "f081a5f1592784f6ea54da58ff63acf6f6978ea48a6550370bd37f11fc3cb2da",
+  "evidence_method": "Power BI Safari UI: upload success, model/report saved, DAX results grid",
+  "dax_controls_observed": {
+    "months": 24,
+    "fact_rows": 8120,
+    "total_e3m3": "31576513.500",
+    "january_2024_e3m3": "1300192.700",
+    "december_2025_e3m3": "1295276.400"
+  },
+  "monthly_query_status": "Success; 24 rows and 3 columns returned; not all rows captured",
+  "query_file": "dashboard/validation/production_controls.dax",
+  "model_editing_observed": false,
+  "remaining_tables_imported": false,
+  "relationships_validated": false,
+  "bridge_dax_validated": false,
+  "screenshots_saved": false,
+  "dashboard_accepted": false,
+  "remaining_work": [
+    "Import remaining fourteen tables",
+    "Set volume display to numeric e3m3 rather than currency",
+    "Set monthly chart chronological sorting and final layout",
+    "Create dimensions-to-facts relationships",
+    "Build operator bridge and quality pages",
+    "Validate range DAX and filters",
+    "Save screenshots and complete final scope/source review"
+  ]
+}

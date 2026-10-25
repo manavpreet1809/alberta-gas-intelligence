@@ -8,7 +8,8 @@ The January 2024–December 2025 run, plus December 2023 context, loaded 13,783,
 source rows into a fixed 551-facility model. Validated CSV/Parquet reporting exports
 contain exactly 24 analysis months. Area/operator changes, concentration and ranked
 facility drivers and the signed production-change bridge are implemented.
-Power BI and final scope/source review remain pending.
+A first Power BI draft is saved and its production controls match the exports.
+The full dashboard and final scope/source review remain pending.
 
 The working study definition is facilities in the Kakwa area of Alberta
 (Twp 60–65, Rge 3–7 W6M), with a fixed January 2024–December 2025 analysis window.
@@ -100,7 +101,9 @@ the accepted bundle containing fifteen tables in CSV and Parquet, a manifest wit
 file hashes, source/configuration/model metadata and a validation report.
 
 [Power BI model and first visual](dashboard/model.md) documents actual export grains
-and import relationships. A dashboard has not been created yet.
+and import relationships. A [saved draft overview](https://app.powerbi.com/groups/me/reports/3e25d1d3-f7c4-47d9-9d8c-b212f2759fa7)
+uses the production fact; it is not the accepted final dashboard. See
+[observed Power BI checks](docs/evidence/powerbi_draft.json).
 
 ## Analytical outputs
 
@@ -176,7 +179,7 @@ still pending. See the [data-quality report](docs/data_quality_report.md).
 | SQL, DuckDB | Exact DECIMAL modeling, analytics, signed bridge and CSV/Parquet exports |
 | pytest, Ruff | Offline regression tests, lint and formatting |
 | GitHub Actions | Fixture-based CI workflow on Python 3.11 and 3.12 |
-| Power BI | Human-built dashboard planned; .pbix and executed measure checks pending |
+| Power BI | Saved web draft; production DAX controls checked; full dashboard, .pbix and bridge measure acceptance pending |
 
 ## Tests and source verification
 

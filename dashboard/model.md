@@ -1,6 +1,8 @@
 # Power BI import model
 
-Status: validated CSV/Parquet bundles exist; no Power BI dashboard has been created.
+Status: a saved Power BI web draft imports fact_gas_production. Production DAX
+controls match the exports; the full model and dashboard are not accepted. See
+[observed checks](../docs/evidence/powerbi_draft.json).
 Use the bundle selected by `data/exports/latest.json`. Each bundle is immutable and
 contains source/configuration/model hashes and its own validation result.
 

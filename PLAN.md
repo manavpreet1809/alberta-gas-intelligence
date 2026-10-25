@@ -15,10 +15,10 @@ replaces the earlier M0–M9 sequence.
 |---|---|---|
 | 1. Foundation | Installable package, honest CLI, tests and CI workflow | Implemented; local checks and remote CI passed |
 | 2. Verify source and scope | Evidence-backed data contract and frozen study definition | In progress: all 24 candidate months and context checked; candidate cohort artifact implemented; final scope review pending |
-| 3. First working result | One real month through every layer to validated exports and one visual | Two-month real-data pipeline and snapshot integrity checks implemented; Power BI visual pending |
+| 3. First working result | One real month through every layer to validated exports and one visual | Pipeline implemented; first Power BI web draft saved; imported production DAX controls checked; final visual acceptance pending |
 | 4. Complete data pipeline | Reproducible 24-month warehouse with integrated validation | Full-window warehouse, change metrics, concentration and drivers implemented; real-data validation recorded; final scope/source review pending |
 | 5. Explain reported changes | Reconciled facility, operator and area bridges | Implemented and independently validated: 13,224 real transitions and 300 contiguous ranges; final study scope remains provisional |
-| 6. Dashboard and portfolio | Validated Power BI model, three findings and clear documentation | Provisional findings, bundle verifier, typed import drafts, walkthrough and manual dashboard acceptance guide implemented; human-built Power BI, screenshots and signoff pending |
+| 6. Dashboard and portfolio | Validated Power BI model, three findings and clear documentation | Provisional findings, bundle verifier, typed import drafts, walkthrough and manual dashboard acceptance guide implemented; web draft saved with production controls checked; full Power BI model, screenshots and signoff pending |
 
 ## 1. Foundation
 

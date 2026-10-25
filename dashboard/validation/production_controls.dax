@@ -1,0 +1,10 @@
+// Executed in Power BI DAX query view, 2026-10-25.
+// Read-only query controls; this does not install report measures.
+EVALUATE
+ROW(
+    "Months", DISTINCTCOUNT(fact_gas_production[month]),
+    "Fact rows", COUNTROWS(fact_gas_production),
+    "Total e3m3", SUM(fact_gas_production[volume]),
+    "January 2024 e3m3", CALCULATE(SUM(fact_gas_production[volume]), fact_gas_production[month] = "2024-01"),
+    "December 2025 e3m3", CALCULATE(SUM(fact_gas_production[volume]), fact_gas_production[month] = "2025-12")
+)

@@ -1,7 +1,9 @@
 # Draft DAX measures
 
 These target the actual export schema and relationship contract in model.md.
-They have **not been executed in Power BI**. The human must check them against
+The report measures below have **not been accepted in Power BI**. A separate
+read-only [production control query](validation/production_controls.dax) has been
+executed successfully; it does not validate these range/bridge measures. Check them against
 handoff.md before recording dashboard completion.
 
 ```dax
