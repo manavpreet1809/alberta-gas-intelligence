@@ -1,8 +1,9 @@
 # M1 verification checklist
 
-Status: in progress. January and February 2025 official volumetric downloads have
-been profiled; see source_verification.md and evidence/. Unticked items remain
-partially or wholly unresolved.
+Status: technical pipeline and full-window candidate verification implemented;
+final scope and source-use exit decisions remain pending. All 24 candidate months
+and December 2023 context have been verified. See the current evidence summary below.
+Historical unchecked items describe the original review queue, not missing code.
 For each item record evidence URL/file/hash, observation, decision, reviewer and
 verification date. A tick without evidence is not a completed contract.
 
@@ -56,4 +57,22 @@ This resolves the missing-local-volumetrics issue after recovery; it does not
 restore historical reference snapshots or record final scope approval.
 
 Final scope confirmation and source-contract exit review remain pending. The
-warehouse has not yet been expanded to consume the full-window cohort artifact.
+warehouse now consumes the full-window cohort artifact; the earlier expansion
+blocker is resolved.
+
+
+## Current technical evidence — 2026-10-25
+
+| Contract | Implemented evidence | Remaining decision |
+|---|---|---|
+| Packaging, codes, units and detail grain | source_verification.md, reference_contracts.md, methodology.md; all 25 selected monthly profiles and reconciled detail aggregates | No unverified revision horizon is claimed |
+| Selected source vintage | Accepted bundle manifest pins source hashes and acquisition times; raw revisions are immutable | Source series is as-downloaded, not as-first-reported |
+| Candidate cohort and monthly baselines | evidence/candidate_cohort_preparation.json pins 551 members and 25 independent monthly baselines | Human approval of the proposed geography/dates |
+| Operator and reporting-state policy | Monthly source BA IDs, UNKNOWN attribution, full spine and fail-closed invalid-volume tests | Absence never proves shutdown; no observed explicit-zero rows |
+| Full pipeline and bridge | evidence/bridge_validation.json and evidence/portfolio_handoff.json | Final study remains provisional |
+| Source reuse | source_verification.md records official terms; source rows are not committed | Review intended publication/use and acknowledgement before publication |
+
+Completed technical checks do not constitute human scope approval, permission for
+commercial reuse, or proof of a completed Power BI report. The final exit decision
+is pending those applicable reviews and the dashboard acceptance in
+[dashboard/handoff.md](../dashboard/handoff.md).

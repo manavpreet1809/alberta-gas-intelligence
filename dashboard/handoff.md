@@ -20,6 +20,10 @@ findings and records the export/manifest/model/configuration/source hashes. This
 a portable check of accepted exports; it does not authorize changed warehouse state
 or replace mandatory validation on `gas-intel export`. Never edit an accepted bundle.
 
+Use the prepared [Power Query import drafts](power_query/README.md) to create all
+15 table queries from one selected bundle. Their execution remains part of manual
+acceptance.
+
 ## Build three report pages
 
 1. **Area overview:** reported volume trend, single-month MoM/YoY, positive/absent

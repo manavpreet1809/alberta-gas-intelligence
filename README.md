@@ -209,3 +209,7 @@ and write evidence-backed findings. See [PLAN.md](PLAN.md).
 Raw files, warehouses, generated bulk exports, environments and secrets stay out
 of Git. Source copyright acknowledged: Government of Alberta, Petrinex public data.
 Use remains subject to [Petrinex terms](https://www.petrinex.ca/terms).
+
+For a presentation or interview, use the [project walkthrough](docs/walkthrough.md).
+Prepared [Power Query drafts](dashboard/power_query/README.md) simplify importing
+the accepted bundle; execution and visual acceptance remain human tasks.
