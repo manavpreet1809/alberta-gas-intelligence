@@ -1,0 +1,10 @@
+createOrReplace
+	ref table fact_gas_production
+		measure 'Selected start gas (e3m3)' = VAR Months = ALLSELECTED(dim_month[month]) VAR StartMonth = MINX(Months, dim_month[month]) VAR EndMonth = MAXX(Months, dim_month[month]) RETURN IF([Range selection valid] = 1, CALCULATE([Reported gas (e3m3)], REMOVEFILTERS(dim_month), dim_month[month] = StartMonth))
+			formatString: #,##0.000
+
+		measure 'Selected end gas (e3m3)' = VAR Months = ALLSELECTED(dim_month[month]) VAR StartMonth = MINX(Months, dim_month[month]) VAR EndMonth = MAXX(Months, dim_month[month]) RETURN IF([Range selection valid] = 1, CALCULATE([Reported gas (e3m3)], REMOVEFILTERS(dim_month), dim_month[month] = EndMonth))
+			formatString: #,##0.000
+
+		measure 'Selected bridge (e3m3)' = VAR Months = ALLSELECTED(dim_month[month]) VAR StartMonth = MINX(Months, dim_month[month]) VAR EndMonth = MAXX(Months, dim_month[month]) RETURN IF([Range selection valid] = 1, COALESCE(CALCULATE([Bridge component (e3m3)], REMOVEFILTERS(dim_month), FILTER(ALL(dim_month[month]), dim_month[month] > StartMonth && dim_month[month] <= EndMonth)), 0))
+			formatString: #,##0.000

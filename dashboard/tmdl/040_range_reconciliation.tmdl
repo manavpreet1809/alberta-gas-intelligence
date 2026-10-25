@@ -1,0 +1,4 @@
+createOrReplace
+	ref table fact_gas_production
+		measure 'Selected reconciliation difference (e3m3)' = IF([Range selection valid] = 1, [Selected change (e3m3)] - CALCULATE([Selected bridge (e3m3)], REMOVEFILTERS(bridge_component_events[component])))
+			formatString: #,##0.000

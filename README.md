@@ -8,7 +8,8 @@ The January 2024–December 2025 run, plus December 2023 context, loaded 13,783,
 source rows into a fixed 551-facility model. Validated CSV/Parquet reporting exports
 contain exactly 24 analysis months. Area/operator changes, concentration and ranked
 facility drivers and the signed production-change bridge are implemented.
-A first Power BI draft is saved and its production controls match the exports.
+A first Power BI draft is saved. All 15 tables are imported and their DAX row
+counts match the exports; relationship recalculation and report acceptance remain pending.
 The full dashboard and final scope/source review remain pending.
 
 The working study definition is facilities in the Kakwa area of Alberta
@@ -167,8 +168,9 @@ Use [dashboard/handoff.md](dashboard/handoff.md) to verify the bundle, build the
 three report pages and manually check expected values. The portable handoff command
 checks all 30 files, text IDs, unique grains, dimension links and start-exclusive
 waterfall totals. It does not replace current-state pipeline validation.
-Power BI, executed DAX checks, screenshots and final scope/source-use approval are
-still pending. See the [data-quality report](docs/data_quality_report.md).
+All 15 Power BI table counts and the original production controls are checked.
+The 23 applied relationships need recalculation before range DAX acceptance.
+Final report pages, screenshots and scope/source-use approval remain pending. See the [data-quality report](docs/data_quality_report.md).
 
 ## Technology and delivery status
 
@@ -179,7 +181,7 @@ still pending. See the [data-quality report](docs/data_quality_report.md).
 | SQL, DuckDB | Exact DECIMAL modeling, analytics, signed bridge and CSV/Parquet exports |
 | pytest, Ruff | Offline regression tests, lint and formatting |
 | GitHub Actions | Fixture-based CI workflow on Python 3.11 and 3.12 |
-| Power BI | Saved web draft; production DAX controls checked; full dashboard, .pbix and bridge measure acceptance pending |
+| Power BI | All 15 tables loaded and counts checked; 23 relationships and 14 measures applied; recalculation and final dashboard acceptance pending |
 
 ## Tests and source verification
 
@@ -206,8 +208,9 @@ exact hashes in future; never silently update reviewed expectations.
 
 ## Next
 
-Complete the final scope/source review, then build and manually reconcile Power BI
-and write evidence-backed findings. See [PLAN.md](PLAN.md).
+Refresh to recalculate Power BI relationships, validate selected-range DAX, and
+finish the report pages and screenshots. Complete final scope/source review before
+accepting the provisional findings. See [PLAN.md](PLAN.md).
 
 Raw files, warehouses, generated bulk exports, environments and secrets stay out
 of Git. Source copyright acknowledged: Government of Alberta, Petrinex public data.

@@ -1,7 +1,8 @@
 # Draft DAX measures
 
 These target the actual export schema and relationship contract in model.md.
-The report measures below have **not been accepted in Power BI**. A separate
+Fourteen measures, including the examples below, were applied in Power BI through
+[versioned TMDL scripts](tmdl/README.md). They have **not been accepted in Power BI**: the first range query requires relationship recalculation. A separate
 read-only [production control query](validation/production_controls.dax) has been
 executed successfully; it does not validate these range/bridge measures. Check them against
 handoff.md before recording dashboard completion.
@@ -34,5 +35,5 @@ The simple Bridge component measure is additive at its original event grain.
 It does not itself validate a waterfall range. Apply the required start-exclusive,
 end-inclusive contiguous transition filter and compare against the selected
 end-minus-start production level. Do not add all January context transitions to
-a waterfall whose baseline is January. Range measures remain a manual modeling
-and validation task; no executed DAX or completed waterfall is claimed.
+a waterfall whose baseline is January. Range measures are applied, but validation is pending after relationship
+recalculation. No successful range result or completed waterfall is claimed.

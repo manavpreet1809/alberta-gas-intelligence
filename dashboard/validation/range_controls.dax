@@ -1,0 +1,10 @@
+EVALUATE
+ROW(
+ "Range valid", [Range selection valid],
+ "Start e3m3", [Selected start gas (e3m3)],
+ "End e3m3", [Selected end gas (e3m3)],
+ "Change e3m3", [Selected change (e3m3)],
+ "Bridge e3m3", [Selected bridge (e3m3)],
+ "Difference e3m3", [Selected reconciliation difference (e3m3)],
+ "Maximum operator difference", MAXX(VALUES(dim_operator[operator_id]), ABS([Selected reconciliation difference (e3m3)]))
+)

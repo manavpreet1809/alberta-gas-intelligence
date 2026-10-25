@@ -7,7 +7,21 @@
   "semantic_model_id": "7859927e-3c36-4e4a-8b4c-72d0b2bf8c8e",
   "export_id": "8f01c2ae-9596-441e-a2cd-c35f4d5e47f6",
   "imported_tables": [
-    "fact_gas_production"
+    "area_bridge_monthly",
+    "bridge_component_events",
+    "data_quality_summary",
+    "dim_facility",
+    "dim_month",
+    "dim_operator",
+    "facility_bridge_monthly",
+    "facility_drivers",
+    "facility_month",
+    "fact_gas_production",
+    "monthly_area_production",
+    "operator_bridge_monthly",
+    "operator_concentration",
+    "operator_monthly_production",
+    "operator_transfers"
   ],
   "source_csv_sha256": "f081a5f1592784f6ea54da58ff63acf6f6978ea48a6550370bd37f11fc3cb2da",
   "evidence_method": "Power BI Safari UI: upload success, model/report saved, DAX results grid",
@@ -21,18 +35,16 @@
   "monthly_query_status": "Success; 24 rows and 3 columns returned; not all rows captured",
   "query_file": "dashboard/validation/production_controls.dax",
   "model_editing_observed": true,
-  "remaining_tables_imported": false,
+  "remaining_tables_imported": true,
   "relationships_validated": false,
   "bridge_dax_validated": false,
   "screenshots_saved": false,
   "dashboard_accepted": false,
   "remaining_work": [
-    "Import the fourteen uploaded tables into the semantic model",
-    "Set volume display to numeric e3m3 rather than currency",
-    "Set monthly chart chronological sorting and final layout",
-    "Create dimensions-to-facts relationships",
+    "Refresh to recalculate the new relationships",
+    "Validate range DAX, relationship filters and noncontiguous selections",
+    "Complete overview layout and chronological sorting",
     "Build operator bridge and quality pages",
-    "Validate range DAX and filters",
     "Save screenshots and complete final scope/source review"
   ],
   "uploaded_csv_tables": [
@@ -89,5 +101,33 @@
     ],
     "recovery": "Attempted disabling load on detail queries for a smaller batch; Safari page became blank. Draft persistence after reload is not confirmed.",
     "reusable_query_directory": "dashboard/power_query/web_csv"
-  }
+  },
+  "model_table_counts_observed": {
+    "area_bridge_monthly": 24,
+    "bridge_component_events": 8832,
+    "data_quality_summary": 48,
+    "dim_facility": 551,
+    "dim_month": 24,
+    "dim_operator": 530,
+    "facility_bridge_monthly": 13224,
+    "facility_drivers": 13224,
+    "facility_month": 13224,
+    "fact_gas_production": 8120,
+    "monthly_area_production": 24,
+    "operator_bridge_monthly": 513,
+    "operator_concentration": 24,
+    "operator_monthly_production": 482,
+    "operator_transfers": 295
+  },
+  "table_counts_query_file": "dashboard/validation/model_counts.dax",
+  "model_loading_options_observed": {
+    "maximum_concurrent_jobs": 1,
+    "autodetect_new_relationships": false
+  },
+  "relationships_applied_count": 23,
+  "measures_applied_count": 14,
+  "relationship_recalculation_pending": true,
+  "range_query_status": "Executed; failed because fact_gas_production.month to dim_month.month relationship needs recalculation. No successful range result recorded.",
+  "import_recovery": "All fifteen table definitions applied in small TMDL batches. First refresh failed on Web connection; opening Power Query with the existing organizational connection and saving, then refreshing, loaded data. All fifteen row counts matched accepted exports in DAX.",
+  "volume_display_format_applied": "#,##0.000"
 }

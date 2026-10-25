@@ -1,7 +1,8 @@
 # Power BI import model
 
-Status: a saved Power BI web draft imports fact_gas_production. Production DAX
-controls match the exports; the full model and dashboard are not accepted. See
+Status: all fifteen export tables are imported, and their DAX row counts match
+the accepted exports. Twenty-three relationships and fourteen measures are applied;
+relationship recalculation, range checks and final dashboard acceptance are pending. See
 [observed checks](../docs/evidence/powerbi_draft.json).
 Use the bundle selected by `data/exports/latest.json`. Each bundle is immutable and
 contains source/configuration/model hashes and its own validation result.

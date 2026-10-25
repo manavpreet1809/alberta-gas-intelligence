@@ -1,0 +1,184 @@
+createOrReplace
+	relationship area_bridge_monthly_month
+		fromColumn: area_bridge_monthly.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship bridge_component_events_month
+		fromColumn: bridge_component_events.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship data_quality_summary_month
+		fromColumn: data_quality_summary.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship facility_bridge_monthly_month
+		fromColumn: facility_bridge_monthly.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship facility_drivers_month
+		fromColumn: facility_drivers.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship facility_month_month
+		fromColumn: facility_month.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship fact_gas_production_month
+		fromColumn: fact_gas_production.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship monthly_area_production_month
+		fromColumn: monthly_area_production.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship operator_bridge_monthly_month
+		fromColumn: operator_bridge_monthly.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship operator_concentration_month
+		fromColumn: operator_concentration.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship operator_monthly_production_month
+		fromColumn: operator_monthly_production.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship operator_transfers_month
+		fromColumn: operator_transfers.month
+		toColumn: dim_month.month
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship fact_gas_production_facility_id
+		fromColumn: fact_gas_production.facility_id
+		toColumn: dim_facility.facility_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship facility_month_facility_id
+		fromColumn: facility_month.facility_id
+		toColumn: dim_facility.facility_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship bridge_component_events_facility_id
+		fromColumn: bridge_component_events.facility_id
+		toColumn: dim_facility.facility_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship facility_bridge_monthly_facility_id
+		fromColumn: facility_bridge_monthly.facility_id
+		toColumn: dim_facility.facility_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship facility_drivers_facility_id
+		fromColumn: facility_drivers.facility_id
+		toColumn: dim_facility.facility_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship operator_transfers_facility_id
+		fromColumn: operator_transfers.facility_id
+		toColumn: dim_facility.facility_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship fact_gas_production_operator_id
+		fromColumn: fact_gas_production.operator_id
+		toColumn: dim_operator.operator_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship facility_month_operator_id
+		fromColumn: facility_month.operator_id
+		toColumn: dim_operator.operator_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship operator_monthly_production_operator_id
+		fromColumn: operator_monthly_production.operator_id
+		toColumn: dim_operator.operator_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship operator_bridge_monthly_operator_id
+		fromColumn: operator_bridge_monthly.operator_id
+		toColumn: dim_operator.operator_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true
+
+	relationship bridge_component_events_credited_operator_id
+		fromColumn: bridge_component_events.credited_operator_id
+		toColumn: dim_operator.operator_id
+		fromCardinality: many
+		toCardinality: one
+		crossFilteringBehavior: oneDirection
+		isActive: true

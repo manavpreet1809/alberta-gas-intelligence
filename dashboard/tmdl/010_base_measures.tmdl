@@ -1,0 +1,33 @@
+createOrReplace
+	ref table fact_gas_production
+		column volume
+			dataType: decimal
+			sourceColumn: volume
+			summarizeBy: sum
+			formatString: #,##0.000
+		measure 'Reported gas (e3m3)' = SUM(fact_gas_production[volume])
+			formatString: #,##0.000
+
+		measure 'Bridge component (e3m3)' = SUM(bridge_component_events[volume])
+			formatString: #,##0.000
+
+		measure 'Range selection valid' = VAR Months = ALLSELECTED(dim_month[month]) VAR StartMonth = MINX(Months, dim_month[month]) VAR EndMonth = MAXX(Months, dim_month[month]) RETURN IF(COUNTROWS(Months) = DATEDIFF(DATEVALUE(StartMonth & "-01"), DATEVALUE(EndMonth & "-01"), MONTH) + 1, 1, 0)
+			formatString: 0
+
+		measure 'Area MoM (single month, e3m3)' = IF(HASONEVALUE(dim_month[month]), SUM(monthly_area_production[mom_change]))
+			formatString: #,##0.000
+
+		measure 'Area YoY (single month, e3m3)' = IF(HASONEVALUE(dim_month[month]), SUM(monthly_area_production[yoy_change]))
+			formatString: #,##0.000
+
+		measure 'Study-area HHI (single month)' = IF(HASONEVALUE(dim_month[month]), MAX(operator_concentration[hhi]))
+			formatString: #,##0.00
+
+		measure 'Study-area top-three share (single month)' = IF(HASONEVALUE(dim_month[month]), MAX(operator_concentration[top_3_share]))
+			formatString: 0.00%
+
+		measure 'Area absent facilities (single month)' = IF(HASONEVALUE(dim_month[month]), MAX(monthly_area_production[absent_facilities]))
+			formatString: #,##0
+
+		measure 'Study-area unknown share (single month)' = IF(HASONEVALUE(dim_month[month]), MAX(operator_concentration[unknown_share]))
+			formatString: 0.00%

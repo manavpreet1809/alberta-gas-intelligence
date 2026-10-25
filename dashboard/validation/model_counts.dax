@@ -1,0 +1,19 @@
+EVALUATE
+UNION(
+    ROW("Table", "area_bridge_monthly", "Rows", COUNTROWS(area_bridge_monthly)),
+    ROW("Table", "bridge_component_events", "Rows", COUNTROWS(bridge_component_events)),
+    ROW("Table", "data_quality_summary", "Rows", COUNTROWS(data_quality_summary)),
+    ROW("Table", "dim_facility", "Rows", COUNTROWS(dim_facility)),
+    ROW("Table", "dim_month", "Rows", COUNTROWS(dim_month)),
+    ROW("Table", "dim_operator", "Rows", COUNTROWS(dim_operator)),
+    ROW("Table", "facility_bridge_monthly", "Rows", COUNTROWS(facility_bridge_monthly)),
+    ROW("Table", "facility_drivers", "Rows", COUNTROWS(facility_drivers)),
+    ROW("Table", "facility_month", "Rows", COUNTROWS(facility_month)),
+    ROW("Table", "fact_gas_production", "Rows", COUNTROWS(fact_gas_production)),
+    ROW("Table", "monthly_area_production", "Rows", COUNTROWS(monthly_area_production)),
+    ROW("Table", "operator_bridge_monthly", "Rows", COUNTROWS(operator_bridge_monthly)),
+    ROW("Table", "operator_concentration", "Rows", COUNTROWS(operator_concentration)),
+    ROW("Table", "operator_monthly_production", "Rows", COUNTROWS(operator_monthly_production)),
+    ROW("Table", "operator_transfers", "Rows", COUNTROWS(operator_transfers))
+)
+ORDER BY [Table]

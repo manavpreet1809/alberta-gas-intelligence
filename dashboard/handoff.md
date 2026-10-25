@@ -6,20 +6,21 @@ full dashboard, bridge measure acceptance, screenshots and .pbix remain pending.
 See [observed draft evidence](../docs/evidence/powerbi_draft.json) and the executed
 [production control query](validation/production_controls.dax).
 
-Only fact_gas_production is imported so far. The draft still uses currency display
-formatting inherited from the fixed-decimal type; change this to a numeric e3m3
-format before presentation. The month chart also needs chronological sorting.
-The user authorized importing all remaining project CSVs to the same connected
-organizational OneDrive/Power BI account. All fourteen remaining CSV files are
-now visible in the private OneDrive folder `gas-intel-csv-upload-jyq8dmqe` under
-Uploaded Files. Uploading files is distinct from importing them into the semantic
-model: only fact_gas_production is confirmed saved. Editing mode is now verified.
-All fifteen queries were defined, with successful preview checks, but two bulk
-save attempts failed with `MaxConcurrentEvaluationsReached` for SKU `General`.
-A smaller-batch recovery was interrupted by a blank Safari page; persistence of
-the unsaved query draft is unconfirmed. Reusable typed web CSV queries are in
-[web_csv](power_query/web_csv/README.md). See the evidence record for upload
-fingerprints and observed save errors.
+All fifteen export tables are now imported. A DAX row-count query returned the
+accepted count for every table. The model also has 23 explicit dimension
+relationships and 14 measures applied through [TMDL scripts](tmdl/README.md).
+Volume formatting was changed to numeric e3m3. Relationship processing and range
+measure acceptance remain pending: the first range query reported that the new
+relationships need recalculation. The month chart still needs chronological
+sorting and the final three-page report is unfinished.
+
+Two bulk Power Query saves previously failed with `MaxConcurrentEvaluationsReached`.
+Small TMDL batches saved the definitions. Sequential loading was selected, and
+opening Power Query with the existing organizational connection, saving, then
+refreshing loaded the data. This does not certify the later relationships or
+bridge measures. See [observed evidence](../docs/evidence/powerbi_draft.json),
+[table count query](validation/model_counts.dax) and
+[pending range controls](validation/range_controls.dax).
 
 ## Verify the bundle first
 

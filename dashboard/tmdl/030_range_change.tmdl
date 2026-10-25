@@ -1,0 +1,4 @@
+createOrReplace
+	ref table fact_gas_production
+		measure 'Selected change (e3m3)' = IF([Range selection valid] = 1, COALESCE([Selected end gas (e3m3)], 0) - COALESCE([Selected start gas (e3m3)], 0))
+			formatString: #,##0.000
