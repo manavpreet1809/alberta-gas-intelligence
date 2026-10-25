@@ -27,12 +27,49 @@
   "screenshots_saved": false,
   "dashboard_accepted": false,
   "remaining_work": [
-    "Import remaining fourteen tables",
+    "Import the fourteen uploaded tables into the semantic model",
     "Set volume display to numeric e3m3 rather than currency",
     "Set monthly chart chronological sorting and final layout",
     "Create dimensions-to-facts relationships",
     "Build operator bridge and quality pages",
     "Validate range DAX and filters",
     "Save screenshots and complete final scope/source review"
-  ]
+  ],
+  "uploaded_csv_tables": [
+    "area_bridge_monthly",
+    "bridge_component_events",
+    "data_quality_summary",
+    "dim_facility",
+    "dim_month",
+    "dim_operator",
+    "facility_bridge_monthly",
+    "facility_drivers",
+    "facility_month",
+    "fact_gas_production",
+    "monthly_area_production",
+    "operator_bridge_monthly",
+    "operator_concentration",
+    "operator_monthly_production",
+    "operator_transfers"
+  ],
+  "uploaded_csv_sha256": {
+    "area_bridge_monthly.csv": "6b53ed03a55f9197eb2fd8dc21047341f08a343040a71c300373fadd95b6d0db",
+    "bridge_component_events.csv": "39447ba26d1962a0caaaa21f049bc02611480dad6443a6a7c45e000407a4d233",
+    "data_quality_summary.csv": "fd3cf3c400888d7ae14edefb86e06a09d4976754121d0e8a2657f0d8616d1578",
+    "dim_facility.csv": "4cf54be5f9c1416784cf56c138351bfbe057551a00fc6cf29fbb05d803bb28df",
+    "dim_month.csv": "fac28d268e37a0ca57523545af62b46570bb1d38868da22a6f1211a9d721e4d3",
+    "dim_operator.csv": "44fccfcf19a78fc470d4fc1133d83099007d11fd08c74e507238b1029ff48133",
+    "facility_bridge_monthly.csv": "4f44ba012e6d6e0c7728bec990b7de3a48c9b73e690db0e85e1fa0a63483f0af",
+    "facility_drivers.csv": "ff37acd9b0c90177f0e0e0850a990a34af391f640c447a57b613197b5d102a14",
+    "facility_month.csv": "338a50f3a1aff1ff86eaba7ad0f63950343675fd0edf47513e9bf9ce1fb6debb",
+    "fact_gas_production.csv": "f081a5f1592784f6ea54da58ff63acf6f6978ea48a6550370bd37f11fc3cb2da",
+    "monthly_area_production.csv": "ba6e3b2cc3fb0b0e8a421f60d4c5214fc571a607cf74d4ea189cb1093bae4472",
+    "operator_bridge_monthly.csv": "815857366653c7c9661ef28142cce4e59e7e17eab310a709362c2bcb97a69e0d",
+    "operator_concentration.csv": "a15afdc8ea05ac7bf902dc5492dab4574224b97eac528ae5da27b23a53eab4c2",
+    "operator_monthly_production.csv": "4a5ca0ede4704d3dbf9556c1396923c82853d5d6a70a495e3c807253c41a25a0",
+    "operator_transfers.csv": "0cb20563d873be2c825c9390a2ae97b160cd60fcccb07dd20d121d5e7abbd334"
+  },
+  "upload_evidence": "OneDrive private listings: production file in Uploaded Files; all fourteen remaining CSV names visible in gas-intel-csv-upload-jyq8dmqe",
+  "remaining_upload_folder": "gas-intel-csv-upload-jyq8dmqe",
+  "editing_blocker": "Model remained in Viewing mode after activating Editing; Apply and model data-editing controls remained disabled."
 }

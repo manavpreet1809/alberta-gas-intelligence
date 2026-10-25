@@ -10,7 +10,12 @@ Only fact_gas_production is imported so far. The draft still uses currency displ
 formatting inherited from the fixed-decimal type; change this to a numeric e3m3
 format before presentation. The month chart also needs chronological sorting.
 The user authorized importing all remaining project CSVs to the same connected
-organizational OneDrive/Power BI account. Those imports have not happened yet.
+organizational OneDrive/Power BI account. All fourteen remaining CSV files are
+now visible in the private OneDrive folder `gas-intel-csv-upload-jyq8dmqe` under
+Uploaded Files. Uploading files is distinct from importing them into the semantic
+model: the model still contains only fact_gas_production. Its Editing transition
+has not persisted in the observed session, leaving Apply and data-editing controls
+unavailable. See the evidence record for the uploaded file fingerprints.
 
 ## Verify the bundle first
 
