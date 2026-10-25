@@ -20,7 +20,7 @@
   },
   "monthly_query_status": "Success; 24 rows and 3 columns returned; not all rows captured",
   "query_file": "dashboard/validation/production_controls.dax",
-  "model_editing_observed": false,
+  "model_editing_observed": true,
   "remaining_tables_imported": false,
   "relationships_validated": false,
   "bridge_dax_validated": false,
@@ -71,5 +71,23 @@
   },
   "upload_evidence": "OneDrive private listings: production file in Uploaded Files; all fourteen remaining CSV names visible in gas-intel-csv-upload-jyq8dmqe",
   "remaining_upload_folder": "gas-intel-csv-upload-jyq8dmqe",
-  "editing_blocker": "Model remained in Viewing mode after activating Editing; Apply and model data-editing controls remained disabled."
+  "import_attempt": {
+    "query_count_observed": 15,
+    "remaining_tables_saved": false,
+    "preview_checks_observed": {
+      "dim_month": "24 rows, 2 columns",
+      "dim_facility": "100 preview rows, 7 columns",
+      "bridge_component_events": "100 preview rows, 7 columns",
+      "facility_bridge_monthly": "100 preview rows, 30 columns"
+    },
+    "save_error": "MaxConcurrentEvaluationsReached",
+    "save_attempts": 2,
+    "service_sku_reported": "General",
+    "activity_ids": [
+      "90279cd1-33db-44b1-8a5e-8de54aee6279",
+      "12db7a2e-0bd8-4c97-8870-1af352723dce"
+    ],
+    "recovery": "Attempted disabling load on detail queries for a smaller batch; Safari page became blank. Draft persistence after reload is not confirmed.",
+    "reusable_query_directory": "dashboard/power_query/web_csv"
+  }
 }

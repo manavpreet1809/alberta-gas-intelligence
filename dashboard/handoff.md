@@ -13,9 +13,13 @@ The user authorized importing all remaining project CSVs to the same connected
 organizational OneDrive/Power BI account. All fourteen remaining CSV files are
 now visible in the private OneDrive folder `gas-intel-csv-upload-jyq8dmqe` under
 Uploaded Files. Uploading files is distinct from importing them into the semantic
-model: the model still contains only fact_gas_production. Its Editing transition
-has not persisted in the observed session, leaving Apply and data-editing controls
-unavailable. See the evidence record for the uploaded file fingerprints.
+model: only fact_gas_production is confirmed saved. Editing mode is now verified.
+All fifteen queries were defined, with successful preview checks, but two bulk
+save attempts failed with `MaxConcurrentEvaluationsReached` for SKU `General`.
+A smaller-batch recovery was interrupted by a blank Safari page; persistence of
+the unsaved query draft is unconfirmed. Reusable typed web CSV queries are in
+[web_csv](power_query/web_csv/README.md). See the evidence record for upload
+fingerprints and observed save errors.
 
 ## Verify the bundle first
 
