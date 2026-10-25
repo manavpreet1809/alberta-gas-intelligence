@@ -18,7 +18,7 @@ replaces the earlier M0–M9 sequence.
 | 3. First working result | One real month through every layer to validated exports and one visual | Two-month real-data pipeline and snapshot integrity checks implemented; Power BI visual pending |
 | 4. Complete data pipeline | Reproducible 24-month warehouse with integrated validation | Full-window warehouse, change metrics, concentration and drivers implemented; real-data validation recorded; final scope/source review pending |
 | 5. Explain reported changes | Reconciled facility, operator and area bridges | Implemented and independently validated: 13,224 real transitions and 300 contiguous ranges; final study scope remains provisional |
-| 6. Dashboard and portfolio | Validated Power BI model, three findings and clear documentation | Pending |
+| 6. Dashboard and portfolio | Validated Power BI model, three findings and clear documentation | Provisional findings, bundle verifier and manual dashboard acceptance guide implemented; human-built Power BI, screenshots and signoff pending |
 
 ## 1. Foundation
 

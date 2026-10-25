@@ -152,6 +152,32 @@ not the 551-facility union previously researched across the entire 24-month wind
 See [pilot validation evidence](docs/evidence/pilot_warehouse_validation.json).
 These numbers describe reported extract contributions, not all physical gas output.
 
+## Findings and Power BI handoff
+
+The [three provisional findings](docs/findings.md) are calculated from accepted
+exports: nearly flat endpoint area volume, a reporting BA-ID decline whose bridge
+separates reassignment effects, and higher top-three BA-ID concentration. Exact
+values and snapshot hashes are in [handoff evidence](docs/evidence/portfolio_handoff.json).
+These are reporting-cohort findings, not physical-production or ownership claims.
+
+Use [dashboard/handoff.md](dashboard/handoff.md) to verify the bundle, build the
+three report pages and manually check expected values. The portable handoff command
+checks all 30 files, text IDs, unique grains, dimension links and start-exclusive
+waterfall totals. It does not replace current-state pipeline validation.
+Power BI, executed DAX checks, screenshots and final scope/source-use approval are
+still pending. See the [data-quality report](docs/data_quality_report.md).
+
+## Technology and delivery status
+
+| Technology | Implemented role |
+|---|---|
+| Python 3.11+, Typer | Source handling, pipeline commands and handoff verification |
+| requests, PyYAML | Official downloads and explicit configuration |
+| SQL, DuckDB | Exact DECIMAL modeling, analytics, signed bridge and CSV/Parquet exports |
+| pytest, Ruff | Offline regression tests, lint and formatting |
+| GitHub Actions | Fixture-based CI workflow on Python 3.11 and 3.12 |
+| Power BI | Human-built dashboard planned; .pbix and executed measure checks pending |
+
 ## Tests and source verification
 
 ```bash
